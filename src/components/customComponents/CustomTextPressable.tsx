@@ -2,6 +2,7 @@ import { TouchableOpacity, Text, StyleSheet } from "react-native";
 
 interface props {
     text: string;
+    style?: StyleSheet
 }
 
 export function CustomTextPressable( {...props} : props) {
