@@ -6,6 +6,8 @@ import {
   View,
   Pressable,
   Image,
+  ScrollView,
+  KeyboardAvoidingView,
 } from "react-native";
 import { CustomButton } from "../components/customComponents/CustomButton";
 
@@ -16,28 +18,32 @@ const iconReturnButton = require("../../resources/icons/retornar-icon.png");
 
 export function SignUpPage() {
   return (
-    <View>
-      {/** Button -> Return page */}
-      <View>
-        <Pressable>
-          <Image source={iconReturnButton} style={styles.iconReturnButton} />
-        </Pressable>
-      </View>
+    <ScrollView>
+      <KeyboardAvoidingView behavior="position" enabled>
+        <View>
+          {/** Button -> Return page */}
+          <View>
+            <Pressable>
+              <Image source={iconReturnButton} style={styles.iconReturnButton} />
+            </Pressable>
+          </View>
 
-      {/** Body SignUp */}
-      <View style={styles.container}>
-        <Text style={styles.title}>Cadastrar</Text>
+          {/** Body SignUp */}
+          <View style={styles.container}>
+            <Text style={styles.title}>Cadastrar</Text>
 
-        <CustomInputText placeholder="Digite seu e-mail" />
-        <CustomInputText placeholder="Confirme seu e-mail" />
-        <CustomInputText placeholder="Digite uma senha" />
-        <CustomInputText placeholder="Confirme sua senha" />
+            <CustomInputText placeholder="Digite seu e-mail" />
+            <CustomInputText placeholder="Confirme seu e-mail" />
+            <CustomInputText placeholder="Digite uma senha" />
+            <CustomInputText placeholder="Confirme sua senha" />
 
-        <CustomButton titleButton="Enviar" />
+            <CustomButton titleButton="Enviar" />
 
-        <CustomTextPressable text=" Já possui uma conta? Entrar!" />
-      </View>
-    </View>
+            <CustomTextPressable text=" Já possui uma conta? Entrar!" />
+          </View>
+        </View>
+      </KeyboardAvoidingView>
+    </ScrollView>
   );
 }
 

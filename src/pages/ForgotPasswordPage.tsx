@@ -5,7 +5,9 @@ import {
   Pressable,
   Image,
   StyleSheet,
-  Text
+  Text,
+  ScrollView,
+  KeyboardAvoidingView
 } from "react-native";
 
 import { CustomButton } from "../components/customComponents/CustomButton";
@@ -17,25 +19,29 @@ const forgotPassImage = require("../../resources/images/esqueci-senha.png");
 
 export function ForgotPasswordPage() {
   return (
-    <View>
-      {/** Button -> Return page */}
-      <Pressable>
-        <Image source={iconReturnButton} style={styles.iconReturnButton} />
-      </Pressable>
+    <ScrollView>
+      <KeyboardAvoidingView behavior="position" enabled>
+        <View>
+          {/** Button -> Return page */}
+          <Pressable>
+            <Image source={iconReturnButton} style={styles.iconReturnButton} />
+          </Pressable>
 
-      {/** Body page */}
-      <View style={styles.container}>
-        <Image source={forgotPassImage} style={styles.forgotPassImage} />
+          {/** Body page */}
+          <View style={styles.container}>
+            <Image source={forgotPassImage} style={styles.forgotPassImage} />
 
-        <Text style={styles.title}>Enviar e-mail de recuperação</Text>
+            <Text style={styles.title}>Enviar e-mail de recuperação</Text>
 
-        <CustomInputText placeholder="Digite seu e-mail" />
+            <CustomInputText placeholder="Digite seu e-mail" />
 
-        <CustomButton titleButton="Enviar" />
+            <CustomButton titleButton="Enviar" />
 
-        <CustomTextPressable text=" Não tem uma conta? Clique aqui!" />
-      </View>
-    </View>
+            <CustomTextPressable text=" Não tem uma conta? Clique aqui!" />
+          </View>
+        </View>
+      </KeyboardAvoidingView>
+    </ScrollView>
   );
 }
 

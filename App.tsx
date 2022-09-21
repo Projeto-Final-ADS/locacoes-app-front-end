@@ -7,12 +7,6 @@ import React from 'react';
 
 export default function App(): JSX.Element {
   return (
-    <ScrollView>
-      <KeyboardAvoidingView behavior="position" enabled>
-
-          <InventoryPage/>
-          
-      </KeyboardAvoidingView>
-    </ScrollView>
+    <InventoryPage/>
   );
 }

@@ -1,20 +1,40 @@
 import { View, Text, StyleSheet} from 'react-native';
 
-export function InventoryItem() {
+interface props {
+    itemName: string;
+    ItemAmount: number;
+}
+
+export function InventoryItem({...props}: props) {
     return (
         <View style={[styles.container, styles.elevation]}>
+            {/*Coluna 1*/}
             <View style={[styles.column, styles.columnItem]}>
                 <Text style={styles.title}>Item</Text>
-                <Text style={{textAlign: 'justify'}}>aasdaas dasdasd</Text>
+
+                <Text style={{textAlign: 'justify'}}>
+                    {props.itemName}
+                </Text>
+
             </View>
+
+            {/*Coluna 2*/}
             <View style={styles.column}>
                 <Text style={styles.title}>Quantidade</Text>
-                <Text>130</Text>
+
+                <Text>
+                    {props.ItemAmount}
+                </Text>
+
             </View>
+
+            {/*Coluna 3*/}
             <View style={styles.column}>
+
                 <Text style={styles.title}>Opções</Text>
                 <Text>Editar</Text>
                 <Text>Excluir</Text>
+
             </View>
         </View>
     );
@@ -25,7 +45,8 @@ const styles = StyleSheet.create({
         width: '95%',
         height: 100,
         marginBottom: 10,
-        backgroundColor: '#fff',
+        marginLeft: 2,
+        backgroundColor: '#f0f0f0',
         borderRadius: 10,
         flexDirection: 'row',
         justifyContent: 'space-between'
