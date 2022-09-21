@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet, KeyboardAvoidingView, ScrollView } from "react-native";
 
 import { CustomInputText } from "../components/customComponents/CustomInputText";
 import { CustomButton } from "../components/customComponents/CustomButton";
@@ -9,34 +9,38 @@ const imagePeopleLooking = require("../../resources/images/people-looking-phone.
 
 export function LoginPage() {
   return (
-    <View>
-      {/** View Logo */}
-      <View style={styles.logo}>
-        <Image
-          source={require("../../resources/images/logo-cubebox.png")}
-          style={{ resizeMode: "contain", height: 75, width: 75 }}
-        />
-        <Text style={styles.titleLogo}>Locações</Text>
-      </View>
+    <ScrollView>
+      <KeyboardAvoidingView behavior="position" enabled>
+        <View>
+          {/** View Logo */}
+          <View style={styles.logo}>
+            <Image
+              source={require("../../resources/images/logo-cubebox.png")}
+              style={{ resizeMode: "contain", height: 75, width: 75 }}
+            />
+            <Text style={styles.titleLogo}>Locações</Text>
+          </View>
 
-      {/** View Container Login */}
-      <View style={styles.container}>
-        <Image
-          source={imagePeopleLooking}
-          style={{
-            resizeMode: "contain",
-            height: 175,
-            width: 175,
-            marginTop: 20,
-            marginBottom: 20,
-          }}
-        />
-        <CustomInputText placeholder="Digite seu e-mail" />
-        <CustomInputText placeholder="Digite sua senha" />
-        <CustomButton titleButton="Entrar" />
-        <CustomTextPressable text="Esqueci minha senha." />
-      </View>
-    </View>
+          {/** View Container Login */}
+          <View style={styles.container}>
+            <Image
+              source={imagePeopleLooking}
+              style={{
+                resizeMode: "contain",
+                height: 175,
+                width: 175,
+                marginTop: 20,
+                marginBottom: 20,
+              }}
+            />
+            <CustomInputText placeholder="Digite seu e-mail" />
+            <CustomInputText placeholder="Digite sua senha" />
+            <CustomButton titleButton="Entrar" />
+            <CustomTextPressable text="Esqueci minha senha." />
+          </View>
+        </View>
+      </KeyboardAvoidingView>
+    </ScrollView>
   );
 }
 
