@@ -2,12 +2,15 @@ import { TouchableOpacity, Text, StyleSheet } from "react-native";
 
 interface props {
     text: string;
-    style?: StyleSheet
+    onPress?: any;
 }
 
 export function CustomTextPressable( {...props} : props) {
     return (
-        <TouchableOpacity activeOpacity={0.7}>
+        <TouchableOpacity
+            activeOpacity={0.7}
+            onPress={props.onPress}
+        >
             <Text style={styles.text}>{props.text}</Text>
         </TouchableOpacity>
     );

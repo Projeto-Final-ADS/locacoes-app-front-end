@@ -23,11 +23,14 @@ const data = [
 
 export function InventoryPage() {
     return (
-        <>
+        <View style={styles.page}>
             <Navbar/>
             {/*Input para pesquisa de item no estoque*/}
             <View style={styles.inputSearch}>
-                <CustomInputText placeholder="Pesquisar"/>
+                <CustomInputText
+                    placeholder="Pesquisar"
+                    textContentType='text'
+                />
             </View>
             <View style={styles.inventoryBar}>
                 {/*Texto de estoque*/}
@@ -51,11 +54,14 @@ export function InventoryPage() {
                         )}
                 />
             </View>
-        </>
+        </View>
     );
 }
 
 const styles = StyleSheet.create({
+    page: {
+        backgroundColor: '#FFF'
+      },
     container: {
         alignItems: 'center',
         marginTop: 20
