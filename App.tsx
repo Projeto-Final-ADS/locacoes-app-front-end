@@ -1,12 +1,7 @@
-import { ForgotPasswordPage } from './src/pages/ForgotPasswordPage';
-import { LoginPage } from './src/pages/LoginPage';
-import { SignUpPage } from './src/pages/SignUpPage';
-import { InventoryPage } from './src/pages/InventoryPage';
-import { KeyboardAvoidingView, ScrollView } from 'react-native';
-import React from 'react';
+import { Routes } from "./src/routes";
 
 export default function App(): JSX.Element {
   return (
-    <InventoryPage/>
+    <Routes/>
   );
 }

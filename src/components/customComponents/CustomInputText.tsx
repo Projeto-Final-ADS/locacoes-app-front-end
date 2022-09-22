@@ -3,13 +3,19 @@ import { TextInput, StyleSheet } from "react-native";
 
 interface props {
     placeholder: string;
+    textContentType: any;
+    secureText?: any;
 }
 
 export function CustomInputText( { ...props } : props) {
-    return  <TextInput
-                style={styles.customInputText}
-                placeholder={props.placeholder}
-            />;
+    return (
+        <TextInput
+            style={styles.customInputText}
+            placeholder={props.placeholder}
+            textContentType={props.textContentType}
+            secureTextEntry={props.secureText}
+        />
+    );
 }
 
 const styles = StyleSheet.create({

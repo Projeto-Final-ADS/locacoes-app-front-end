@@ -19,25 +19,41 @@ const forgotPassImage = require("../../resources/images/esqueci-senha.png");
 
 export function ForgotPasswordPage() {
   return (
-    <ScrollView>
+    <ScrollView style={styles.page}>
       <KeyboardAvoidingView behavior="position" enabled>
         <View>
           {/** Button -> Return page */}
           <Pressable>
-            <Image source={iconReturnButton} style={styles.iconReturnButton} />
+            <Image
+              source={iconReturnButton}
+              style={styles.iconReturnButton}
+            />
           </Pressable>
 
           {/** Body page */}
           <View style={styles.container}>
-            <Image source={forgotPassImage} style={styles.forgotPassImage} />
+            <Image
+              source={forgotPassImage}
+              style={styles.forgotPassImage}
+            />
 
-            <Text style={styles.title}>Enviar e-mail de recuperação</Text>
+            <Text style={styles.title}>
+              Enviar e-mail de recuperação
+            </Text>
 
-            <CustomInputText placeholder="Digite seu e-mail" />
+            <CustomInputText
+              placeholder="Digite seu e-mail"
+              textContentType='emailAddress'
+            />
 
-            <CustomButton titleButton="Enviar" />
+            <CustomButton 
+              titleButton="Enviar"
+            />
 
-            <CustomTextPressable text=" Não tem uma conta? Clique aqui!" />
+            <CustomTextPressable
+              text=" Não tem uma conta? Clique aqui!"
+            />
+            
           </View>
         </View>
       </KeyboardAvoidingView>
@@ -46,6 +62,9 @@ export function ForgotPasswordPage() {
 }
 
 const styles = StyleSheet.create({
+  page: {
+    backgroundColor: '#FFF'
+  },
   container: {
     alignItems: "center",
   },

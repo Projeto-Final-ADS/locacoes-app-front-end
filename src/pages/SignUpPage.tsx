@@ -18,9 +18,10 @@ const iconReturnButton = require("../../resources/icons/retornar-icon.png");
 
 export function SignUpPage() {
   return (
-    <ScrollView>
+    <ScrollView style={styles.page}>
       <KeyboardAvoidingView behavior="position" enabled>
         <View>
+          
           {/** Button -> Return page */}
           <View>
             <Pressable>
@@ -32,14 +33,36 @@ export function SignUpPage() {
           <View style={styles.container}>
             <Text style={styles.title}>Cadastrar</Text>
 
-            <CustomInputText placeholder="Digite seu e-mail" />
-            <CustomInputText placeholder="Confirme seu e-mail" />
-            <CustomInputText placeholder="Digite uma senha" />
-            <CustomInputText placeholder="Confirme sua senha" />
+            <CustomInputText
+              placeholder="Digite seu e-mail"
+              textContentType='emailAddress'
+            />
 
-            <CustomButton titleButton="Enviar" />
+            <CustomInputText
+              placeholder="Confirme seu e-mail"
+              textContentType='emailAddress'
+            />
 
-            <CustomTextPressable text=" Já possui uma conta? Entrar!" />
+            <CustomInputText
+              placeholder="Digite uma senha"
+              textContentType='password'
+              secureText={true}
+            />
+
+            <CustomInputText
+              placeholder="Confirme sua senha"
+              textContentType='newPassword'
+              secureText={true}
+            />
+
+            <CustomButton
+              titleButton="Enviar"
+            />
+
+            <CustomTextPressable
+              text=" Já possui uma conta? Entrar!"
+            />
+
           </View>
         </View>
       </KeyboardAvoidingView>
@@ -48,6 +71,9 @@ export function SignUpPage() {
 }
 
 const styles = StyleSheet.create({
+  page: {
+    backgroundColor: '#FFF'
+  },
   container: {
     alignItems: "center",
     marginTop: "30%",

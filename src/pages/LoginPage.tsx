@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, Image, StyleSheet, KeyboardAvoidingView, ScrollView } from "react-native";
-
+import { useNavigation } from '@react-navigation/native'
 import { CustomInputText } from "../components/customComponents/CustomInputText";
 import { CustomButton } from "../components/customComponents/CustomButton";
 import { CustomTextPressable } from "../components/customComponents/CustomTextPressable";
@@ -8,8 +8,26 @@ import { CustomTextPressable } from "../components/customComponents/CustomTextPr
 const imagePeopleLooking = require("../../resources/images/people-looking-phone.png");
 
 export function LoginPage() {
+
+  const navigation = useNavigation();
+
+  function handleInventory() {
+    //direcionar para outra pagina
+    navigation.navigate('inventory');
+  }
+
+  function handleSignUp() {
+    //direcionar para outra pagina
+    navigation.navigate('signup');
+  }
+  
+  function handleForgotPassword() {
+    //direcionar para outra pagina
+    navigation.navigate('forgotpassword');
+  }
+
   return (
-    <ScrollView>
+    <ScrollView style={styles.page}>
       <KeyboardAvoidingView behavior="position" enabled>
         <View>
           {/** View Logo */}
@@ -33,10 +51,27 @@ export function LoginPage() {
                 marginBottom: 20,
               }}
             />
-            <CustomInputText placeholder="Digite seu e-mail" />
-            <CustomInputText placeholder="Digite sua senha" />
-            <CustomButton titleButton="Entrar" />
-            <CustomTextPressable text="Esqueci minha senha." />
+            <CustomInputText
+              placeholder="Digite seu e-mail"
+              textContentType='emailAddress'
+            />
+
+            <CustomInputText
+              placeholder="Digite sua senha"
+              textContentType='password'
+              secureText={true}
+            />
+
+            <CustomButton
+              titleButton="Entrar"
+              onPress={handleInventory}
+            />
+            <CustomTextPressable text="Esqueci minha senha." onPress={handleForgotPassword}/>
+
+            <View style={styles.textRegister}>
+              <CustomTextPressable text="Não tem uma conta? Registre-se!" onPress={handleSignUp}/>
+            </View>
+
           </View>
         </View>
       </KeyboardAvoidingView>
@@ -45,6 +80,9 @@ export function LoginPage() {
 }
 
 const styles = StyleSheet.create({
+  page: {
+    backgroundColor: '#FFF'
+  },
   logo: {
     alignItems: "center",
     justifyContent: "center",
@@ -63,4 +101,7 @@ const styles = StyleSheet.create({
     height: "80%",
     alignItems: "center",
   },
+  textRegister: {
+    marginTop: 20
+  }
 });
