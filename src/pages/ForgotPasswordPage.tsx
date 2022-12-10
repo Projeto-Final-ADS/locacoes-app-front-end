@@ -7,9 +7,11 @@ import {
   StyleSheet,
   Text,
   ScrollView,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  Dimensions
 } from "react-native";
 
+import { useNavigation } from '@react-navigation/native';
 import { CustomButton } from "../components/customComponents/CustomButton";
 import { CustomInputText } from "../components/customComponents/CustomInputText";
 import { CustomTextPressable } from "../components/customComponents/CustomTextPressable";
@@ -18,6 +20,14 @@ const iconReturnButton = require("../../resources/icons/retornar-icon.png");
 const forgotPassImage = require("../../resources/images/esqueci-senha.png");
 
 export function ForgotPasswordPage() {
+
+  const navigation = useNavigation();
+
+  function handleSignUp() {
+    //direcionar para outra pagina
+    navigation.navigate('signup');
+  }
+
   return (
     <ScrollView style={styles.page}>
       <KeyboardAvoidingView behavior="position" enabled>
@@ -50,9 +60,15 @@ export function ForgotPasswordPage() {
               titleButton="Enviar"
             />
 
-            <CustomTextPressable
-              text=" Não tem uma conta? Clique aqui!"
-            />
+            <View style={{marginTop: 20, flexDirection: 'row'}}>
+              <Text style={{fontSize: 18}}>
+                Não tem uma conta?
+              </Text>
+              <CustomTextPressable
+                text=" Clique aqui!"
+                onPress={handleSignUp}
+              />
+            </View>
             
           </View>
         </View>
@@ -63,7 +79,9 @@ export function ForgotPasswordPage() {
 
 const styles = StyleSheet.create({
   page: {
-    backgroundColor: '#FFF'
+    backgroundColor: '#FFF',
+    width: Dimensions.get('screen').width,
+    height: Dimensions.get('screen').height
   },
   container: {
     alignItems: "center",

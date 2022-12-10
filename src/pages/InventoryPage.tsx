@@ -1,7 +1,12 @@
 import React from "react";
 
 import {
-    View, StyleSheet, Text, Pressable, FlatList
+    View,
+    StyleSheet,
+    Text,
+    Pressable,
+    FlatList,
+    Dimensions
 } from 'react-native';
 
 import { CustomInputText } from "../components/customComponents/CustomInputText";
@@ -45,13 +50,14 @@ export function InventoryPage() {
             {/*Lista de estoque*/}
             <View style={styles.container}>
                 <FlatList
-                    style={{marginRight: -18, maxHeight: '85%'}}
+                    style={styles.flatList}
                     data={data}
                     showsVerticalScrollIndicator ={false}
                     renderItem={
                         ({item}) => (
-                            <InventoryItem itemName={item.itemName} ItemAmount={item.key} />
-                        )}
+                            <InventoryItem itemName={item.itemName} ItemAmount={item.amount} key={item.key}/>
+                        )
+                    }
                 />
             </View>
         </View>
@@ -60,8 +66,10 @@ export function InventoryPage() {
 
 const styles = StyleSheet.create({
     page: {
-        backgroundColor: '#FFF'
-      },
+        backgroundColor: '#FFF',
+        width: Dimensions.get('screen').width,
+        height: Dimensions.get('screen').height
+    },
     container: {
         alignItems: 'center',
         marginTop: 20
@@ -92,5 +100,9 @@ const styles = StyleSheet.create({
     textButtonAdd: {
         fontSize: 30,
         color: '#fff'
+    },
+    flatList: {
+        marginRight: -18,
+        maxHeight: '100%'
     }
 });

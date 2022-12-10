@@ -14,6 +14,7 @@ export function CustomInputText( { ...props } : props) {
             placeholder={props.placeholder}
             textContentType={props.textContentType}
             secureTextEntry={props.secureText}
+            autoCapitalize='none'
         />
     );
 }
