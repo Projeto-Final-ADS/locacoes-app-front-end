@@ -15,17 +15,19 @@ import { useNavigation } from '@react-navigation/native';
 import { CustomButton } from "../components/customComponents/CustomButton";
 import { CustomInputText } from "../components/customComponents/CustomInputText";
 import { CustomTextPressable } from "../components/customComponents/CustomTextPressable";
+import { CustomReturnButton } from "../components/customComponents/CustomReturnButton";
 
-const iconReturnButton = require("../../resources/icons/retornar-icon.png");
 const forgotPassImage = require("../../resources/images/esqueci-senha.png");
 
 export function ForgotPasswordPage() {
 
   const navigation = useNavigation();
 
-  function handleSignUp() {
-    //direcionar para outra pagina
+  function navigateSignUp() {
     navigation.navigate('signup');
+  }
+  function navigateLogin() {
+    navigation.navigate('login');
   }
 
   return (
@@ -33,12 +35,9 @@ export function ForgotPasswordPage() {
       <KeyboardAvoidingView behavior="position" enabled>
         <View>
           {/** Button -> Return page */}
-          <Pressable>
-            <Image
-              source={iconReturnButton}
-              style={styles.iconReturnButton}
-            />
-          </Pressable>
+          <CustomReturnButton
+            onPress={navigateLogin}
+          />
 
           {/** Body page */}
           <View style={styles.container}>
@@ -66,7 +65,7 @@ export function ForgotPasswordPage() {
               </Text>
               <CustomTextPressable
                 text=" Clique aqui!"
-                onPress={handleSignUp}
+                onPress={navigateSignUp}
               />
             </View>
             

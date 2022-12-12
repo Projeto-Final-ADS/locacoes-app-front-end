@@ -15,14 +15,14 @@ import { CustomButton } from "../components/customComponents/CustomButton";
 import { useNavigation } from '@react-navigation/native'
 import { CustomInputText } from "../components/customComponents/CustomInputText";
 import { CustomTextPressable } from "../components/customComponents/CustomTextPressable";
+import { CustomReturnButton } from "../components/customComponents/CustomReturnButton";
 
-const iconReturnButton = require("../../resources/icons/retornar-icon.png");
 
 export function SignUpPage() {
 
   const navigation = useNavigation();
 
-  function handleLogin() {
+  function navigateLogin() {
     //direcionar para outra pagina
     navigation.navigate('login');
   }
@@ -33,11 +33,9 @@ export function SignUpPage() {
         <View>
           
           {/** Button -> Return page */}
-          <View>
-            <Pressable>
-              <Image source={iconReturnButton} style={styles.iconReturnButton} />
-            </Pressable>
-          </View>
+          <CustomReturnButton
+            onPress={navigateLogin}
+          />
 
           {/** Body SignUp */}
           <View style={styles.container}>
@@ -75,7 +73,7 @@ export function SignUpPage() {
               </Text>
               <CustomTextPressable
                 text=" Entrar!"
-                onPress={handleLogin}
+                onPress={navigateLogin}
               />
             </View>
 

@@ -1,36 +1,36 @@
 import React from "react";
-import {StyleSheet, Text, TouchableOpacity } from "react-native";
+import {
+    StyleSheet,
+    Image,
+    TouchableOpacity
+} from "react-native";
+
+const iconReturnButton = require("../../../resources/icons/retornar-icon.png");
 
 interface props {
-    titleButton: string;
     onPress?: any;
 }
 
-export function CustomButton( { ...props } : props) {
+export function CustomReturnButton( { ...props } : props) {
     return (
         <TouchableOpacity
             activeOpacity={0.7}
-            style={styles.customButton}
             onPress={props.onPress}
         >
-            <Text style={styles.title}>{props.titleButton}</Text>
+            <Image
+                source={iconReturnButton}
+                style={styles.image}
+            />
         </TouchableOpacity>
     );
 }
 
 const styles = StyleSheet.create({
-    customButton: {
-        backgroundColor: "#2FB176",
-        height: 50,
-        width: '65%',
-        marginTop: 20,
-        borderRadius: 30,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    title: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: "#fff"
+    image: {
+        width: 60,
+        height: 60,
+        resizeMode: 'contain',
+        marginTop: 40,
+        marginLeft: 20
     }
 });

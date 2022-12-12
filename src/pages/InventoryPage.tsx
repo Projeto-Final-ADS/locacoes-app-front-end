@@ -48,7 +48,7 @@ export function InventoryPage() {
             </View>
             
             {/*Lista de estoque*/}
-            <View style={styles.container}>
+            <View style={styles.containerInventory}>
                 <FlatList
                     style={styles.flatList}
                     data={data}
@@ -58,6 +58,7 @@ export function InventoryPage() {
                             <InventoryItem itemName={item.itemName} ItemAmount={item.amount} key={item.key}/>
                         )
                     }
+                    ListFooterComponent={<View style={{height:300}}></View>} //Adiciona espaço abaixo do Flatlist
                 />
             </View>
         </View>
@@ -70,7 +71,7 @@ const styles = StyleSheet.create({
         width: Dimensions.get('screen').width,
         height: Dimensions.get('screen').height
     },
-    container: {
+    containerInventory: {
         alignItems: 'center',
         marginTop: 20
     },
@@ -102,7 +103,6 @@ const styles = StyleSheet.create({
         color: '#fff'
     },
     flatList: {
-        marginRight: -18,
         maxHeight: '100%'
     }
 });

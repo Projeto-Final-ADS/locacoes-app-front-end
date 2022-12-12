@@ -7,19 +7,15 @@ interface props {
 
 export function InventoryItem({...props}: props) {
     return (
-        <View style={[styles.container, styles.elevation]}>
+        <View style={styles.container}>
             {/*Coluna 1*/}
-            <View style={[styles.column, styles.columnItem]}>
+            <View style={styles.column}>
                 <Text style={styles.title}>Item</Text>
 
                 <Text style={{textAlign: 'justify'}}>
                     {props.itemName}
                 </Text>
 
-            </View>
-
-            {/*Coluna 2*/}
-            <View style={styles.column}>
                 <Text style={styles.title}>Quantidade</Text>
 
                 <Text>
@@ -42,29 +38,19 @@ export function InventoryItem({...props}: props) {
 
 const styles = StyleSheet.create({
     container: {
-        width: '95%',
-        height: 100,
+        width: '100%',
+        height: 110,
         marginBottom: 10,
-        marginLeft: 2,
         backgroundColor: '#f0f0f0',
         borderRadius: 10,
         flexDirection: 'row',
-        justifyContent: 'space-between'
-    },
-    elevation: {
-        elevation: 4,
-        shadowColor: '#000000',
+        justifyContent: 'space-around'
     },
     column: {
         width: '25%',
-        marginLeft: 10,
         marginTop: 10,
         marginBottom: 10,
-        marginRight: 10,
         alignItems: 'center'
-    },
-    columnItem: {
-        width: '35%'
     },
     title: {
         fontSize: 18,
