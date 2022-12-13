@@ -1,5 +1,13 @@
 import React from "react";
-import { View, Text, Image, StyleSheet, KeyboardAvoidingView, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  KeyboardAvoidingView,
+  ScrollView,
+  Dimensions
+} from "react-native";
 import { useNavigation } from '@react-navigation/native'
 import { CustomInputText } from "../components/customComponents/CustomInputText";
 import { CustomButton } from "../components/customComponents/CustomButton";
@@ -45,9 +53,8 @@ export function LoginPage() {
               source={imagePeopleLooking}
               style={{
                 resizeMode: "contain",
-                height: 175,
-                width: 175,
-                marginTop: 20,
+                height: 150,
+                width: 150,
                 marginBottom: 20,
               }}
             />
@@ -66,12 +73,23 @@ export function LoginPage() {
               titleButton="Entrar"
               onPress={handleInventory}
             />
-            <CustomTextPressable text="Esqueci minha senha." onPress={handleForgotPassword}/>
 
-            <View style={styles.textRegister}>
-              <CustomTextPressable text="Não tem uma conta? Registre-se!" onPress={handleSignUp}/>
+            <View style={{marginTop: 20, alignItems: 'center'}}>
+              <CustomTextPressable
+                text="Esqueci minha senha!"
+                onPress={handleForgotPassword}
+              />
+
+              <View style={styles.textRegister}>
+                <Text style={{fontSize: 18}}>
+                  Não tem uma conta?
+                </Text>
+                <CustomTextPressable
+                  text=" Registre-se!"
+                  onPress={handleSignUp}
+                />
+              </View>
             </View>
-
           </View>
         </View>
       </KeyboardAvoidingView>
@@ -81,14 +99,16 @@ export function LoginPage() {
 
 const styles = StyleSheet.create({
   page: {
-    backgroundColor: '#FFF'
+    backgroundColor: '#FFF',
+    width: Dimensions.get('screen').width,
+    height: Dimensions.get('screen').height
   },
   logo: {
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "row",
     marginTop: 20,
-    height: 200,
+    height: 180,
   },
   titleLogo: {
     color: "#019874",
@@ -102,6 +122,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   textRegister: {
-    marginTop: 20
+    marginTop: 20,
+    flexDirection: 'row'
   }
 });

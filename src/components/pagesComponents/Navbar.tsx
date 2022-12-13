@@ -8,10 +8,13 @@ export function Navbar() {
     <>
       {/* Navbar */}
       <View style={styles.topNavBar}>
+
         {/** Button -> Return page */}
         <Pressable>
           <Image source={menuIcon} style={styles.menuIcon} />
         </Pressable>
+
+        {/** Imagem perfil */}
         <Image source={profile} style={styles.profile} />
       </View>
     </>
@@ -22,20 +25,21 @@ const styles = StyleSheet.create({
   topNavBar: {
     backgroundColor: "#ffffff",
     width: "100%",
-    height: 150,
+    height: 60,
     flexDirection: "row",
     justifyContent: "space-between",
+    marginTop: 60
   },
   menuIcon: {
-    width: 35,
-    height: 35,
-    marginTop: 70,
-    marginLeft: 20,
+    width: 40,
+    height: 40,
+    resizeMode: 'contain',
+    marginLeft: 20
   },
   profile: {
-    width: 51,
+    width: 50,
     height: 50,
-    marginTop: 60,
-    marginRight: 20,
-  },
+    resizeMode: 'contain',
+    marginRight: 20 
+  }
 });

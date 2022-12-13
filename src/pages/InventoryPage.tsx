@@ -1,10 +1,19 @@
-import React from "react";
+import {
+    useState,
+    useEffect
+} from 'react';
 
 import {
-    View, StyleSheet, Text, Pressable, FlatList
+    View,
+    StyleSheet,
+    Text,
+    FlatList,
+    Dimensions
 } from 'react-native';
 
+import { useNavigation } from '@react-navigation/native';
 import { CustomInputText } from "../components/customComponents/CustomInputText";
+import { CustomAddButton } from "../components/customComponents/CustomAddButton";
 import { InventoryItem } from "../components/pagesComponents/inventoryPage/InventoryItem";
 import { Navbar } from "../components/pagesComponents/Navbar";
 
@@ -22,7 +31,32 @@ const data = [
 ];
 
 export function InventoryPage() {
+
+    const navigation = useNavigation();
+
+    const [ itemsData, setItemsData ] = useState([...data]);
+    const [ itemList, setItemList ] = useState(itemsData);
+    const [ searchText, setSearchText ] = useState("");
+
+    useEffect(() => {
+        setItemList(
+            itemsData.filter(
+                (item) => {
+                    return (
+                        Object.values(item).join('').toLowerCase().includes(searchText.toLowerCase())
+                    )
+                }
+            )
+        );
+    }, [searchText]);
+
+    function navigateRegisterItem() {
+        //direcionar para outra pagina
+        navigation.navigate('registerItem');
+    }
+
     return (
+        
         <View style={styles.page}>
             <Navbar/>
             {/*Input para pesquisa de item no estoque*/}
@@ -30,6 +64,7 @@ export function InventoryPage() {
                 <CustomInputText
                     placeholder="Pesquisar"
                     textContentType='text'
+                    onChange={setSearchText}
                 />
             </View>
             <View style={styles.inventoryBar}>
@@ -37,21 +72,23 @@ export function InventoryPage() {
                 <Text style={styles.title}>Estoque</Text>
                 
                 {/*Botão para adicionar estoque*/}
-                <Pressable style={styles.buttonAdd}>
-                    <Text style={styles.textButtonAdd}>+</Text>
-                </Pressable>
+                <CustomAddButton
+                    onPress={navigateRegisterItem}
+                />
             </View>
             
             {/*Lista de estoque*/}
-            <View style={styles.container}>
+            <View style={styles.containerInventory}>
                 <FlatList
-                    style={{marginRight: -18, maxHeight: '85%'}}
-                    data={data}
+                    style={styles.flatList}
+                    data={itemList}
                     showsVerticalScrollIndicator ={false}
                     renderItem={
                         ({item}) => (
-                            <InventoryItem itemName={item.itemName} ItemAmount={item.key} />
-                        )}
+                            <InventoryItem itemName={item.itemName} ItemAmount={item.amount} key={item.key}/>
+                        )
+                    }
+                    ListFooterComponent={<View style={{height:300}}></View>} //Adiciona espaço abaixo do Flatlist
                 />
             </View>
         </View>
@@ -60,9 +97,11 @@ export function InventoryPage() {
 
 const styles = StyleSheet.create({
     page: {
-        backgroundColor: '#FFF'
-      },
-    container: {
+        backgroundColor: '#FFF',
+        width: Dimensions.get('screen').width,
+        height: Dimensions.get('screen').height
+    },
+    containerInventory: {
         alignItems: 'center',
         marginTop: 20
     },
@@ -71,26 +110,17 @@ const styles = StyleSheet.create({
     },
     inventoryBar: {
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginTop: 20,
+        marginLeft: 20,
+        marginRight: 20
     },
     title: {
         fontSize: 30,
-        fontWeight: 'bold',
-        marginTop: 20,
-        marginLeft: 45
+        fontWeight: 'bold'
     },
-    buttonAdd: {
-        backgroundColor: '#2FB176',
-        width: 50,
-        height: 50,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 30,
-        marginTop: 20,
-        marginRight: 20
-    },
-    textButtonAdd: {
-        fontSize: 30,
-        color: '#fff'
+    flatList: {
+        maxHeight: '100%'
     }
 });

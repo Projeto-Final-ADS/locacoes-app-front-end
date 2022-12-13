@@ -8,26 +8,34 @@ import {
   Image,
   ScrollView,
   KeyboardAvoidingView,
+  Dimensions
 } from "react-native";
-import { CustomButton } from "../components/customComponents/CustomButton";
 
+import { CustomButton } from "../components/customComponents/CustomButton";
+import { useNavigation } from '@react-navigation/native'
 import { CustomInputText } from "../components/customComponents/CustomInputText";
 import { CustomTextPressable } from "../components/customComponents/CustomTextPressable";
+import { CustomReturnButton } from "../components/customComponents/CustomReturnButton";
 
-const iconReturnButton = require("../../resources/icons/retornar-icon.png");
 
 export function SignUpPage() {
+
+  const navigation = useNavigation();
+
+  function navigateLogin() {
+    //direcionar para outra pagina
+    navigation.navigate('login');
+  }
+
   return (
     <ScrollView style={styles.page}>
       <KeyboardAvoidingView behavior="position" enabled>
         <View>
           
           {/** Button -> Return page */}
-          <View>
-            <Pressable>
-              <Image source={iconReturnButton} style={styles.iconReturnButton} />
-            </Pressable>
-          </View>
+          <CustomReturnButton
+            onPress={navigateLogin}
+          />
 
           {/** Body SignUp */}
           <View style={styles.container}>
@@ -59,9 +67,15 @@ export function SignUpPage() {
               titleButton="Enviar"
             />
 
-            <CustomTextPressable
-              text=" Já possui uma conta? Entrar!"
-            />
+            <View style={{marginTop: 20, flexDirection: 'row'}}>
+              <Text style={{fontSize: 18}}>
+                Já possui uma conta?
+              </Text>
+              <CustomTextPressable
+                text=" Entrar!"
+                onPress={navigateLogin}
+              />
+            </View>
 
           </View>
         </View>
@@ -72,11 +86,13 @@ export function SignUpPage() {
 
 const styles = StyleSheet.create({
   page: {
-    backgroundColor: '#FFF'
+    backgroundColor: '#FFF',
+    width: Dimensions.get('screen').width,
+    height: Dimensions.get('screen').height
   },
   container: {
     alignItems: "center",
-    marginTop: "30%",
+    marginTop: "10%",
     marginBottom: "10%",
   },
   title: {

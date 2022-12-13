@@ -2,33 +2,41 @@ import React from "react";
 
 import {
   View,
-  Pressable,
   Image,
   StyleSheet,
   Text,
   ScrollView,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  Dimensions
 } from "react-native";
 
+import { useNavigation } from '@react-navigation/native';
 import { CustomButton } from "../components/customComponents/CustomButton";
 import { CustomInputText } from "../components/customComponents/CustomInputText";
 import { CustomTextPressable } from "../components/customComponents/CustomTextPressable";
+import { CustomReturnButton } from "../components/customComponents/CustomReturnButton";
 
-const iconReturnButton = require("../../resources/icons/retornar-icon.png");
 const forgotPassImage = require("../../resources/images/esqueci-senha.png");
 
 export function ForgotPasswordPage() {
+
+  const navigation = useNavigation();
+
+  function navigateSignUp() {
+    navigation.navigate('signup');
+  }
+  function navigateLogin() {
+    navigation.navigate('login');
+  }
+
   return (
     <ScrollView style={styles.page}>
       <KeyboardAvoidingView behavior="position" enabled>
         <View>
           {/** Button -> Return page */}
-          <Pressable>
-            <Image
-              source={iconReturnButton}
-              style={styles.iconReturnButton}
-            />
-          </Pressable>
+          <CustomReturnButton
+            onPress={navigateLogin}
+          />
 
           {/** Body page */}
           <View style={styles.container}>
@@ -50,9 +58,15 @@ export function ForgotPasswordPage() {
               titleButton="Enviar"
             />
 
-            <CustomTextPressable
-              text=" Não tem uma conta? Clique aqui!"
-            />
+            <View style={{marginTop: 20, flexDirection: 'row'}}>
+              <Text style={{fontSize: 18}}>
+                Não tem uma conta?
+              </Text>
+              <CustomTextPressable
+                text=" Clique aqui!"
+                onPress={navigateSignUp}
+              />
+            </View>
             
           </View>
         </View>
@@ -63,7 +77,9 @@ export function ForgotPasswordPage() {
 
 const styles = StyleSheet.create({
   page: {
-    backgroundColor: '#FFF'
+    backgroundColor: '#FFF',
+    width: Dimensions.get('screen').width,
+    height: Dimensions.get('screen').height
   },
   container: {
     alignItems: "center",
