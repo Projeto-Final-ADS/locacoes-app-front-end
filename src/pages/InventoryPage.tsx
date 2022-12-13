@@ -1,15 +1,19 @@
-import React from "react";
+import {
+    useState,
+    useEffect
+} from 'react';
 
 import {
     View,
     StyleSheet,
     Text,
-    Pressable,
     FlatList,
     Dimensions
 } from 'react-native';
 
+import { useNavigation } from '@react-navigation/native';
 import { CustomInputText } from "../components/customComponents/CustomInputText";
+import { CustomAddButton } from "../components/customComponents/CustomAddButton";
 import { InventoryItem } from "../components/pagesComponents/inventoryPage/InventoryItem";
 import { Navbar } from "../components/pagesComponents/Navbar";
 
@@ -27,7 +31,32 @@ const data = [
 ];
 
 export function InventoryPage() {
+
+    const navigation = useNavigation();
+
+    const [ itemsData, setItemsData ] = useState([...data]);
+    const [ itemList, setItemList ] = useState(itemsData);
+    const [ searchText, setSearchText ] = useState("");
+
+    useEffect(() => {
+        setItemList(
+            itemsData.filter(
+                (item) => {
+                    return (
+                        Object.values(item).join('').toLowerCase().includes(searchText.toLowerCase())
+                    )
+                }
+            )
+        );
+    }, [searchText]);
+
+    function navigateRegisterItem() {
+        //direcionar para outra pagina
+        navigation.navigate('registerItem');
+    }
+
     return (
+        
         <View style={styles.page}>
             <Navbar/>
             {/*Input para pesquisa de item no estoque*/}
@@ -35,6 +64,7 @@ export function InventoryPage() {
                 <CustomInputText
                     placeholder="Pesquisar"
                     textContentType='text'
+                    onChange={setSearchText}
                 />
             </View>
             <View style={styles.inventoryBar}>
@@ -42,16 +72,16 @@ export function InventoryPage() {
                 <Text style={styles.title}>Estoque</Text>
                 
                 {/*Botão para adicionar estoque*/}
-                <Pressable style={styles.buttonAdd}>
-                    <Text style={styles.textButtonAdd}>+</Text>
-                </Pressable>
+                <CustomAddButton
+                    onPress={navigateRegisterItem}
+                />
             </View>
             
             {/*Lista de estoque*/}
             <View style={styles.containerInventory}>
                 <FlatList
                     style={styles.flatList}
-                    data={data}
+                    data={itemList}
                     showsVerticalScrollIndicator ={false}
                     renderItem={
                         ({item}) => (
@@ -80,27 +110,15 @@ const styles = StyleSheet.create({
     },
     inventoryBar: {
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginTop: 20,
+        marginLeft: 20,
+        marginRight: 20
     },
     title: {
         fontSize: 30,
-        fontWeight: 'bold',
-        marginTop: 20,
-        marginLeft: 45
-    },
-    buttonAdd: {
-        backgroundColor: '#2FB176',
-        width: 50,
-        height: 50,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: 30,
-        marginTop: 20,
-        marginRight: 20
-    },
-    textButtonAdd: {
-        fontSize: 30,
-        color: '#fff'
+        fontWeight: 'bold'
     },
     flatList: {
         maxHeight: '100%'

@@ -5,6 +5,7 @@ interface props {
     placeholder: string;
     textContentType: any;
     secureText?: any;
+    onChange?: any;
 }
 
 export function CustomInputText( { ...props } : props) {
@@ -15,6 +16,7 @@ export function CustomInputText( { ...props } : props) {
             textContentType={props.textContentType}
             secureTextEntry={props.secureText}
             autoCapitalize='none'
+            onChangeText={props.onChange}
         />
     );
 }

@@ -53,9 +53,8 @@ export function LoginPage() {
               source={imagePeopleLooking}
               style={{
                 resizeMode: "contain",
-                height: 175,
-                width: 175,
-                marginTop: 20,
+                height: 150,
+                width: 150,
                 marginBottom: 20,
               }}
             />
@@ -109,7 +108,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     flexDirection: "row",
     marginTop: 20,
-    height: 200,
+    height: 180,
   },
   titleLogo: {
     color: "#019874",

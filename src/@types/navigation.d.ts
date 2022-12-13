@@ -5,6 +5,8 @@ export declare global {
             inventory: undefined;
             forgotpassword: undefined;
             signup: undefined;
+            registerItem: undefined;
+            registerClient: undefined;
         }
     }
 }
