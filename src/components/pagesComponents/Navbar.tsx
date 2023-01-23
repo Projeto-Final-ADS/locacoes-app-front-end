@@ -1,6 +1,7 @@
-import { View, StyleSheet, Pressable, Image } from "react-native";
+import { View, StyleSheet, Image, TouchableOpacity} from "react-native";
+import { MenuButton } from "../customComponents/MenuButton";
 
-const menuIcon = require("../../../resources/icons/menu-icon.png");
+
 const profile = require("../../../resources/icons/profile.png");
 
 export function Navbar() {
@@ -10,9 +11,7 @@ export function Navbar() {
       <View style={styles.topNavBar}>
 
         {/** Button -> Return page */}
-        <Pressable>
-          <Image source={menuIcon} style={styles.menuIcon} />
-        </Pressable>
+        <MenuButton/>
 
         {/** Imagem perfil */}
         <Image source={profile} style={styles.profile} />
@@ -29,12 +28,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     marginTop: 60
-  },
-  menuIcon: {
-    width: 40,
-    height: 40,
-    resizeMode: 'contain',
-    marginLeft: 20
   },
   profile: {
     width: 50,

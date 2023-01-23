@@ -8,20 +8,12 @@ import {
   Dimensions
 } from "react-native";
 
-import { useNavigation } from '@react-navigation/native'
 import { CustomInputText } from "../components/customComponents/CustomInputText";
 import { CustomAddButton } from "../components/customComponents/CustomAddButton";
 import { Navbar } from "../components/pagesComponents/Navbar";
 
 export function RegisterItemPage() {
-
-  const navigation = useNavigation();
-
-  function navigationRegisterClientPage() {
-    navigation.navigate('registerClient');
-  }
   
-
   return (
     <ScrollView style={styles.page}>
       <KeyboardAvoidingView behavior="padding" enabled>
@@ -43,7 +35,7 @@ export function RegisterItemPage() {
           />
 
           <View style={styles.buttonAdd}>
-            <CustomAddButton onPress={navigationRegisterClientPage}/>
+            <CustomAddButton/>
           </View>
         
         </View>
