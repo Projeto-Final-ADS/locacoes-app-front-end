@@ -8,12 +8,15 @@ import {
   Dimensions
 } from "react-native";
 
+
 import { CustomInputText } from "../components/customComponents/CustomInputText";
 import { CustomAddButton } from "../components/customComponents/CustomAddButton";
 import { Navbar } from "../components/pagesComponents/Navbar";
 import { CustomCancelButton } from "../components/customComponents/CustomCancelButton";
 
-export function RegisterItemPage() {
+import DateTimePicker from '@react-native-community/datetimepicker';
+
+export function RegisterNewTask() {
   
   return (
     <ScrollView style={styles.page}>
@@ -23,18 +26,37 @@ export function RegisterItemPage() {
 
         <View style={styles.container}>
 
-          <Text style={styles.title}>Cadastro de Estoque</Text>
+          <Text style={styles.title}>Cadastro de Tarefa</Text>
+
+          <DateTimePicker
+            testID="dateTimePicker"
+            value={new Date()}
+            mode={"date"}
+            is24Hour={true}
+            display='default'
+          />
 
           <CustomInputText
-            placeholder="Nome do item"
+            placeholder="Cliente"
             textContentType="text"
           />
 
           <CustomInputText
-            placeholder="Quantidade"
+            placeholder="Data Entrega"
             textContentType="text"
           />
-
+          <CustomInputText
+            placeholder="Hora Entrega"
+            textContentType="text"
+          />
+          <CustomInputText
+            placeholder="Data Recolhimento"
+            textContentType="text"
+          />
+          <CustomInputText
+            placeholder="Hora Recolhimento"
+            textContentType="text"
+          />
 
           <View style={styles.buttons}>
 
