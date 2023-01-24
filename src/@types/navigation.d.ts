@@ -7,6 +7,8 @@ export declare global {
             signup: undefined;
             registerItem: undefined;
             registerClient: undefined;
+            tasksPage: undefined;
+            registerNewTask: undefined;
         }
     }
 }

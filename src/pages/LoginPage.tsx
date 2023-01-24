@@ -19,9 +19,9 @@ export function LoginPage() {
 
   const navigation = useNavigation();
 
-  function handleInventory() {
+  function handleTasksPage() {
     //direcionar para outra pagina
-    navigation.navigate('inventory');
+    navigation.navigate('tasksPage');
   }
 
   function handleSignUp() {
@@ -71,7 +71,7 @@ export function LoginPage() {
 
             <CustomButton
               titleButton="Entrar"
-              onPress={handleInventory}
+              onPress={handleTasksPage}
             />
 
             <View style={{marginTop: 20, alignItems: 'center'}}>
