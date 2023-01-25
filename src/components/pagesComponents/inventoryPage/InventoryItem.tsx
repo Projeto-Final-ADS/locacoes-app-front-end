@@ -2,43 +2,42 @@ import {
     View,
     Text,
     StyleSheet,
-    Dimensions
+    Dimensions,
+    Image
 } from 'react-native';
 
 interface props {
     itemName: string;
-    ItemAmount: number;
+    itemTotalAmount: number;
+    itemAvaiableAmount: number;
 }
+
+const editIcon = require("../../../../resources/icons/edit-icon.png");
 
 export function InventoryItem({...props}: props) {
 
     return (
         <View style={styles.container}>
-            {/*Coluna 1*/}
-            <View style={styles.column}>
-
-                <Text style={styles.title}>Item</Text>
-                <Text
-                    numberOfLines={5}
-                    style={{textAlign: 'left'}}
-                >
-                    {props.itemName}
-                </Text>
-
-                <Text style={[styles.title, {marginTop: 10}]}>Quantidade</Text>
-                <Text>
-                    {props.ItemAmount}
-                </Text>
-
+            <View style={styles.buttonEdit}>
+                <Image source={editIcon} style={styles.editIcon}/>
             </View>
+            
+            <View style={{flexDirection: 'column'}}>
+                <View style={styles.propertiesItemName}>
+                    <Text style={styles.label}>Item</Text>
+                    <Text numberOfLines={1} style={{width: 300}}>{props.itemName}</Text>
+                </View>
 
-            {/*Coluna 2*/}
-            <View style={styles.column2}>
+                <View style={styles.propertiesAmount}>
+                    <Text style={styles.label}>Total: </Text>
+                    <Text style={styles.totalAmount}>{props.itemTotalAmount}</Text>
+                </View>
 
-                <Text style={styles.title}>Opções</Text>
-                <Text>Editar</Text>
-                <Text>Excluir</Text>
-
+                <View style={styles.propertiesAmount}>
+                    <Text style={styles.label}>Disponível: </Text>
+                    <Text style={styles.availableAmount}>{props.itemAvaiableAmount}</Text>
+                </View>
+                
             </View>
         </View>
     );
@@ -47,29 +46,51 @@ export function InventoryItem({...props}: props) {
 const styles = StyleSheet.create({
     container: {
         width: Dimensions.get('screen').width,
-        height: 125,
+        height: 120,
         marginBottom: 10,
         backgroundColor: '#f0f0f0',
         borderRadius: 10,
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'flex-start',
+        padding: 10
     },
-    column: {
-        width: '49%',
-        marginTop: 10,
-        marginBottom: 10,
-        marginLeft: 20
+    label: {
+        fontSize: 18,
+        fontWeight: 'bold'
     },
-    column2: {
-        width: '49%',
-        marginTop: 10,
-        marginBottom: 10,
-        marginLeft: 20,
-        marginRight: 20,
-        alignItems: 'center'
-    },
-    title: {
+    totalAmount: {
         fontSize: 18,
         fontWeight: 'bold',
+        color: '#42c9db'
+    },
+    availableAmount: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#0fbf6f'
+    },
+    buttonEdit: {
+        backgroundColor: "#ffdd00",
+        width: 60,
+        height: 100,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 10
+    },
+    propertiesItemName: {
+        marginLeft: 15,
+        marginRight: 20,
+        width: 310,
+        backgroundColor: '#f9f9f9',
+        borderRadius: 10,
+        padding: 5
+    },
+    propertiesAmount: {
+        marginLeft: 20,
+        marginRight: 20,
+        flexDirection: 'row'
+    },
+    editIcon: {
+        width:50,
+        height: 50
     }
 });

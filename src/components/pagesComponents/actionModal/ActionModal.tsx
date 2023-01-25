@@ -29,6 +29,9 @@ export default function ActionModal({handleClose}: props) {
     function navigateTasksPage() {
         navigation.navigate("tasksPage");
     }
+    function navigateRegisterTaskPage() {
+        navigation.navigate("registerNewTask");
+    }
 
     return (
         <View style={styles.container}>
@@ -44,7 +47,7 @@ export default function ActionModal({handleClose}: props) {
                     <Text style={styles.textMenu}>MENU</Text>  
 
                     <CustomButton titleButton='Tarefas'onPress={navigateTasksPage}/>
-                    <CustomButton titleButton='Cadastro Tarefa'/>
+                    <CustomButton titleButton='Cadastro Tarefa' onPress={navigateRegisterTaskPage}/>
                     <CustomButton titleButton='Estoque' onPress={navigateInventory}/>
                     <CustomButton titleButton='Cadastro estoque' onPress={navigateRegisterItem}/>
                     <CustomButton titleButton='Clientes' />

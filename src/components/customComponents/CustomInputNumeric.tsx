@@ -7,27 +7,25 @@ interface props {
     onChange?: any;
     editable?: any;
     value?: string;
-    textContentType:any;
 }
 
-export function CustomInputText( { ...props } : props) {
+export function CustomInputNumeric( { ...props } : props) {
     return (
         <TextInput
-            style={styles.customInputText}
+            style={styles.customInputNumeric}
             placeholder={props.placeholder}
             secureTextEntry={props.secureText}
             autoCapitalize='none'
             onChangeText={props.onChange}
             editable={props.editable}
             value={props.value}
-            keyboardType = 'default'
-            textContentType={props.textContentType}
+            keyboardType = 'numeric'
         />
     );
 }
 
 const styles = StyleSheet.create({
-    customInputText: {
+    customInputNumeric: {
         backgroundColor: '#f8f8f8',
         height: 50,
         width: '80%',

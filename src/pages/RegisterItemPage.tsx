@@ -8,6 +8,7 @@ import {
   Dimensions
 } from "react-native";
 
+import { CustomInputNumeric } from "../components/customComponents/CustomInputNumeric";
 import { CustomInputText } from "../components/customComponents/CustomInputText";
 import { CustomAddButton } from "../components/customComponents/CustomAddButton";
 import { Navbar } from "../components/pagesComponents/Navbar";
@@ -27,12 +28,11 @@ export function RegisterItemPage() {
 
           <CustomInputText
             placeholder="Nome do item"
-            textContentType="text"
+            textContentType='none'
           />
 
-          <CustomInputText
+          <CustomInputNumeric
             placeholder="Quantidade"
-            textContentType="text"
           />
 
 

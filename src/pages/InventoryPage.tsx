@@ -18,16 +18,16 @@ import { InventoryItem } from "../components/pagesComponents/inventoryPage/Inven
 import { Navbar } from "../components/pagesComponents/Navbar";
 
 const data = [
-    {itemName: 'Mesa', amount: 23, key: 1},
-    {itemName: 'Cadeira', amount: 104, key: 2},
-    {itemName: 'Garfo', amount: 140, key: 3},
-    {itemName: 'Prato', amount: 63, key: 4},
-    {itemName: 'Mesa de madeira', amount: 8, key: 5},
-    {itemName: 'Sombrite', amount: 12, key: 6},
-    {itemName: 'Forro de mesa', amount: 80, key: 7},
-    {itemName: 'Panela de pressão', amount: 6, key: 8},
-    {itemName: 'Tacho', amount: 4, key: 10},
-    {itemName: 'Colher', amount: 44, key: 11},
+    {itemName: 'Mesa', amount: 23, itemAvaiableAmount: 12, key: 1},
+    {itemName: 'Cadeira', amount: 104, itemAvaiableAmount: 89, key: 2},
+    {itemName: 'Garfo', amount: 140, itemAvaiableAmount: 80, key: 3},
+    {itemName: 'Prato', amount: 63, itemAvaiableAmount: 33, key: 4},
+    {itemName: 'Mesa de madeira', amount: 8, itemAvaiableAmount: 2, key: 5},
+    {itemName: 'Sombrite', amount: 12, itemAvaiableAmount: 12, key: 6},
+    {itemName: 'Forro de mesa', amount: 80, itemAvaiableAmount: 75, key: 7},
+    {itemName: 'Panela de pressão', amount: 6, itemAvaiableAmount: 6, key: 8},
+    {itemName: 'Tacho', amount: 4, itemAvaiableAmount: 0, key: 10},
+    {itemName: 'Colher', amount: 44, itemAvaiableAmount: 8, key: 11},
 ];
 
 export function InventoryPage() {
@@ -63,8 +63,8 @@ export function InventoryPage() {
             <View style={styles.inputSearch}>
                 <CustomInputText
                     placeholder="Pesquisar"
-                    textContentType='text'
                     onChange={setSearchText}
+                    textContentType='none'
                 />
             </View>
             <View style={styles.inventoryBar}>
@@ -80,12 +80,11 @@ export function InventoryPage() {
             {/*Lista de estoque*/}
             <View style={styles.containerInventory}>
                 <FlatList
-                    style={styles.flatList}
                     data={itemList}
                     showsVerticalScrollIndicator ={false}
                     renderItem={
                         ({item}) => (
-                            <InventoryItem itemName={item.itemName} ItemAmount={item.amount} key={item.key}/>
+                            <InventoryItem itemName={item.itemName} itemTotalAmount={item.amount} itemAvaiableAmount={item.itemAvaiableAmount} key={item.key}/>
                         )
                     }
                     ListFooterComponent={<View style={{height:300}}></View>} //Adiciona espaço abaixo do Flatlist
@@ -119,8 +118,5 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 30,
         fontWeight: 'bold'
-    },
-    flatList: {
-        maxHeight: '100%'
     }
 });
