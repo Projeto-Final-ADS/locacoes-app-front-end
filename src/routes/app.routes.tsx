@@ -8,6 +8,7 @@ import { RegisterItemPage } from '../pages/RegisterItemPage';
 import { SignUpPage } from '../pages/SignUpPage';
 import { TaskPage } from '../pages/TaskPage';
 import { RegisterNewTask } from '../pages/RegisterNewTask';
+import { ClientsPage } from '../pages/ClientsPage';
 
 const { Navigator, Screen } = createNativeStackNavigator();
 
@@ -50,6 +51,10 @@ export function AppRoutes() {
             <Screen
                 name="registerNewTask"
                 component={RegisterNewTask}
+            />
+            <Screen
+                name="clientsPage"
+                component={ClientsPage}
             />
         </Navigator>
     );

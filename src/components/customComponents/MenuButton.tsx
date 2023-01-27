@@ -45,9 +45,9 @@ export function MenuButton( { ...props } : props) {
 
 const styles = StyleSheet.create({
     menuIcon: {
-        width: 40,
-        height: 40,
+        width: 50,
+        height: 50,
         resizeMode: 'contain',
-        marginLeft: 10
+        marginLeft: 8
     }
 });

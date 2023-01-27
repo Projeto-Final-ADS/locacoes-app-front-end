@@ -9,6 +9,7 @@ export declare global {
             registerClient: undefined;
             tasksPage: undefined;
             registerNewTask: undefined;
+            clientsPage: undefined;
         }
     }
 }
