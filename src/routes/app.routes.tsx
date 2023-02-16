@@ -9,6 +9,7 @@ import { SignUpPage } from '../pages/SignUpPage';
 import { TaskPage } from '../pages/TaskPage';
 import { RegisterNewTask } from '../pages/RegisterNewTask';
 import { ClientsPage } from '../pages/ClientsPage';
+import { EditItemPage } from '../pages/EditItemPage';
 
 const { Navigator, Screen } = createNativeStackNavigator();
 
@@ -55,6 +56,10 @@ export function AppRoutes() {
             <Screen
                 name="clientsPage"
                 component={ClientsPage}
+            />
+            <Screen
+                name="editItemPage"
+                component={EditItemPage}
             />
         </Navigator>
     );

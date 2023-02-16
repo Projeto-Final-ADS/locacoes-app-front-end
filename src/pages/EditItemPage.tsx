@@ -11,19 +11,24 @@ import {
 
 import CurrencyInput from 'react-native-currency-input';
 
-import { CreateProduct } from '../services/product';
-import { CreateStorageProduct } from '../services/storage';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
-import { useNavigation } from '@react-navigation/native';
+import { deleteStorageProduct ,updateStorageProduct } from '../services/storage';
+import { deleteProduct, updateProduct } from '../services/product';
 
 import { CustomInputText } from "../components/customComponents/CustomInputText";
-import { CustomAddButton } from "../components/customComponents/CustomAddButton";
+import { CustomEditButton } from "../components/customComponents/CustomEditButton";
 import { Navbar } from "../components/pagesComponents/Navbar";
+import { CustomCancelButton } from "../components/customComponents/CustomCancelButton";
 
-export function RegisterItemPage() {
-  
+export function EditItemPage() {
+
   const navigation = useNavigation();
 
+  const route = useRoute();
+
+  const [ itemId, setItemId ] = useState(-1);
+  const [ storageId, setStorageId ] = useState(-1);
   const [ itemName, setItemName ] = useState("");
   const [ itemDescription, setItemDescription ] = useState("");
   const [ itemPrice, setItemPrice ] = useState(0.01);
@@ -34,36 +39,76 @@ export function RegisterItemPage() {
     if (itemPrice === null)
       setItemPrice(0.01);
   },[itemPrice]);
+  
+  useEffect(() => {
+    if (itemAmount === null)
+      setItemAmount(0);
+  },[itemAmount]);
 
-  async function handleCreateProduct() {
+  useEffect(() => {
+    toFillFields();
+  }, [route?.params?.item]);
 
-    const response = await CreateProduct({itemName, itemDescription, itemPrice, itemImage});
+  function toFillFields() {
+    setStorageId(route?.params?.item.id);
+    setItemId(route?.params?.item.produto.id);
+    setItemAmount(route?.params?.item.quantidade)
+    setItemDescription(route?.params?.item.produto.descricao)
+    setItemName(route?.params?.item.produto.nome)
+    setItemPrice(route?.params?.item.produto.preco)
+  }
+
+  async function updateStorage() {
     
-    if (response != undefined) {
-
-      await CreateStorageProduct(response.data.produto.id, itemAmount);
-
-      if (response.data.sucesso === true) {
-        Alert.alert("Sucesso!", "Item criado com sucesso!");
-        clearFields();
+    const responseProduct = await updateProduct({itemId, itemName, itemDescription, itemPrice, itemImage});
+    const responseStorage = await updateStorageProduct({productId: itemId, storageAmount: itemAmount, storageId: storageId});
+    
+    if (responseProduct?.data.sucesso == true && responseStorage?.data.sucesso == true) {
+        Alert.alert("Sucesso!","Produto atualizado com sucesso!");
         navigateInventoryPage();
-      }
-      if (response.data.sucesso === false)
-        Alert.alert("Erro!", "\n" + response.data.mensagem);
     } else {
-      Alert.alert("Erro!", "Erro na requisição!");
+
+      if (responseProduct?.data.mensagem != undefined)
+        Alert.alert("Erro!", responseProduct?.data.mensagem + ".");
+      if (responseStorage?.data.mensagem != undefined)
+        Alert.alert("Erro!", + responseStorage?.data.mensagem + ".");
     }
+  }
+
+  function alertConfirmDelete() {
+    Alert.alert(
+      "Confirmar",
+      "Você realmente deseja excluir este item?",
+      [{
+        text: "Sim",
+        onPress: () => {
+          deleteProductStorage();
+        }
+      },
+      {
+        text: "Não",
+      }]
+    );
+  }
+
+  async function deleteProductStorage() {
+
+      const responseStorage = await deleteStorageProduct({storageId});
+      const responseProduct = await deleteProduct({itemId});
+  
+      if (responseProduct?.data.sucesso == true && responseStorage?.data.sucesso == true) {
+        Alert.alert("Sucesso!","Produto excluido do estoque!");
+        navigateInventoryPage();
+      } else {
+        if (responseProduct?.data.mensagem != undefined)
+          Alert.alert("Erro!", responseProduct?.data.mensagem + ".");
+        if (responseStorage?.data.mensagem != undefined)
+          Alert.alert("Erro!", + responseStorage?.data.mensagem + ".");
+      }
   }
 
   function navigateInventoryPage() {
     navigation.navigate('inventory', {refresh: true});
-  }
-
-  function clearFields() {
-    setItemAmount(1)
-    setItemDescription("")
-    setItemName("")
-    setItemPrice(0.01)
   }
 
   return (
@@ -74,7 +119,7 @@ export function RegisterItemPage() {
 
         <View style={styles.container}>
 
-          <Text style={styles.title}>Cadastro de Estoque</Text>
+          <Text style={styles.title}>Editar Item</Text>
 
           <CustomInputText
             value={itemName}
@@ -112,11 +157,17 @@ export function RegisterItemPage() {
             style={styles.customInputCurrency}
           />
 
-          <View style={styles.buttons}>
-              
+          <View style={styles.buttons}>     
+
             <View style={styles.button}>
-              <CustomAddButton
-                onPress={handleCreateProduct}
+              <CustomCancelButton
+                onPress={alertConfirmDelete}
+              />
+            </View>
+
+            <View style={styles.button}>
+              <CustomEditButton
+                onPress={updateStorage}
               />
             </View>
 

@@ -3,24 +3,38 @@ import {
     Text,
     StyleSheet,
     Dimensions,
-    Image
+    Image,
+    TouchableOpacity
 } from 'react-native';
 
+import { useNavigation } from '@react-navigation/native';
+
 interface props {
-    itemName: string;
-    itemTotalAmount: number;
-    itemAvaiableAmount: number;
+    itemName?: string;
+    itemTotalAmount?: number;
+    itemAvaiableAmount?: number;
+    item?: any;
 }
 
 const editIcon = require("../../../../resources/icons/edit-icon.png");
 
 export function InventoryItem({...props}: props) {
 
+    const navigation = useNavigation();
+
+    function navigateEditItemPage() {
+        navigation.navigate('editItemPage', {item: props.item, refresh: false});
+    }
+
     return (
         <View style={styles.container}>
-            <View style={styles.buttonEdit}>
-                <Image source={editIcon} style={styles.editIcon}/>
-            </View>
+            <TouchableOpacity
+                onPress={navigateEditItemPage}
+            >
+                <View style={styles.buttonEdit}>
+                    <Image source={editIcon} style={styles.editIcon}/>
+                </View>
+            </TouchableOpacity>
             
             <View style={{flexDirection: 'column'}}>
                 <View style={styles.propertiesItemName}>
