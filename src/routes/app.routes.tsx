@@ -10,6 +10,7 @@ import { TaskPage } from '../pages/TaskPage';
 import { RegisterNewTask } from '../pages/RegisterNewTask';
 import { ClientsPage } from '../pages/ClientsPage';
 import { EditItemPage } from '../pages/EditItemPage';
+import { InventoryPageUser } from '../pages/commonUserPage/InventoryPageUser';
 
 const { Navigator, Screen } = createNativeStackNavigator();
 
@@ -60,6 +61,10 @@ export function AppRoutes() {
             <Screen
                 name="editItemPage"
                 component={EditItemPage}
+            />
+            <Screen
+                name="inventoryUser"
+                component={InventoryPageUser}
             />
         </Navigator>
     );

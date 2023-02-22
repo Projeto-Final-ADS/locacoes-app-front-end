@@ -1,4 +1,4 @@
-import React from "react";
+import {useState, useContext} from "react";
 import {
   View,
   Text,
@@ -8,10 +8,12 @@ import {
   ScrollView,
   Dimensions
 } from "react-native";
+
 import { useNavigation } from '@react-navigation/native'
 import { CustomInputText } from "../components/customComponents/CustomInputText";
 import { CustomButton } from "../components/customComponents/CustomButton";
 import { CustomTextPressable } from "../components/customComponents/CustomTextPressable";
+import { AuthContext } from "../contexts/auth";
 
 const imagePeopleLooking = require("../../resources/images/people-looking-phone.png");
 
@@ -19,18 +21,20 @@ export function LoginPage() {
 
   const navigation = useNavigation();
 
-  function handleTasksPage() {
-    //direcionar para outra pagina
-    navigation.navigate('tasksPage');
+  const { signIn } = useContext(AuthContext);
+  
+  const [ email, setEmail ] = useState("alessandro@gmail.com");
+  const [ password, setPassword ] = useState("123456");
+
+  async function handleLogin() {
+    await signIn(email, password);
   }
 
   function handleSignUp() {
-    //direcionar para outra pagina
     navigation.navigate('signup');
   }
   
   function handleForgotPassword() {
-    //direcionar para outra pagina
     navigation.navigate('forgotpassword');
   }
 
@@ -61,17 +65,21 @@ export function LoginPage() {
             <CustomInputText
               placeholder="Digite seu e-mail"
               textContentType='emailAddress'
+              onChange={setEmail}
+              value={email}
             />
 
             <CustomInputText
               placeholder="Digite sua senha"
               textContentType='password'
               secureText={true}
+              onChange={setPassword}
+              value={password}
             />
 
             <CustomButton
               titleButton="Entrar"
-              onPress={handleTasksPage}
+              onPress={handleLogin}
             />
 
             <View style={{marginTop: 20, alignItems: 'center'}}>

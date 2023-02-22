@@ -4,9 +4,10 @@ import {
     StyleSheet,
     Text
 } from 'react-native';
+import { useContext } from 'react';
 
 import { CustomButton } from '../../customComponents/CustomButton';
-
+import { AuthContext } from '../../../contexts/auth';
 import { useNavigation } from '@react-navigation/native';
 
 interface props {
@@ -15,10 +16,15 @@ interface props {
 
 export default function ActionModal({handleClose}: props) {
 
+    const { signOut } = useContext(AuthContext);
+
     const navigation = useNavigation();
         
     function navigateInventory() {
         navigation.navigate("inventory");
+    }
+    function navigateLogin() {
+        signOut();
     }
     function navigateRegisterItem() {
         navigation.navigate("registerItem");
@@ -57,6 +63,7 @@ export default function ActionModal({handleClose}: props) {
                     <CustomButton titleButton='Cadastro cliente' onPress={navigateRegisterClient}/>
                     <CustomButton titleButton='Funcionários'/>
                     <CustomButton titleButton='Cadastro Funcionario'/>
+                    <CustomButton titleButton='Sign Out' onPress={navigateLogin}/>
                 </View>
             </View>
 

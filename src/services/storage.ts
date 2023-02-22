@@ -1,5 +1,7 @@
 import { api } from '../services/api';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 interface productStorage {
     productId?: number;
     productName?: string;
@@ -8,6 +10,14 @@ interface productStorage {
     storageAmount?: number;
     productPrice?: number;
     storageId?: number;
+}
+
+async function getAuthToken() {
+    try {
+        return await AsyncStorage.getItem("@AuthToken");
+    } catch(error) {
+        console.log(error)
+    }
 }
 
 export async function CreateStorageProduct(itemId: number,  itemAmount: number) {
@@ -28,9 +38,15 @@ export async function CreateStorageProduct(itemId: number,  itemAmount: number) 
 }
 
 export async function ListStorageProducts() {
+    const token = await getAuthToken();
     try {
         const response = await api.get(
-            '/estoques'
+            '/estoques',
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
         );
 
         return response;

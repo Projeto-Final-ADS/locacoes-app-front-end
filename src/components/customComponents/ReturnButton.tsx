@@ -13,7 +13,8 @@ export function ReturnButton() {
     const navigation = useNavigation();
 
     function navigateRegisterClient() {
-        navigation.goBack();
+        if (navigation.canGoBack())
+            navigation.goBack();
     }
 
     return (

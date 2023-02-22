@@ -15,8 +15,13 @@ interface productStorage {
 export declare global {
     namespace ReactNavigation {
         interface RootParamList {
-            login: undefined;
-            inventory: {
+            login?: {
+                tokenAuth?: string;
+            };
+            inventory?: {
+                refresh?: boolean;
+            };
+            inventoryUser?: {
                 refresh?: boolean;
             };
             forgotpassword: undefined;
