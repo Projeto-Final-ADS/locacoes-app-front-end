@@ -1,4 +1,4 @@
-import {useState, useContext} from "react";
+import {useState, useContext, useEffect} from "react";
 import {
   View,
   Text,
@@ -21,13 +21,15 @@ export function LoginPage() {
 
   const navigation = useNavigation();
 
-  const { signIn } = useContext(AuthContext);
+  const { signIn, error } = useContext(AuthContext);
   
   const [ email, setEmail ] = useState("alessandro@gmail.com");
   const [ password, setPassword ] = useState("123456");
+  const [ wrongPassword, setWrongPassword ] = useState(false);
 
   async function handleLogin() {
     await signIn(email, password);
+    setWrongPassword(error.success);
   }
 
   function handleSignUp() {
@@ -37,6 +39,10 @@ export function LoginPage() {
   function handleForgotPassword() {
     navigation.navigate('forgotpassword');
   }
+
+  useEffect(()=> {
+    setWrongPassword(false);
+  },[email, password]);
 
   return (
     <ScrollView style={styles.page}>
@@ -76,6 +82,12 @@ export function LoginPage() {
               onChange={setPassword}
               value={password}
             />
+            { wrongPassword &&
+              <Text style={styles.wrongPassword}>
+                Usuário ou senha incorreto!
+              </Text>
+            }
+            
 
             <CustomButton
               titleButton="Entrar"
@@ -132,5 +144,8 @@ const styles = StyleSheet.create({
   textRegister: {
     marginTop: 20,
     flexDirection: 'row'
+  },
+  wrongPassword: {
+    color: 'red'
   }
 });

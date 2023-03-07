@@ -1,6 +1,4 @@
-import { api } from '../services/api';
-
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { api, GetAuthToken } from '../services/api';
 
 interface productStorage {
     productId?: number;
@@ -12,21 +10,20 @@ interface productStorage {
     storageId?: number;
 }
 
-async function getAuthToken() {
-    try {
-        return await AsyncStorage.getItem("@AuthToken");
-    } catch(error) {
-        console.log(error)
-    }
-}
-
 export async function CreateStorageProduct(itemId: number,  itemAmount: number) {
     try {
+        const token = await GetAuthToken();
+
         const response = await api.post(
             '/estoques',
             {
                 produtoId: itemId,
                 quantidade: itemAmount
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
             }
         );
 
@@ -38,8 +35,9 @@ export async function CreateStorageProduct(itemId: number,  itemAmount: number) 
 }
 
 export async function ListStorageProducts() {
-    const token = await getAuthToken();
     try {
+        const token = await GetAuthToken();
+
         const response = await api.get(
             '/estoques',
             {
@@ -58,12 +56,19 @@ export async function ListStorageProducts() {
 
 export async function updateStorageProduct(props:productStorage) {
     try {
+        const token = await GetAuthToken();
+
         const response = await api.put(
             '/estoques',
             {
                 produtoId: props.productId,
                 quantidade: props.storageAmount,
                 id: props.storageId
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
             }
         );
 
@@ -76,8 +81,15 @@ export async function updateStorageProduct(props:productStorage) {
 
 export async function deleteStorageProduct( props: productStorage ) {
     try {
-         const response = await api.delete(
-            '/estoques/' + props.storageId
+        const token = await GetAuthToken();
+
+        const response = await api.delete(
+            '/estoques/' + props.storageId,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
         );
         
         return response;

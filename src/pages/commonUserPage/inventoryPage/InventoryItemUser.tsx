@@ -54,18 +54,8 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold'
     },
-    totalAmount: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        color: '#42c9db'
-    },
-    availableAmount: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        color: '#0fbf6f'
-    },
     buttonImage: {
-        backgroundColor: "#989898",
+        backgroundColor: "#afafaf",
         width: 90,
         height: 100,
         justifyContent: 'center',

@@ -8,7 +8,8 @@ import {
     StyleSheet,
     Text,
     FlatList,
-    Dimensions
+    Dimensions,
+    Switch
 } from 'react-native';
 
 import { ListStorageProducts } from '../../services/storage';
@@ -16,6 +17,7 @@ import { ListStorageProducts } from '../../services/storage';
 import { useRoute } from '@react-navigation/native';
 import { CustomInputText } from "../../components/customComponents/CustomInputText";
 import { InventoryItemUser } from "./inventoryPage/InventoryItemUser";
+import { InventoryItemUserLocation } from "./inventoryPage/InventoryItemUserLocation";
 import { Navbar } from "./inventoryPage/Navbar";
 
 export function InventoryPageUser() {
@@ -25,6 +27,7 @@ export function InventoryPageUser() {
     const [ itemsData, setItemsData ] = useState([]);
     const [ itemList, setItemList ] = useState([]);
     const [ searchText, setSearchText ] = useState("");
+    const [ switchVal, setSwitchVal ] = useState(false);
 
     useEffect(() => {
         setItemList(
@@ -66,8 +69,17 @@ export function InventoryPageUser() {
                     textContentType='none'
                 />
             </View>
-            <View style={styles.inventoryBar}>
-                <Text style={styles.title}>Estoque</Text>
+
+            <View style={styles.options}>
+                <Text style={styles.title}>Produtos</Text>
+                <View style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding:5, borderRadius: 20}}>
+                    <Switch
+                        value={switchVal}
+                        onValueChange={()=>setSwitchVal(!switchVal)}
+                        style={{height: 20}}
+                    />
+                    <Text>Modo Locação</Text>
+                </View>
             </View>
             
 
@@ -82,13 +94,19 @@ export function InventoryPageUser() {
                     showsVerticalScrollIndicator ={false}
                     renderItem={
                         ({item}) => (
-                            <InventoryItemUser
-                                itemName={item.produto.nome}
-                                itemTotalAmount={item.quantidade}
-                                itemAvaiableAmount={item.quantidade}
-                                key={item.id}
-                                item={item}
-                            />
+                            <>
+                                { switchVal &&
+                                <InventoryItemUserLocation
+                                    itemName={item.produto.nome}
+                                    itemTotalAmount={item.quantidade}
+                                    itemAvaiableAmount={item.quantidade}
+                                    key={item.id}
+                                    item={item}
+                                    isCheckedForLocation={false}
+                                    locationModeIsChecked={switchVal}
+                                />
+                                }
+                            </>
                         )
                     }
                     ListFooterComponent={<View style={{height:300}}></View>} //Adiciona espaço abaixo do Flatlist
@@ -111,22 +129,24 @@ const styles = StyleSheet.create({
     inputSearch: {
         alignItems: 'center'
     },
-    inventoryBar: {
+    options: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginTop: 20,
-        marginLeft: 20,
-        marginRight: 20
+        paddingTop: 20,
+        paddingLeft: 10,
+        paddingRight: 10
     },
     title: {
         fontSize: 30,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        paddingLeft: 5
+
     },
     storageInfo: {
         fontSize: 18,
         fontWeight: 'bold',
         opacity: 0.2,
         padding: 18
-    },
+    }
 });

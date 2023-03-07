@@ -1,6 +1,5 @@
 import { useNavigation} from '@react-navigation/native';
 import React, { createContext, useState, useEffect} from 'react';
-import { Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { SignIn } from '../services/signIn';
@@ -12,11 +11,17 @@ export interface AuthData {
     role?: string;
 }
 
+export interface Error {
+    success: boolean;
+    message?: string;
+}
+
 interface AuthContextData {
     authData?: AuthData;
     signIn: (email: string, password: string) => Promise<void>;
     signOut: () => Promise<void>;
     isLoading: boolean;
+    error: Error;
 }
 
 interface Props {
@@ -30,6 +35,7 @@ export default function AuthProvider ({children}:Props) {
 
     const [authData, setAuthData] = useState<AuthData>();
     const [isLoading, setisLoading] = useState(true);
+    const [error, setError] = useState<Error>({success:true});
 
     useEffect(() => {
       loadStorageData();
@@ -70,30 +76,36 @@ export default function AuthProvider ({children}:Props) {
         if (email !== '' && password !== '') {
 
             const response = await SignIn({email_username: email, password});
+
             if (response != undefined) {
-
-                const responseAuthData = {
-                    token: response.data.usuario.token,
-                    name: response.data.usuario.nome,
-                    lastName: response.data.usuario.sobrenome,
-                    role: response.data.usuario.role
+                if (response.data.sucesso == true) {
+                    const responseAuthData = {
+                        token: response.data.usuario.token,
+                        name: response.data.usuario.nome,
+                        lastName: response.data.usuario.sobrenome,
+                        role: response.data.usuario.role
+                    }
+    
+                    await setAuthData(responseAuthData);
+                    await saveAuthData(responseAuthData);
+                    await saveAuthToken(responseAuthData.token);
+                    setError({success: true});
+    
+                    if (response.data.usuario.role === "Usuario")
+                        navigation.reset({
+                            index: 0,
+                            routes: [{name: 'inventoryUser'}],
+                        });
+    
+                    if (response.data.usuario.role === "Administrador")
+                        navigation.reset({
+                            index: 0,
+                            routes: [{name: 'tasksPage'}],
+                        });
+                } else {
+                    setError({success: false});
                 }
-
-                await setAuthData(responseAuthData);
-                await saveAuthData(responseAuthData);
-                await saveAuthToken(responseAuthData.token);
-
-                if (response.data.usuario.role === "Usuario")
-                    navigation.reset({
-                        index: 0,
-                        routes: [{name: 'inventoryUser'}],
-                    });
-
-                if (response.data.usuario.role === "Administrador")
-                    navigation.reset({
-                        index: 0,
-                        routes: [{name: 'tasksPage'}],
-                    });
+                
             }
         }
     }
@@ -108,7 +120,7 @@ export default function AuthProvider ({children}:Props) {
     }
 
     return (
-        <AuthContext.Provider value={{authData, signIn, signOut, isLoading}}>
+        <AuthContext.Provider value={{authData, signIn, signOut, isLoading, error}}>
             {children}
         </AuthContext.Provider>
     );
