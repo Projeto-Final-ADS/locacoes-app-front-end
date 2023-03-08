@@ -11,18 +11,20 @@ import {
     Dimensions,
     Switch
 } from 'react-native';
-
-import { ListStorageProducts } from '../../services/storage';
-
-import { useRoute } from '@react-navigation/native';
+import { ListProducts } from '../../services/product';
+import { useRoute, useNavigation } from '@react-navigation/native';
 import { CustomInputText } from "../../components/customComponents/CustomInputText";
-import { InventoryItemUser } from "./inventoryPage/InventoryItemUser";
 import { InventoryItemUserLocation } from "./inventoryPage/InventoryItemUserLocation";
 import { Navbar } from "./inventoryPage/Navbar";
+import { InventoryItemUser } from './inventoryPage/InventoryItemUser';
+import { CustomButton } from '../../components/customComponents/CustomButton';
 
 export function InventoryPageUser() {
 
     const route = useRoute();
+    const navigation = useNavigation();
+
+    const [ listSelectedItens, setListSelectedItens] = useState([]);
 
     const [ itemsData, setItemsData ] = useState([]);
     const [ itemList, setItemList ] = useState([]);
@@ -34,7 +36,7 @@ export function InventoryPageUser() {
             itemsData.filter(
                 (item) => {
                     return (
-                        Object.values(item.produto).join('').toLowerCase().includes(searchText.toLowerCase())
+                        Object.values(item.nome).join('').toLowerCase().includes(searchText.toLowerCase())
                     )
                 }
             )
@@ -50,11 +52,15 @@ export function InventoryPageUser() {
     }, [route?.params]);
     
     async function listAllProductStorage() {
-        const response = await ListStorageProducts();
+        const response = await ListProducts();
         if (response != undefined) {
-            setItemsData(response.data.estoques);
-            setItemList(response.data.estoques);
+            setItemsData(response.data.produtos);
+            setItemList(response.data.produtos);
         }
+    }
+
+    function navigateLocationPage() {
+        navigation.navigate("requestLocation", {itemsLocationList: listSelectedItens});
     }
 
     return (
@@ -80,6 +86,10 @@ export function InventoryPageUser() {
                     />
                     <Text>Modo Locação</Text>
                 </View>
+                <CustomButton
+                    titleButton=''
+                    onPress={navigateLocationPage}
+                />
             </View>
             
 
@@ -96,15 +106,22 @@ export function InventoryPageUser() {
                         ({item}) => (
                             <>
                                 { switchVal &&
-                                <InventoryItemUserLocation
-                                    itemName={item.produto.nome}
-                                    itemTotalAmount={item.quantidade}
-                                    itemAvaiableAmount={item.quantidade}
-                                    key={item.id}
-                                    item={item}
-                                    isCheckedForLocation={false}
-                                    locationModeIsChecked={switchVal}
-                                />
+                                    <InventoryItemUserLocation
+                                        itemTotalAmount={item.quantidade}
+                                        itemAvaiableAmount={item.quantidade}
+                                        key={item.id}
+                                        item={item}
+                                        isCheckedForLocation={false}
+                                        listSelectedItens={listSelectedItens}
+                                    />
+                                }
+                                { switchVal == false &&
+                                    <InventoryItemUser
+                                        itemTotalAmount={item.quantidade}
+                                        itemAvaiableAmount={item.quantidade}
+                                        key={item.id}
+                                        item={item}
+                                    />
                                 }
                             </>
                         )

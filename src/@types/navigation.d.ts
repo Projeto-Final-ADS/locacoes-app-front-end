@@ -37,6 +37,9 @@ export declare global {
                 item: undefined;
                 refresh?: boolean;
             };
+            requestLocation?: {
+                itemsLocationList: any;
+            };
         }
     }
 }

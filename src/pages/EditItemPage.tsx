@@ -13,7 +13,6 @@ import CurrencyInput from 'react-native-currency-input';
 
 import { useNavigation, useRoute } from '@react-navigation/native';
 
-import { deleteStorageProduct ,updateStorageProduct } from '../services/storage';
 import { deleteProduct, updateProduct } from '../services/product';
 
 import { CustomInputText } from "../components/customComponents/CustomInputText";
@@ -28,7 +27,6 @@ export function EditItemPage() {
   const route = useRoute();
 
   const [ itemId, setItemId ] = useState(-1);
-  const [ storageId, setStorageId ] = useState(-1);
   const [ itemName, setItemName ] = useState("");
   const [ itemDescription, setItemDescription ] = useState("");
   const [ itemPrice, setItemPrice ] = useState(0.01);
@@ -50,28 +48,24 @@ export function EditItemPage() {
   }, [route?.params?.item]);
 
   function toFillFields() {
-    setStorageId(route?.params?.item.id);
-    setItemId(route?.params?.item.produto.id);
-    setItemAmount(route?.params?.item.quantidade)
-    setItemDescription(route?.params?.item.produto.descricao)
-    setItemName(route?.params?.item.produto.nome)
-    setItemPrice(route?.params?.item.produto.preco)
+    setItemId(route?.params?.item.id);
+    setItemAmount(route?.params?.item.quantidade);
+    setItemDescription(route?.params?.item.descricao);
+    setItemName(route?.params?.item.nome);
+    setItemPrice(route?.params?.item.preco);
   }
 
   async function updateStorage() {
     
-    const responseProduct = await updateProduct({itemId, itemName, itemDescription, itemPrice, itemImage});
-    const responseStorage = await updateStorageProduct({productId: itemId, storageAmount: itemAmount, storageId: storageId});
+    const responseProduct = await updateProduct({itemId, itemName, itemDescription, itemPrice, itemImage, itemAmount});
     
-    if (responseProduct?.data.sucesso == true && responseStorage?.data.sucesso == true) {
+    if (responseProduct?.data.sucesso == true) {
         Alert.alert("Sucesso!","Produto atualizado com sucesso!");
         navigateInventoryPage();
     } else {
 
       if (responseProduct?.data.mensagem != undefined)
         Alert.alert("Erro!", responseProduct?.data.mensagem + ".");
-      if (responseStorage?.data.mensagem != undefined)
-        Alert.alert("Erro!", + responseStorage?.data.mensagem + ".");
     }
   }
 
@@ -93,17 +87,14 @@ export function EditItemPage() {
 
   async function deleteProductStorage() {
 
-      const responseStorage = await deleteStorageProduct({storageId});
       const responseProduct = await deleteProduct({itemId});
   
-      if (responseProduct?.data.sucesso == true && responseStorage?.data.sucesso == true) {
+      if (responseProduct?.data.sucesso) {
         Alert.alert("Sucesso!","Produto excluido do estoque!");
         navigateInventoryPage();
       } else {
         if (responseProduct?.data.mensagem != undefined)
           Alert.alert("Erro!", responseProduct?.data.mensagem + ".");
-        if (responseStorage?.data.mensagem != undefined)
-          Alert.alert("Erro!", + responseStorage?.data.mensagem + ".");
       }
   }
 

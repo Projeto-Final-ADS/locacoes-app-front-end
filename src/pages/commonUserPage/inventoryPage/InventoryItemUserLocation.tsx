@@ -7,16 +7,15 @@ import {
     TouchableOpacity
 } from 'react-native';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CheckBox } from 'react-native-elements';
 
 interface props {
-    itemName?: string;
     itemTotalAmount?: number;
     itemAvaiableAmount?: number;
-    item?: any;
     isCheckedForLocation: boolean;
-    locationModeIsChecked: boolean;
+    listSelectedItens?: any;
+    item: any;
 }
 
 const noImage = require("../../../../resources/icons/no-image.png");
@@ -24,12 +23,25 @@ const noImage = require("../../../../resources/icons/no-image.png");
 export function InventoryItemUserLocation({...props}: props) {
 
     const [ checkBoxValue, setCheckBoxValue ] = useState(false);
-    const [ locationModeIsChecked, setLocationModeIsChecked ] = useState(props.locationModeIsChecked);
+
+    useEffect(() => {
+        if (checkBoxValue) {
+            props.listSelectedItens.push({
+                productId: props.item.id,
+                productName: props.item.nome,
+                amount: 0
+            });
+        } else {
+            props.listSelectedItens.pop({
+                productId: props.item.id,
+                productName: props.item.nome,
+                amount: 0
+            });
+        }
+    },[checkBoxValue]);
 
     return (
         <View style={styles.container}>
-            { locationModeIsChecked == true &&
-            <>
                 <View>
                     <TouchableOpacity>
                         <View style={styles.buttonImage2}>
@@ -39,31 +51,18 @@ export function InventoryItemUserLocation({...props}: props) {
                 </View>
                 
                 <CheckBox
-                        title={""}
-                        checked={checkBoxValue}
-                        onPress={()=> setCheckBoxValue(!checkBoxValue)}
-                        containerStyle={styles.checkbox}
-                        checkedColor="#2fbf0f"
+                    title={""}
+                    checked={checkBoxValue}
+                    onPress={()=> setCheckBoxValue(!checkBoxValue)}
+                    containerStyle={styles.checkbox}
+                    checkedColor="#2fbf0f"
                 />
-            </>
-            }
-
-            { locationModeIsChecked == false &&
-            <>
-                <View>
-                    <TouchableOpacity>
-                        <View style={styles.buttonImage}>
-                            <Image source={noImage} style={styles.imgIcon}/>
-                        </View>
-                    </TouchableOpacity>
-                </View>
-            </>
-            }
             
             <View style={styles.propertiesItemName}>
                 <Text style={styles.label}>Item:</Text>
-                <Text numberOfLines={2} style={{width: 270}}>{props.itemName}</Text>
+                <Text numberOfLines={2} style={{width: 270}}>{props.item.nome}</Text>
             </View>
+            
             
         </View>
     );

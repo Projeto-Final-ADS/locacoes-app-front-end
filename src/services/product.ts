@@ -6,6 +6,7 @@ interface product {
     itemDescription?: string;
     itemPrice?: number;
     itemImage?: string;
+    itemAmount?: number;
 }
 
 export async function CreateProduct( props: product ) {
@@ -18,7 +19,8 @@ export async function CreateProduct( props: product ) {
                 nome: props.itemName,
                 descricao: props.itemDescription,
                 preco: props.itemPrice,
-                imagem: props.itemImage
+                imagem: props.itemImage,
+                quantidade: props.itemAmount
             },
             {
                 headers: {
@@ -37,7 +39,6 @@ export async function CreateProduct( props: product ) {
 export async function updateProduct( props: product ) {
     try {
         const token = await GetAuthToken();
-
          const response = await api.put(
             '/produtos',
             {
@@ -45,7 +46,8 @@ export async function updateProduct( props: product ) {
                 nome: props.itemName,
                 descricao: props.itemDescription,
                 preco: props.itemPrice,
-                imagem: props.itemImage
+                imagem: props.itemImage,
+                quantidade: props.itemAmount
             },
             {
                 headers: {
@@ -67,6 +69,26 @@ export async function deleteProduct( props: product ) {
 
         const response = await api.delete(
             '/produtos/' + props.itemId,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
+        
+        return response;
+
+    } catch(error) {
+      console.log(error);
+    }
+}
+
+export async function ListProducts() {
+    try {
+        const token = await GetAuthToken();
+
+        const response = await api.get(
+            '/produtos',
             {
                 headers: {
                     Authorization: `Bearer ${token}`

@@ -10,7 +10,6 @@ import {
 import { useNavigation } from '@react-navigation/native';
 
 interface props {
-    itemName?: string;
     itemTotalAmount?: number;
     itemAvaiableAmount?: number;
     item?: any;
@@ -33,7 +32,7 @@ export function InventoryItemUser({...props}: props) {
 
             <View style={styles.propertiesItemName}>
                 <Text style={styles.label}>Item:</Text>
-                <Text numberOfLines={2} style={{width: 270}}>{props.itemName}</Text>
+                <Text numberOfLines={2} style={{width: 270}}>{props.item.nome}</Text>
             </View>
         </View>
     );
@@ -55,7 +54,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     buttonImage: {
-        backgroundColor: "#afafaf",
+        backgroundColor: "#dfdfdf",
         width: 90,
         height: 100,
         justifyContent: 'center',

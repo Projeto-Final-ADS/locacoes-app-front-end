@@ -11,7 +11,7 @@ import {
     Dimensions
 } from 'react-native';
 
-import { ListStorageProducts } from '../services/storage';
+import { ListProducts } from '../services/product';
 
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { CustomInputText } from "../components/customComponents/CustomInputText";
@@ -33,7 +33,7 @@ export function InventoryPage() {
             itemsData.filter(
                 (item) => {
                     return (
-                        Object.values(item.produto).join('').toLowerCase().includes(searchText.toLowerCase())
+                        Object.values(item.nome).join('').toLowerCase().includes(searchText.toLowerCase())
                     )
                 }
             )
@@ -49,10 +49,10 @@ export function InventoryPage() {
     }, [route?.params]);
 
     async function listAllProductStorage() {
-        const response = await ListStorageProducts();
+        const response = await ListProducts();
         if (response != undefined) {
-            setItemsData(response.data.estoques);
-            setItemList(response.data.estoques);
+            setItemsData(response.data.produtos);
+            setItemList(response.data.produtos);
         }
     }
 
@@ -93,7 +93,7 @@ export function InventoryPage() {
                     renderItem={
                         ({item}) => (
                             <InventoryItem
-                                itemName={item.produto.nome}
+                                itemName={item.nome}
                                 itemTotalAmount={item.quantidade}
                                 itemAvaiableAmount={item.quantidade}
                                 key={item.id}

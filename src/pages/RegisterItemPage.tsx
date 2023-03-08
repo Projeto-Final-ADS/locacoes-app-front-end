@@ -12,7 +12,6 @@ import {
 import CurrencyInput from 'react-native-currency-input';
 
 import { CreateProduct } from '../services/product';
-import { CreateStorageProduct } from '../services/storage';
 
 import { useNavigation } from '@react-navigation/native';
 
@@ -37,11 +36,9 @@ export function RegisterItemPage() {
 
   async function handleCreateProduct() {
 
-    const response = await CreateProduct({itemName, itemDescription, itemPrice, itemImage});
+    const response = await CreateProduct({itemName, itemDescription, itemPrice, itemImage, itemAmount});
     
     if (response != undefined) {
-
-      await CreateStorageProduct(response.data.produto.id, itemAmount);
 
       if (response.data.sucesso === true) {
         Alert.alert("Sucesso!", "Item criado com sucesso!");
@@ -96,7 +93,7 @@ export function RegisterItemPage() {
             separator=","
             precision={2}
             minValue={0}
-            onChangeValue={ setItemPrice }
+            onChangeValue={ () => setItemPrice }
             style={styles.customInputCurrency}
           />
 
@@ -108,7 +105,7 @@ export function RegisterItemPage() {
             separator=","
             precision={0}
             minValue={0}
-            onChangeValue={ setItemAmount }
+            onChangeValue={ () => setItemAmount }
             style={styles.customInputCurrency}
           />
 
