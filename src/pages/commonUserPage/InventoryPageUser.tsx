@@ -64,7 +64,8 @@ export function InventoryPageUser() {
     }
 
     function navigateLocationPage() {
-        navigation.navigate("requestLocation", {itemsLocationList: listSelectedItens});
+        if (listSelectedItens.length > 0)
+            navigation.navigate("requestLocation", {itemsLocationList: listSelectedItens});
     }
 
     return (
