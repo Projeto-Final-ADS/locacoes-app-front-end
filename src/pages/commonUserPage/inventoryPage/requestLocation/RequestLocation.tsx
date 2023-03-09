@@ -26,7 +26,7 @@ export function RequestLocation() {
   });
 
   return (
-    <ScrollView style={styles.page}>
+    <View style={styles.page}>
       <KeyboardAvoidingView behavior="position" enabled>
 
         <Navbar/>
@@ -83,7 +83,7 @@ export function RequestLocation() {
           />
         </View> 
       </KeyboardAvoidingView>
-    </ScrollView>
+    </View>
   );
 }
 

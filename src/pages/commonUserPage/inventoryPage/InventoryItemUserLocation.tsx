@@ -59,7 +59,7 @@ export function InventoryItemUserLocation({...props}: props) {
     }
 
     return (
-        <View>
+        <View style={{marginBottom: 10}}>
             <View style={styles.container}>
                     <View>
                         <TouchableOpacity>
@@ -82,10 +82,9 @@ export function InventoryItemUserLocation({...props}: props) {
                     <Text numberOfLines={2} style={{width: Dimensions.get('screen').width - 130}}>{props.item.nome}</Text>
                 </View>
             </View>
-            
-            <View style={styles.containerAmount}>
-                { checkBoxValue &&
-                <>
+
+            { checkBoxValue &&
+                <View style={styles.containerAmount}> 
                     <Text style={{fontSize: 16}}>Quantidade:</Text>
                     <View>
                         
@@ -101,11 +100,9 @@ export function InventoryItemUserLocation({...props}: props) {
                                     onPress={() => setAmount(amount +1)}
                                 />
                             </View>
-                        
                     </View>
-                </>
-                }
-            </View>
+                </View>
+            }
         </View>
     );
 }
@@ -115,7 +112,6 @@ const styles = StyleSheet.create({
         width: Dimensions.get('screen').width,
         height: 120,
         backgroundColor: '#f0f0f0',
-        borderRadius: 10,
         flexDirection: 'row',
         justifyContent: 'flex-start',
         padding: 10
@@ -143,7 +139,7 @@ const styles = StyleSheet.create({
     propertiesItemName: {
         marginLeft: 15,
         marginRight: 20,
-        width: 290,
+        width: Dimensions.get('screen').width - 125,
         backgroundColor: '#f9f9f9',
         borderRadius: 10,
         padding: 5

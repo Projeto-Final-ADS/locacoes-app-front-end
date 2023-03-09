@@ -17,7 +17,7 @@ import { CustomInputText } from "../../components/customComponents/CustomInputTe
 import { InventoryItemUserLocation } from "./inventoryPage/InventoryItemUserLocation";
 import { Navbar } from "./inventoryPage/Navbar";
 import { InventoryItemUser } from './inventoryPage/InventoryItemUser';
-import { CustomButton } from '../../components/customComponents/CustomButton';
+import { CustomButtonLocation } from '../../components/customComponents/CustomButtonLocation';
 
 export function InventoryPageUser() {
 
@@ -48,6 +48,10 @@ export function InventoryPageUser() {
     }, []);
 
     useEffect(() => {
+        setListSelectedItens([]);
+    }, [switchVal]);
+
+    useEffect(() => {
         listAllProductStorage();
     }, [route?.params]);
     
@@ -60,7 +64,6 @@ export function InventoryPageUser() {
     }
 
     function navigateLocationPage() {
-        console.log(listSelectedItens);
         navigation.navigate("requestLocation", {itemsLocationList: listSelectedItens});
     }
 
@@ -87,8 +90,7 @@ export function InventoryPageUser() {
                     />
                     <Text>Modo Locação</Text>
                 </View>
-                <CustomButton
-                    titleButton=''
+                <CustomButtonLocation
                     onPress={navigateLocationPage}
                 />
             </View>
@@ -151,9 +153,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingTop: 20,
-        paddingLeft: 10,
-        paddingRight: 10
+        marginTop: 20,
+        marginLeft: 10,
+        marginRight: 10,
+        width: Dimensions.get('screen').width -30
+
     },
     title: {
         fontSize: 30,
