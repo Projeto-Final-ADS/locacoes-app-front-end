@@ -60,6 +60,7 @@ export function InventoryPageUser() {
     }
 
     function navigateLocationPage() {
+        console.log(listSelectedItens);
         navigation.navigate("requestLocation", {itemsLocationList: listSelectedItens});
     }
 
