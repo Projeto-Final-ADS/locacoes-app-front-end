@@ -1,27 +1,26 @@
 import React from "react";
-import { TextInput, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
+import { TextInputMask } from 'react-native-masked-text';
 
 interface props {
     placeholder: string;
     secureText?: any;
     onChange?: any;
-    editable?: any;
-    value?: string;
-    textContentType:any;
+    editable?: boolean;
+    value?: any;
+    type:any;
 }
 
-export function CustomInputText( { ...props } : props) {
+export function CustomInputPersonalData( { ...props } : props) {
     return (
-        <TextInput
+        <TextInputMask
             style={styles.customInputText}
-            placeholder={props.placeholder}
-            secureTextEntry={props.secureText}
-            autoCapitalize='none'
+            type={props.type}
+            value={props.value}
             onChangeText={props.onChange}
             editable={props.editable}
-            value={props.value}
-            keyboardType = 'default'
-            textContentType={props.textContentType}
+            keyboardType = 'numeric'
+            placeholder={props.placeholder}
         />
     );
 }

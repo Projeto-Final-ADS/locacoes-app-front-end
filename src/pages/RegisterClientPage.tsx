@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import {
   View,
   Text,
@@ -12,10 +12,14 @@ import { useNavigation } from '@react-navigation/native'
 import { CustomInputText } from "../components/customComponents/CustomInputText";
 import { CustomAddButton } from "../components/customComponents/CustomAddButton";
 import { Navbar } from "../components/pagesComponents/Navbar";
+import { CustomInputPersonalData } from "../components/customComponents/CustomInputCPF";
+import { CustomInputNumeric } from "../components/customComponents/CustomInputNumeric";
 
 export function RegisterClientPage() {
 
   const navigation = useNavigation();
+
+  const [cpf, setCpf] = useState();
 
   return (
     <ScrollView style={styles.page}>
@@ -25,15 +29,25 @@ export function RegisterClientPage() {
 
         <View style={styles.container}>
 
-          <Text style={styles.title}>Cadastrar de Cliente</Text>
+          <Text style={styles.title}>Cadastro de Cliente</Text>
 
           <CustomInputText
             placeholder="Nome do cliente"
             textContentType="text"
           />
 
+          <CustomInputPersonalData
+            placeholder="CPF"
+            type='cpf'
+            onChange={setCpf}
+            value={cpf}
+          />
+          <CustomInputNumeric
+            placeholder="CEP"
+            maxLength={8}
+          />
           <CustomInputText
-            placeholder="Rua"
+            placeholder="Cidade"
             textContentType="text"
           />
 
@@ -43,7 +57,39 @@ export function RegisterClientPage() {
           />
 
           <CustomInputText
-            placeholder="Cidade"
+            placeholder="Rua"
+            textContentType="text"
+          />
+
+          <View style={{width: "80%"}}>
+            <View style={{flexDirection: 'row', justifyContent: 'center', width: "105%"}}>
+
+              <View style={{width: 100}}>
+                <CustomInputText
+                  placeholder="Qd."
+                  textContentType="text"
+                />
+              </View>
+
+              <View style={{width: 100}}>
+                <CustomInputText
+                  placeholder="Lt."
+                  textContentType="text"
+                />
+              </View>
+
+              <View style={{width: 100}}>
+                <CustomInputText
+                  placeholder="Nº"
+                  textContentType="text"
+                />
+              </View>
+
+            </View>
+          </View>
+
+          <CustomInputText
+            placeholder="Complemento"
             textContentType="text"
           />
 

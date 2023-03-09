@@ -9,7 +9,7 @@ interface props {
     onPress?: any;
 }
 
-export function CustomAddButton( { ...props } : props) {
+export function CustomSmallAddButton( { ...props } : props) {
     return (
         <TouchableOpacity
             activeOpacity={0.7}
@@ -28,8 +28,8 @@ const styles = StyleSheet.create({
     },
     buttonAdd: {
         backgroundColor: '#2fbc5e',
-        width: 50,
-        height: 50,
+        width: 40,
+        height: 40,
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 30

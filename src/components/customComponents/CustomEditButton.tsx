@@ -1,33 +1,35 @@
 import React from "react";
 import {
     StyleSheet,
-    Text,
-    TouchableOpacity
+    TouchableOpacity,
+    Image
 } from "react-native";
 
 interface props {
     onPress?: any;
 }
 
-export function CustomAddButton( { ...props } : props) {
+const editIcon = require("../../../resources/icons/edit-icon.png");
+
+export function CustomEditButton( { ...props } : props) {
     return (
         <TouchableOpacity
             activeOpacity={0.7}
             onPress={props.onPress}
-            style={styles.buttonAdd}
+            style={styles.buttonEdit}
         >
-            <Text style={styles.textButtonAdd}>+</Text>
+            <Image source={editIcon} style={styles.img}/>
         </TouchableOpacity>
     );
 }
 
 const styles = StyleSheet.create({
-    textButtonAdd: {
-        fontSize: 30,
-        color: '#fff'
+    img: {
+        width: 30,
+        height: 30
     },
-    buttonAdd: {
-        backgroundColor: '#2fbc5e',
+    buttonEdit: {
+        backgroundColor: "#ffdd00",
         width: 50,
         height: 50,
         alignItems: 'center',

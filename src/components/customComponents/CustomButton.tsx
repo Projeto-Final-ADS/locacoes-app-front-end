@@ -19,7 +19,7 @@ export function CustomButton( { ...props } : props) {
 
 const styles = StyleSheet.create({
     customButton: {
-        backgroundColor: "#2FB176",
+        backgroundColor: "#2fbc5e",
         height: 50,
         width: '65%',
         marginTop: 20,

@@ -4,9 +4,10 @@ import {
     StyleSheet,
     Text
 } from 'react-native';
+import { useContext } from 'react';
 
 import { CustomButton } from '../../customComponents/CustomButton';
-
+import { AuthContext } from '../../../contexts/auth';
 import { useNavigation } from '@react-navigation/native';
 
 interface props {
@@ -15,10 +16,15 @@ interface props {
 
 export default function ActionModal({handleClose}: props) {
 
+    const { signOut } = useContext(AuthContext);
+
     const navigation = useNavigation();
         
     function navigateInventory() {
         navigation.navigate("inventory");
+    }
+    function navigateLogin() {
+        signOut();
     }
     function navigateRegisterItem() {
         navigation.navigate("registerItem");
@@ -28,6 +34,12 @@ export default function ActionModal({handleClose}: props) {
     }
     function navigateTasksPage() {
         navigation.navigate("tasksPage");
+    }
+    function navigateRegisterTaskPage() {
+        navigation.navigate("registerNewTask");
+    }
+    function navigateClientsPage() {
+        navigation.navigate("clientsPage");
     }
 
     return (
@@ -44,13 +56,14 @@ export default function ActionModal({handleClose}: props) {
                     <Text style={styles.textMenu}>MENU</Text>  
 
                     <CustomButton titleButton='Tarefas'onPress={navigateTasksPage}/>
-                    <CustomButton titleButton='Cadastro Tarefa'/>
+                    <CustomButton titleButton='Cadastro Tarefa' onPress={navigateRegisterTaskPage}/>
                     <CustomButton titleButton='Estoque' onPress={navigateInventory}/>
                     <CustomButton titleButton='Cadastro estoque' onPress={navigateRegisterItem}/>
-                    <CustomButton titleButton='Clientes' />
+                    <CustomButton titleButton='Clientes' onPress={navigateClientsPage}/>
                     <CustomButton titleButton='Cadastro cliente' onPress={navigateRegisterClient}/>
                     <CustomButton titleButton='Funcionários'/>
                     <CustomButton titleButton='Cadastro Funcionario'/>
+                    <CustomButton titleButton='Sign Out' onPress={navigateLogin}/>
                 </View>
             </View>
 

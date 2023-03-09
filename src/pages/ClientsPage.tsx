@@ -11,60 +11,48 @@ import {
     Dimensions
 } from 'react-native';
 
-import { ListProducts } from '../services/product';
-
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import { CustomInputText } from "../components/customComponents/CustomInputText";
 import { CustomAddButton } from "../components/customComponents/CustomAddButton";
-import { InventoryItem } from "../components/pagesComponents/inventoryPage/InventoryItem";
+import { Client } from "../components/pagesComponents/clientsPage/Client";
 import { Navbar } from "../components/pagesComponents/Navbar";
 
-export function InventoryPage() {
+const data = [
+    {clientName: 'Alessandro Luiz da Silva Mota', address: 'Rua 14, Qd.47, Lt. 10, N15, 75357-010, Setor Centro, Varjão - Goiás', key: 1},
+    {clientName: 'Lucas', address: 'Rua 15, Qd.7, Lt. 10, N122, 75555-010, Setor Centro, Varjão - Goiás, Centro', key: 2},
+    {clientName: 'Maria Firmina', address: 'Rua 17, Qd.50, Lt. 45, N47, 75557-010, Setor Centro, Varjão - Goiás, Centro', key: 3},
+    {clientName: 'João Katagury', address: 'Rua 18, Qd.53, Lt. 21, N8, 75357-010, Setor Centro, Varjão - Goiás, Centro', key: 4},
+    {clientName: 'Kin Jhon Yiun', address: 'Rua 19, Qd.12, Lt. 45, N9, 75357-010, Setor Centro, Varjão - Goiás, Centro', key: 5},
+];
+
+export function ClientsPage() {
 
     const navigation = useNavigation();
-    const route = useRoute();
 
-    const [ itemsData, setItemsData ] = useState([]);
-    const [ itemList, setItemList ] = useState([]);
+    const [ itemsData, setItemsData ] = useState([...data]);
+    const [ itemList, setItemList ] = useState(itemsData);
     const [ searchText, setSearchText ] = useState("");
 
     useEffect(() => {
         setItemList(
             itemsData.filter(
-                (item) => {
+                (client) => {
                     return (
-                        Object.values(item.nome).join('').toLowerCase().includes(searchText.toLowerCase())
+                        Object.values(client).join('').toLowerCase().includes(searchText.toLowerCase())
                     )
                 }
             )
         );
     }, [searchText]);
 
-    useEffect(() => {
-        listAllProductStorage();
-    }, []);
-
-    useEffect(() => {
-        listAllProductStorage();
-    }, [route?.params]);
-
-    async function listAllProductStorage() {
-        const response = await ListProducts();
-        if (response != undefined) {
-            setItemsData(response.data.produtos);
-            setItemList(response.data.produtos);
-        }
-    }
-
-    function navigateRegisterItem() {
-        navigation.navigate('registerItem', {refresh: false});
+    function navigateRegisterClient() {
+        navigation.navigate('registerClient');
     }
 
     return (
         
         <View style={styles.page}>
             <Navbar/>
-
             <View style={styles.inputSearch}>
                 <CustomInputText
                     placeholder="Pesquisar"
@@ -73,32 +61,21 @@ export function InventoryPage() {
                 />
             </View>
             <View style={styles.inventoryBar}>
-                <Text style={styles.title}>Estoque</Text>
-                
+
+                <Text style={styles.title}>Clientes</Text>
+
                 <CustomAddButton
-                    onPress={navigateRegisterItem}
+                    onPress={navigateRegisterClient}
                 />
             </View>
             
-
             <View style={styles.containerInventory}>
-
-                {itemsData.length == 0 &&
-                    <Text style={styles.storageInfo}>Nenhum item encontrado</Text>
-                }
-
                 <FlatList
                     data={itemList}
                     showsVerticalScrollIndicator ={false}
                     renderItem={
                         ({item}) => (
-                            <InventoryItem
-                                itemName={item.nome}
-                                itemTotalAmount={item.quantidade}
-                                itemAvaiableAmount={item.quantidade}
-                                key={item.id}
-                                item={item}
-                            />
+                            <Client clientName={item.clientName} address={item.address} key={item.key}/>
                         )
                     }
                     ListFooterComponent={<View style={{height:300}}></View>} //Adiciona espaço abaixo do Flatlist
@@ -132,11 +109,5 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 30,
         fontWeight: 'bold'
-    },
-    storageInfo: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        opacity: 0.2,
-        padding: 18
-    },
+    }
 });

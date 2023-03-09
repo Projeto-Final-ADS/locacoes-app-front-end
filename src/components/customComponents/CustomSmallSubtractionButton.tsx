@@ -9,27 +9,28 @@ interface props {
     onPress?: any;
 }
 
-export function CustomAddButton( { ...props } : props) {
+export function CustomSmallSubtractionButton( { ...props } : props) {
     return (
         <TouchableOpacity
             activeOpacity={0.7}
             onPress={props.onPress}
-            style={styles.buttonAdd}
+            style={styles.buttonCancel}
         >
-            <Text style={styles.textButtonAdd}>+</Text>
+            <Text style={styles.textButtonCancel}>--</Text>
         </TouchableOpacity>
     );
 }
 
 const styles = StyleSheet.create({
-    textButtonAdd: {
-        fontSize: 30,
-        color: '#fff'
+    textButtonCancel: {
+        fontSize: 20,
+        color: '#fff',
+        fontWeight: 'bold'
     },
-    buttonAdd: {
-        backgroundColor: '#2fbc5e',
-        width: 50,
-        height: 50,
+    buttonCancel: {
+        backgroundColor: '#B12F2F',
+        width: 40,
+        height: 40,
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius: 30

@@ -11,18 +11,22 @@ import {
 
 import CurrencyInput from 'react-native-currency-input';
 
-import { CreateProduct } from '../services/product';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
-import { useNavigation } from '@react-navigation/native';
+import { deleteProduct, updateProduct } from '../services/product';
 
 import { CustomInputText } from "../components/customComponents/CustomInputText";
-import { CustomAddButton } from "../components/customComponents/CustomAddButton";
+import { CustomEditButton } from "../components/customComponents/CustomEditButton";
 import { Navbar } from "../components/pagesComponents/Navbar";
+import { CustomCancelButton } from "../components/customComponents/CustomCancelButton";
 
-export function RegisterItemPage() {
-  
+export function EditItemPage() {
+
   const navigation = useNavigation();
 
+  const route = useRoute();
+
+  const [ itemId, setItemId ] = useState(-1);
   const [ itemName, setItemName ] = useState("");
   const [ itemDescription, setItemDescription ] = useState("");
   const [ itemPrice, setItemPrice ] = useState(0.01);
@@ -33,34 +37,69 @@ export function RegisterItemPage() {
     if (itemPrice === null)
       setItemPrice(0.01);
   },[itemPrice]);
+  
+  useEffect(() => {
+    if (itemAmount === null)
+      setItemAmount(0);
+  },[itemAmount]);
 
-  async function handleCreateProduct() {
+  useEffect(() => {
+    toFillFields();
+  }, [route?.params?.item]);
 
-    const response = await CreateProduct({itemName, itemDescription, itemPrice, itemImage, itemAmount});
+  function toFillFields() {
+    setItemId(route?.params?.item.id);
+    setItemAmount(route?.params?.item.quantidade);
+    setItemDescription(route?.params?.item.descricao);
+    setItemName(route?.params?.item.nome);
+    setItemPrice(route?.params?.item.preco);
+  }
+
+  async function updateStorage() {
     
-    if (response != undefined) {
-
-      if (response.data.sucesso === true) {
-        Alert.alert("Sucesso!", "Item criado com sucesso!");
-        clearFields();
+    const responseProduct = await updateProduct({itemId, itemName, itemDescription, itemPrice, itemImage, itemAmount});
+    
+    if (responseProduct?.data.sucesso == true) {
+        Alert.alert("Sucesso!","Produto atualizado com sucesso!");
         navigateInventoryPage();
-      }
-      if (response.data.sucesso === false)
-        Alert.alert("Erro!", "\n" + response.data.mensagem);
     } else {
-      Alert.alert("Erro!", "Erro na requisição!");
+
+      if (responseProduct?.data.mensagem != undefined)
+        Alert.alert("Erro!", responseProduct?.data.mensagem + ".");
     }
+  }
+
+  function alertConfirmDelete() {
+    Alert.alert(
+      "Confirmar",
+      "Você realmente deseja excluir este item?",
+      [{
+        text: "Sim",
+        onPress: () => {
+          deleteProductStorage();
+        }
+      },
+      {
+        text: "Não",
+      }]
+    );
+  }
+
+  async function deleteProductStorage() {
+
+      const responseProduct = await deleteProduct({itemId});
+  
+      if (responseProduct?.data.sucesso) {
+        Alert.alert("Sucesso!","Produto excluido do estoque!");
+        navigateInventoryPage();
+      } else {
+        if (responseProduct?.data.mensagem != undefined)
+          Alert.alert("Erro!", responseProduct?.data.mensagem + ".");
+      }
   }
 
   function navigateInventoryPage() {
     navigation.navigate('inventory', {refresh: true});
-  }
-
-  function clearFields() {
-    setItemAmount(1)
-    setItemDescription("")
-    setItemName("")
-    setItemPrice(0.01)
   }
 
   return (
@@ -71,7 +110,7 @@ export function RegisterItemPage() {
 
         <View style={styles.container}>
 
-          <Text style={styles.title}>Cadastro de Estoque</Text>
+          <Text style={styles.title}>Editar Item</Text>
 
           <CustomInputText
             value={itemName}
@@ -93,7 +132,7 @@ export function RegisterItemPage() {
             separator=","
             precision={2}
             minValue={0}
-            onChangeValue={ () => setItemPrice }
+            onChangeValue={ setItemPrice }
             style={styles.customInputCurrency}
           />
 
@@ -105,15 +144,21 @@ export function RegisterItemPage() {
             separator=","
             precision={0}
             minValue={0}
-            onChangeValue={ () => setItemAmount }
+            onChangeValue={ setItemAmount }
             style={styles.customInputCurrency}
           />
 
-          <View style={styles.buttons}>
-              
+          <View style={styles.buttons}>     
+
             <View style={styles.button}>
-              <CustomAddButton
-                onPress={handleCreateProduct}
+              <CustomCancelButton
+                onPress={alertConfirmDelete}
+              />
+            </View>
+
+            <View style={styles.button}>
+              <CustomEditButton
+                onPress={updateStorage}
               />
             </View>
 

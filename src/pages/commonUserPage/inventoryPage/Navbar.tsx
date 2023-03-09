@@ -1,9 +1,9 @@
 import { View, StyleSheet, Image} from "react-native";
-import { MenuButton } from "../customComponents/MenuButton";
-import { ReturnButton } from "../customComponents/ReturnButton";
+import { MenuButton } from "./MenuButton";
+import { ReturnButton } from "../../../components/customComponents/ReturnButton";
 
 
-const profile = require("../../../resources/icons/profile.png");
+const profile = require("../../../../resources/icons/profile.png");
 
 export function Navbar() {
   return (

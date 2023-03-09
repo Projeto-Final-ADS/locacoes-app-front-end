@@ -4,16 +4,15 @@ import {
     TouchableOpacity,
     Image,
     View,
-    Modal,
-    Text
+    Modal
 } from "react-native";
-import ActionModal from "../pagesComponents/actionModal/ActionModal";
+import ActionModal from "./actionModal/ActionModal";
 
 interface props {
     onPress?: any;
 }
 
-const menuIcon = require("../../../resources/icons/menu-icon.png");
+const menuIcon = require("../../../../resources/icons/menu-icon.png");
 
 export function MenuButton( { ...props } : props) {
     const [visibleModal, setVisibleModal] = useState(false);

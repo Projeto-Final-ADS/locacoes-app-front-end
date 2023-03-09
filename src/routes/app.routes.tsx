@@ -8,6 +8,10 @@ import { RegisterItemPage } from '../pages/RegisterItemPage';
 import { SignUpPage } from '../pages/SignUpPage';
 import { TaskPage } from '../pages/TaskPage';
 import { RegisterNewTask } from '../pages/RegisterNewTask';
+import { ClientsPage } from '../pages/ClientsPage';
+import { EditItemPage } from '../pages/EditItemPage';
+import { InventoryPageUser } from '../pages/commonUserPage/InventoryPageUser';
+import { RequestLocation } from '../pages/commonUserPage/inventoryPage/requestLocation/RequestLocation';
 
 const { Navigator, Screen } = createNativeStackNavigator();
 
@@ -50,6 +54,22 @@ export function AppRoutes() {
             <Screen
                 name="registerNewTask"
                 component={RegisterNewTask}
+            />
+            <Screen
+                name="clientsPage"
+                component={ClientsPage}
+            />
+            <Screen
+                name="editItemPage"
+                component={EditItemPage}
+            />
+            <Screen
+                name="inventoryUser"
+                component={InventoryPageUser}
+            />
+            <Screen
+                name="requestLocation"
+                component={RequestLocation}
             />
         </Navigator>
     );

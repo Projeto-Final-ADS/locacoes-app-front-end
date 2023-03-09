@@ -34,16 +34,16 @@ export function TaskPage() {
 
     const navigation = useNavigation();
 
-    const [ itemsData, setItemsData ] = useState([...data]);
-    const [ itemList, setItemList ] = useState(itemsData);
+    const [ tasksData, setTasksData ] = useState([...data]);
+    const [ tasksList, setTasksList ] = useState(tasksData);
     const [ searchText, setSearchText ] = useState("");
 
     useEffect(() => {
-        setItemList(
-            itemsData.filter(
-                (item) => {
+        setTasksList(
+            tasksData.filter(
+                (task) => {
                     return (
-                        Object.values(item).join('').toLowerCase().includes(searchText.toLowerCase())
+                        Object.values(task).join('').toLowerCase().includes(searchText.toLowerCase())
                     )
                 }
             )
@@ -63,8 +63,8 @@ export function TaskPage() {
             <View style={styles.inputSearch}>
                 <CustomInputText
                     placeholder="Pesquisar"
-                    textContentType='text'
                     onChange={setSearchText}
+                    textContentType='none'
                 />
             </View>
             <View style={styles.inventoryBar}>
@@ -81,7 +81,7 @@ export function TaskPage() {
             <View style={styles.containerInventory}>
                 <FlatList
                     style={styles.flatList}
-                    data={itemList}
+                    data={tasksList}
                     showsVerticalScrollIndicator ={false}
                     renderItem={
                         ({item}) => (
