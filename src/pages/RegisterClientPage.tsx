@@ -119,12 +119,13 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    marginBottom: 10,
   },
   input: {
     marginBottom: 20
   },
   buttonAdd: {
-    marginTop: 20
+    marginTop: 10
   }
 });
