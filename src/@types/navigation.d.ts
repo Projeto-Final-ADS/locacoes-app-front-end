@@ -38,8 +38,9 @@ export declare global {
                 refresh?: boolean;
             };
             requestLocation?: {
-                itemsLocationList: any;
+                itemsLocationList?: any;
             };
+            solicitationPage: undefined;
         }
     }
 }

@@ -12,6 +12,7 @@ import { ClientsPage } from '../pages/ClientsPage';
 import { EditItemPage } from '../pages/EditItemPage';
 import { InventoryPageUser } from '../pages/commonUserPage/InventoryPageUser';
 import { RequestLocation } from '../pages/commonUserPage/inventoryPage/requestLocation/RequestLocation';
+import { SolicitacionPageUser } from '../pages/commonUserPage/solicitacionPageUser/SolicitacionPageUser';
 
 const { Navigator, Screen } = createNativeStackNavigator();
 
@@ -70,6 +71,10 @@ export function AppRoutes() {
             <Screen
                 name="requestLocation"
                 component={RequestLocation}
+            />
+            <Screen
+                name="solicitationPage"
+                component={SolicitacionPageUser}
             />
         </Navigator>
     );

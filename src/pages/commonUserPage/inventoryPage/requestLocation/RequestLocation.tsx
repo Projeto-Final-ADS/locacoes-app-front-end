@@ -11,17 +11,19 @@ import {
   Alert
 } from "react-native";
 
-import { useRoute } from '@react-navigation/native'
+import { useRoute, useNavigation } from '@react-navigation/native'
 import { CustomInputText } from "../../../../components/customComponents/CustomInputText";
 import { CustomAddButton } from "../../../../components/customComponents/CustomAddButton";
 import { Navbar } from "../Navbar";
 import { CustomInputNumeric } from "../../../../components/customComponents/CustomInputNumeric";
 import { PutLocation } from "../../../../services/location";
+
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 export function RequestLocation() {
 
   const route = useRoute();
+  const navigate = useNavigation();
 
   const [ itemsList, setItemList ] = useState([]);
   
@@ -59,6 +61,7 @@ export function RequestLocation() {
       const response = await PutLocation(locationBody);
   
         if (response?.data.sucesso == true) {
+          navigate.navigate("inventoryUser");
           Alert.alert("Sucesso!","Solicitação de locação criada com sucesso!");
         } else {
   
@@ -116,7 +119,7 @@ export function RequestLocation() {
       <KeyboardAvoidingView
         behavior="position"
         enabled
-        keyboardVerticalOffset={-140}
+        keyboardVerticalOffset={-240}
       >
         <View>
           <Navbar/>
@@ -143,14 +146,16 @@ export function RequestLocation() {
             mode='time'
             is24Hour={true}
             onChange={(event, date) => {
-              setShowHourLocationDialog(false);
+              if (date != undefined) {
+                setShowHourLocationDialog(false);
 
-              var hours = locationDate;
+                var hours = locationDate;
 
-              hours.setHours(date.getHours());
-              hours.setMinutes(date.getMinutes());
+                hours.setHours(date.getHours());
+                hours.setMinutes(date.getMinutes());
 
-              setLocationDate(new Date(hours));
+                setLocationDate(new Date(hours));
+              }
             }}
           />
         }
@@ -188,18 +193,18 @@ export function RequestLocation() {
               onChange={setFederativeUnit}
             />
 
+            <Text style={styles.label}>Dia de hora da locação:</Text>
             <View style={{flexDirection:"row"}}>
-            
-            <TouchableOpacity style={styles.containerDate} onPress={() => setShowDateLocationDialog(true)}>
-              <Text style={styles.labelDate}>Dia</Text>
-              <Text style={styles.date}>{formatDate(locationDate)}</Text>
-            </TouchableOpacity>
+              <TouchableOpacity style={styles.containerDate} onPress={() => setShowDateLocationDialog(true)}>
+                <Text style={styles.labelDate}>Dia</Text>
+                <Text style={styles.date}>{formatDate(locationDate)}</Text>
+              </TouchableOpacity>
 
-            <TouchableOpacity style={styles.containerDate} onPress={() => setShowHourLocationDialog(true)}>
-              <Text style={styles.labelDate}>Hora</Text>
-              <Text style={styles.date}>{formatHours(locationDate)}</Text>
-            </TouchableOpacity>
-          </View>
+              <TouchableOpacity style={styles.containerDate} onPress={() => setShowHourLocationDialog(true)}>
+                <Text style={styles.labelDate}>Hora</Text>
+                <Text style={styles.date}>{formatHours(locationDate)}</Text>
+              </TouchableOpacity>
+            </View>
 
             <View style={styles.buttonAdd}>
               <CustomAddButton
@@ -260,7 +265,6 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     marginRight: 5,
     marginLeft: 5,
-    marginTop: 10,
     marginBottom: 10
   }
 });

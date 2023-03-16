@@ -24,7 +24,7 @@ export function InventoryItemUser({...props}: props) {
     return (
         <View style={styles.container}>
             <TouchableOpacity
-            >
+        >
                 <View style={styles.buttonImage}>
                     <Image source={noImage} style={styles.imgIcon}/>
                 </View>
