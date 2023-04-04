@@ -12,6 +12,16 @@ interface productStorage {
     produto: product;
 }
 
+interface Solicitacion {
+    dateOpen: string;
+    dateDelivery: string;
+    totalItems: number;
+    solicitacionID: number;
+    client: string;
+    statusSolicitacion: string;
+    productList: undefined;
+}
+
 export declare global {
     namespace ReactNavigation {
         interface RootParamList {
@@ -40,7 +50,14 @@ export declare global {
             requestLocation?: {
                 itemsLocationList?: any;
             };
+            
             solicitationPage: undefined;
+
+            solicitationPageAdmin: undefined;
+
+            editSolicitacionPage?: {
+                solicitacion?: Solicitacion;
+            };
         }
     }
 }

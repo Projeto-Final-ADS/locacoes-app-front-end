@@ -29,6 +29,9 @@ export default function ActionModal({handleClose}: props) {
     function navigateRegisterItem() {
         navigation.navigate("registerItem");
     }
+    function navigateSolicitationPageAdmin() {
+        navigation.navigate("solicitationPageAdmin");
+    }
     function navigateRegisterClient() {
         navigation.navigate("registerClient");
     }
@@ -58,6 +61,7 @@ export default function ActionModal({handleClose}: props) {
                     <CustomButton titleButton='Tarefas'onPress={navigateTasksPage}/>
                     <CustomButton titleButton='Cadastro Tarefa' onPress={navigateRegisterTaskPage}/>
                     <CustomButton titleButton='Estoque' onPress={navigateInventory}/>
+                    <CustomButton titleButton='Solicitações' onPress={navigateSolicitationPageAdmin}/>
                     <CustomButton titleButton='Cadastro estoque' onPress={navigateRegisterItem}/>
                     <CustomButton titleButton='Clientes' onPress={navigateClientsPage}/>
                     <CustomButton titleButton='Cadastro cliente' onPress={navigateRegisterClient}/>

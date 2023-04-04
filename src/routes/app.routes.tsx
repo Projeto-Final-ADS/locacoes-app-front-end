@@ -13,6 +13,8 @@ import { EditItemPage } from '../pages/EditItemPage';
 import { InventoryPageUser } from '../pages/commonUserPage/InventoryPageUser';
 import { RequestLocation } from '../pages/commonUserPage/inventoryPage/requestLocation/RequestLocation';
 import { SolicitacionPageUser } from '../pages/commonUserPage/solicitacionPageUser/SolicitacionPageUser';
+import { SolicitacionPageAdmin } from '../pages/solicitacionPageAdmin/SolicitacionPageAdmin';
+import { EditSolicitacionPage } from '../pages/solicitacionPageAdmin/EditSolicitacionPage';
 
 const { Navigator, Screen } = createNativeStackNavigator();
 
@@ -75,6 +77,15 @@ export function AppRoutes() {
             <Screen
                 name="solicitationPage"
                 component={SolicitacionPageUser}
+            />
+            <Screen
+                name="solicitationPageAdmin"
+                component={SolicitacionPageAdmin}
+            />
+
+            <Screen
+                name="editSolicitacionPage"
+                component={EditSolicitacionPage}
             />
         </Navigator>
     );
