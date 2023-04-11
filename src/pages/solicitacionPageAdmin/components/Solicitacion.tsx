@@ -39,7 +39,8 @@ export function Solicitacion(props: Solicitacion) {
     function navigateToEditSolicitacionPage() {
         
         navigation.navigate("editSolicitacionPage", {
-            solicitacion: props
+            solicitacion: props,
+            refresh: false
         });
     }
 

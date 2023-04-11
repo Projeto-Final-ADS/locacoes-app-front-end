@@ -10,14 +10,21 @@ import { GetLocationSolicitations } from '../../services/solicitacion';
 
 import { Navbar } from '../../components/pagesComponents/Navbar';
 import { Solicitacion } from './components/Solicitacion';
+import { useRoute } from '@react-navigation/native';
 
 export function SolicitacionPageAdmin() {
+
     const [ listSolicitationLocation, setListSolicitationLocation] = useState([]);
 
+    const route = useRoute();
 
     useEffect(() => {
         getAllSolicitacionLocation();
     }, []);
+
+    useEffect(() => {
+        getAllSolicitacionLocation();
+    }, [route.params]);
 
     async function getAllSolicitacionLocation() {
         const data = await GetLocationSolicitations();
@@ -41,10 +48,10 @@ export function SolicitacionPageAdmin() {
                                 solicitacionID={item.id}
                                 dateOpen={item.dataSolicitacao}
                                 dateDelivery={item.dataDoEvento}
-                                totalItems={item.produtos.length}
+                                totalItems={item.produtoPorLocacao.length}
                                 client={item.usuarioQueSolicitou}
                                 statusSolicitacion={item.statusDaLocacao.toLowerCase()}
-                                productList={item.produtos}
+                                productList={item.produtoPorLocacao}
                                 addressEvent={item.enderecoDoEvento}
                             />
                         </>

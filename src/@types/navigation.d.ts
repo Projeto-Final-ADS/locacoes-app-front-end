@@ -53,10 +53,13 @@ export declare global {
             
             solicitationPage: undefined;
 
-            solicitationPageAdmin: undefined;
+            solicitationPageAdmin?: {
+                refresh?: boolean;
+            };
 
             editSolicitacionPage?: {
                 solicitacion?: Solicitacion;
+                refresh?: boolean;
             };
         }
     }

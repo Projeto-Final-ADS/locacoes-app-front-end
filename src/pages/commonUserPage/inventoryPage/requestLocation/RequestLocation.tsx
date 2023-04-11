@@ -11,6 +11,8 @@ import {
   Alert
 } from "react-native";
 
+import axios from 'axios';
+
 import { useRoute, useNavigation } from '@react-navigation/native'
 import { CustomInputText } from "../../../../components/customComponents/CustomInputText";
 import { CustomAddButton } from "../../../../components/customComponents/CustomAddButton";
@@ -27,9 +29,11 @@ export function RequestLocation() {
 
   const [ itemsList, setItemList ] = useState([]);
   
+  let date = new Date();
+  date.setHours(date.getHours() - 3);
   const [showDateLocationDialog, setShowDateLocationDialog] = useState(false);
   const [showHourLocationDialog, setShowHourLocationDialog] = useState(false);
-  const [locationDate, setLocationDate] = useState(new Date());
+  const [locationDate, setLocationDate] = useState(date);
 
   const [ street, setStreet ] = useState();
   const [ neighborhood, setNeighborhood ] = useState();
@@ -41,11 +45,23 @@ export function RequestLocation() {
     setItemList(route.params?.itemsLocationList);
   });
 
+  async function viaCEP() {
+    
+    const res = axios.get("https://viacep.com.br/ws/"+ cep +"/json/")
+    .then((response) => {
+      setCity(response.data.localidade);
+      setNeighborhood(response.data.bairro);
+      setFederativeUnit(response.data.uf);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  }
+
   async function putLocation() {
     const flag = await checkEmptyFields();
 
     let date = new Date(locationDate);
-    date.setHours(date.getHours() - 3);
 
     if (flag) {
       const locationBody = {
@@ -166,20 +182,25 @@ export function RequestLocation() {
               placeholder="CEP"
               maxLength={8}
               onChange={setCEP}
+              value={cep}
+              eventOnBlur={viaCEP}
             />
             <Text style={styles.label}>Cidade:</Text>
             <CustomInputText
               placeholder="Cidade"
               textContentType="text"
               onChange={setCity}
+              value={city}
+              editable={false}
             />
             <Text style={styles.label}>Bairro:</Text>
             <CustomInputText
               placeholder="Bairro"
               textContentType="text"
               onChange={setNeighborhood}
+              value={neighborhood}
             />
-            <Text style={styles.label}>Rua: </Text>
+            <Text style={styles.label}>Rua/Logradouro: </Text>
             <CustomInputText
               placeholder="Rua, Lote, Quadra, Nº"
               textContentType="text"
@@ -191,9 +212,11 @@ export function RequestLocation() {
               placeholder="Unidade Federativa"
               textContentType="text"
               onChange={setFederativeUnit}
+              value={federativeUnit}
+              editable={false}
             />
 
-            <Text style={styles.label}>Dia de hora da locação:</Text>
+            <Text style={styles.label}>Dia e hora da locação:</Text>
             <View style={{flexDirection:"row"}}>
               <TouchableOpacity style={styles.containerDate} onPress={() => setShowDateLocationDialog(true)}>
                 <Text style={styles.labelDate}>Dia</Text>

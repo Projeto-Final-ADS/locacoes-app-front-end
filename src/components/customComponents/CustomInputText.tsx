@@ -5,7 +5,7 @@ interface props {
     placeholder: string;
     secureText?: any;
     onChange?: any;
-    editable?: any;
+    editable?: boolean;
     value?: string;
     textContentType:any;
 }
@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         paddingLeft: 20,
         paddingRight: 20,
-        fontSize: 18
+        fontSize: 18,
+        color: "#000"
     }
 });

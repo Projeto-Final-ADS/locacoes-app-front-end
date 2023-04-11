@@ -19,7 +19,7 @@ export function Status(props:props) {
             { props.status == "pendente" || props.status == "andamento" &&
                 <View style={styles.statusPending}/>
             }
-            { props.status == "cancelado" &&
+            { props.status == "analiserecusada" &&
                 <View style={styles.statusCanceled}/>
             }
             
