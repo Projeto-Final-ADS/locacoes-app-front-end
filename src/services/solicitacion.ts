@@ -42,7 +42,7 @@ export async function PutLocationSolicitation(props: Solicitacion) {
                 dataDoEvento: props.dateDelivery,
                 enderecoDoEvento: props.addressEvent,
                 id: props.solicitacionID,
-                status: props.statusSolicitacion
+                statusDaSolicitacao: props.statusSolicitacion
             },
             {
                 headers: {

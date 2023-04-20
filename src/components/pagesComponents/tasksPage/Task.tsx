@@ -4,33 +4,81 @@ import {
     Dimensions,
     Text
 } from 'react-native';
+
 import { Status } from './Status';
+import { useNavigation } from '@react-navigation/native';
 
 interface props {
     task: any;
 }
 
+interface Location {
+    username?: string;
+    locationId?: number;
+    address?: any;
+    statusLocation?: string;
+}
+
 export function Task({...props}: props) {
+
+    const navigation = useNavigation();
+
+    const dateDeliveryConverted = new Date(props.task.dataDoEvento);
+
+    const formatedDateDelivery = formatDate(dateDeliveryConverted);
+    const formatedHourDelivery = formatHours(dateDeliveryConverted);
+
+    function padTo2Digits(number:number) {
+        return number.toString().padStart(2, '0');
+    }
+      
+    function formatDate(date:Date) {
+        return [
+          padTo2Digits(date.getDate()),
+          padTo2Digits(date.getMonth() + 1),
+          date.getFullYear(),
+        ].join('/');
+    }
+    
+    function formatHours(hours:Date) {
+        return [
+          padTo2Digits(hours.getHours()),
+          padTo2Digits(hours.getMinutes())
+        ].join(':');
+    }
+
+    function NavigateEditLocationPage() {
+        const location:Location = {
+            locationId: props.task.id,
+            statusLocation: props.task.statusDaLocacao,
+            address: props.task.enderecoDoEvento,
+            username: props.task.usuarioQueSolicitou
+        }
+        navigation.navigate("editLocationPage", {location: location, refresh: false});
+    }
 
     return (
         <View style={styles.container}>
 
-            <Status status={props.task.status}/>
-
+            <Status
+                onPress={NavigateEditLocationPage}
+                status={props.task.statusDaLocacao}
+            />
+        
             <View style={styles.properties}>
 
                 <Text style={styles.textLabel}>Cliente</Text>
-                    <Text numberOfLines={1} style={{width: 250}}>{props.task.clientNameTask}</Text>
+                    <Text numberOfLines={1} style={{width: 250}}>{props.task.usuarioQueSolicitou}</Text>
 
                 <Text style={styles.textLabel}>Data Entrega</Text>
                     <View style={{flexDirection: 'row'}}>
-                        <Text>{props.task.deliverDate}</Text>
-                        <Text style={styles.hour}>{props.task.deliverHour}h</Text>
+                        <Text>{formatedDateDelivery}</Text>
+                        <Text style={styles.hour}>{formatedHourDelivery}h</Text>
                     </View>
                 <Text style={styles.textLabel}>Data Recolhimento</Text>
                     <View style={{flexDirection: 'row'}}>
-                        <Text>{props.task.toRecallDate}</Text>
-                        <Text style={styles.hour}>{props.task.toRecallHour}h</Text>
+                        <Text>-----</Text>
+                        <Text style={styles.hour}>----</Text>
                     </View>
             </View>
         </View>
@@ -65,5 +113,9 @@ const styles = StyleSheet.create({
         color: "#3fc0d1",
         marginLeft: 12,
         fontWeight: 'bold'
-    }
+    },
+    infoButtom: {
+        width: 50,
+        height: 50
+    },
 });

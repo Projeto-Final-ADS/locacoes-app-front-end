@@ -51,7 +51,7 @@ export function EditSolicitacionPage() {
         if (response != undefined) {
             if (response.data.sucesso == true) {
                 
-                navigation.navigate("solicitationPageAdmin", {refresh: true});
+                navigation.navigate("tasksPage", {refresh: true});
                 
                 Alert.alert("Status", "Solicitação aceita com sucesso!");
             }
@@ -78,7 +78,7 @@ export function EditSolicitacionPage() {
         if (response != undefined) {
             if (response.data.sucesso == true) {
                 
-                navigation.navigate("solicitationPageAdmin", {refresh: true});
+                navigation.navigate("tasksPage", {refresh: true});
                 
                 Alert.alert("Status", "Solicitação cancelada com sucesso!");
             }

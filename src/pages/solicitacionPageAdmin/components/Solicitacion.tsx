@@ -48,7 +48,7 @@ export function Solicitacion(props: Solicitacion) {
         return number.toString().padStart(2, '0');
       }
       
-      function formatDate(date:Date) {
+    function formatDate(date:Date) {
         return [
           padTo2Digits(date.getDate()),
           padTo2Digits(date.getMonth() + 1),
@@ -56,12 +56,12 @@ export function Solicitacion(props: Solicitacion) {
         ].join('/');
       }
     
-      function formatHours(hours:Date) {
+    function formatHours(hours:Date) {
         return [
           padTo2Digits(hours.getHours()),
           padTo2Digits(hours.getMinutes())
         ].join(':');
-      }
+    }
 
     return(
         <View style={styles.container}>

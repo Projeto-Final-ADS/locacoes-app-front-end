@@ -50,7 +50,7 @@ export function SolicitacionPageAdmin() {
                                 dateDelivery={item.dataDoEvento}
                                 totalItems={item.produtoPorLocacao.length}
                                 client={item.usuarioQueSolicitou}
-                                statusSolicitacion={item.statusDaLocacao.toLowerCase()}
+                                statusSolicitacion={item.statusDaSolicitacao.toLowerCase()}
                                 productList={item.produtoPorLocacao}
                                 addressEvent={item.enderecoDoEvento}
                             />

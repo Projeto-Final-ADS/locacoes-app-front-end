@@ -7,7 +7,6 @@ import { RegisterClientPage } from '../pages/RegisterClientPage';
 import { RegisterItemPage } from '../pages/RegisterItemPage';
 import { SignUpPage } from '../pages/SignUpPage';
 import { TaskPage } from '../pages/TaskPage';
-import { RegisterNewTask } from '../pages/RegisterNewTask';
 import { ClientsPage } from '../pages/ClientsPage';
 import { EditItemPage } from '../pages/EditItemPage';
 import { InventoryPageUser } from '../pages/commonUserPage/InventoryPageUser';
@@ -15,6 +14,7 @@ import { RequestLocation } from '../pages/commonUserPage/inventoryPage/requestLo
 import { SolicitacionPageUser } from '../pages/commonUserPage/solicitacionPageUser/SolicitacionPageUser';
 import { SolicitacionPageAdmin } from '../pages/solicitacionPageAdmin/SolicitacionPageAdmin';
 import { EditSolicitacionPage } from '../pages/solicitacionPageAdmin/EditSolicitacionPage';
+import { EditLocationPage } from '../pages/EditLocationPage';
 
 const { Navigator, Screen } = createNativeStackNavigator();
 
@@ -55,10 +55,6 @@ export function AppRoutes() {
                 component={TaskPage}
             />
             <Screen
-                name="registerNewTask"
-                component={RegisterNewTask}
-            />
-            <Screen
                 name="clientsPage"
                 component={ClientsPage}
             />
@@ -86,6 +82,11 @@ export function AppRoutes() {
             <Screen
                 name="editSolicitacionPage"
                 component={EditSolicitacionPage}
+            />
+
+            <Screen
+                name="editLocationPage"
+                component={EditLocationPage}
             />
         </Navigator>
     );

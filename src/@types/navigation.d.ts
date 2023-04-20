@@ -6,6 +6,13 @@ interface product {
     preco: number;
 }
 
+interface Location {
+    username?: string;
+    locationId?: number;
+    address?: any;
+    statusLocation?: string;
+}
+
 interface productStorage {
     id: number;
     quantidade: number;
@@ -40,8 +47,9 @@ export declare global {
                 refresh?: boolean;
             };
             registerClient: undefined;
-            tasksPage: undefined;
-            registerNewTask: undefined;
+            tasksPage?: {
+                refresh?: boolean;
+            };
             clientsPage: undefined;
             editItemPage?: {
                 item: undefined;
@@ -59,6 +67,10 @@ export declare global {
 
             editSolicitacionPage?: {
                 solicitacion?: Solicitacion;
+                refresh?: boolean;
+            };
+            editLocationPage?: {
+                location?: Location;
                 refresh?: boolean;
             };
         }
