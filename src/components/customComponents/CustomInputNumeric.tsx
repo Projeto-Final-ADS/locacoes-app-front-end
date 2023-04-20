@@ -5,9 +5,10 @@ interface props {
     placeholder: string;
     secureText?: any;
     onChange?: any;
-    editable?: any;
+    editable?: boolean;
     value?: string;
     maxLength?: number;
+    eventOnBlur?: any;
 }
 
 export function CustomInputNumeric( { ...props } : props) {
@@ -22,6 +23,7 @@ export function CustomInputNumeric( { ...props } : props) {
             value={props.value}
             keyboardType = 'numeric'
             maxLength={props.maxLength}
+            onBlur={props.eventOnBlur}
         />
     );
 }
@@ -32,9 +34,10 @@ const styles = StyleSheet.create({
         height: 50,
         width: '80%',
         borderRadius: 20,
-        marginTop: 10,
         paddingLeft: 20,
         paddingRight: 20,
-        fontSize: 18
+        fontSize: 18,
+        marginBottom: 10
+        
     }
 });

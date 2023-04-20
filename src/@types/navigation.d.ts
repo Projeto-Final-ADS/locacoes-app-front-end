@@ -6,10 +6,27 @@ interface product {
     preco: number;
 }
 
+interface Location {
+    username?: string;
+    locationId?: number;
+    address?: any;
+    statusLocation?: string;
+}
+
 interface productStorage {
     id: number;
     quantidade: number;
     produto: product;
+}
+
+interface Solicitacion {
+    dateOpen: string;
+    dateDelivery: string;
+    totalItems: number;
+    solicitacionID: number;
+    client: string;
+    statusSolicitacion: string;
+    productList: undefined;
 }
 
 export declare global {
@@ -30,15 +47,31 @@ export declare global {
                 refresh?: boolean;
             };
             registerClient: undefined;
-            tasksPage: undefined;
-            registerNewTask: undefined;
+            tasksPage?: {
+                refresh?: boolean;
+            };
             clientsPage: undefined;
             editItemPage?: {
                 item: undefined;
                 refresh?: boolean;
             };
             requestLocation?: {
-                itemsLocationList: any;
+                itemsLocationList?: any;
+            };
+            
+            solicitationPage: undefined;
+
+            solicitationPageAdmin?: {
+                refresh?: boolean;
+            };
+
+            editSolicitacionPage?: {
+                solicitacion?: Solicitacion;
+                refresh?: boolean;
+            };
+            editLocationPage?: {
+                location?: Location;
+                refresh?: boolean;
             };
         }
     }

@@ -25,6 +25,10 @@ export default function ActionModal({handleClose}: props) {
         signOut();
     }
 
+    function navigateSolicitationPage() {
+        navigation.navigate("solicitationPage");
+    }
+
     return (
         <View style={styles.container}>
 
@@ -38,6 +42,7 @@ export default function ActionModal({handleClose}: props) {
                     
                     <Text style={styles.textMenu}>MENU</Text>  
 
+                    <CustomButton titleButton='Solicitações'onPress={navigateSolicitationPage}/>
                     <CustomButton titleButton='Sign Out'onPress={navigateLogin}/>
 
                 </View>

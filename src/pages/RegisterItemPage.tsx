@@ -93,7 +93,7 @@ export function RegisterItemPage() {
             separator=","
             precision={2}
             minValue={0}
-            onChangeValue={ () => setItemPrice }
+            onChangeValue={setItemPrice }
             style={styles.customInputCurrency}
           />
 
@@ -105,7 +105,7 @@ export function RegisterItemPage() {
             separator=","
             precision={0}
             minValue={0}
-            onChangeValue={ () => setItemAmount }
+            onChangeValue={setItemAmount }
             style={styles.customInputCurrency}
           />
 
@@ -159,13 +159,12 @@ const styles = StyleSheet.create({
       height: 50,
       width: '80%',
       borderRadius: 20,
-      marginTop: 10,
       paddingLeft: 20,
       paddingRight: 20,
       fontSize: 18
   },
   quantidade: {
     fontSize: 18,
-    marginTop: 16
+    marginTop: 5
   }
 });

@@ -204,13 +204,12 @@ const styles = StyleSheet.create({
       height: 50,
       width: '80%',
       borderRadius: 20,
-      marginTop: 10,
       paddingLeft: 20,
       paddingRight: 20,
       fontSize: 18
   },
   quantidade: {
     fontSize: 18,
-    marginTop: 16
+    marginTop: 5
   }
 });

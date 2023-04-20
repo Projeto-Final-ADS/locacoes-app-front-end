@@ -8,51 +8,61 @@ import {
     StyleSheet,
     Text,
     FlatList,
-    Dimensions
+    Dimensions,
+    Alert
 } from 'react-native';
 
-import { useNavigation } from '@react-navigation/native';
+import { useRoute, useNavigation } from '@react-navigation/native';
 import { CustomInputText } from "../components/customComponents/CustomInputText";
-import { CustomAddButton } from "../components/customComponents/CustomAddButton";
 import { Task } from "../components/pagesComponents/tasksPage/Task";
 import { Navbar } from "../components/pagesComponents/Navbar";
+import { GetLocationSolicitations } from "../services/tasks";
 
-const data = [
-    {clientNameTask: 'Alessandro Luiz da Silva Mota', deliverDate: "2016/01/12", deliverHour: "14:00", toRecallHour: "14:00", toRecallDate: "2016/01/12", key: 1, status: "OK"},
-    {clientNameTask: 'Lucas da Night Baladeiro', deliverDate: "2016/01/12", deliverHour: "14:00", toRecallHour: "14:00", toRecallDate: "2016/01/12", key: 2, status: "WATCH"},
-    {clientNameTask: 'Mr. Brad Rodriguez MD', deliverDate: "2016/01/12", toRecallDate: "2016/01/12", deliverHour: "14:00", toRecallHour: "14:00", key: 3, status: "OK"},
-    {clientNameTask: 'Christopher Giles', deliverDate: "2016/01/12", toRecallDate: "2016/01/12", deliverHour: "14:00", toRecallHour: "14:00", key: 4, status: "DELIVER"},
-    {clientNameTask: 'Frederick Cohen', deliverDate: "2016/01/12", toRecallDate: "2016/01/12", deliverHour: "14:00", toRecallHour: "14:00", key: 5, status: "OK"},
-    {clientNameTask: 'Dr. Alexandre Cardoso', deliverDate: "2016/01/12", toRecallDate: "2016/01/12", deliverHour: "14:00", toRecallHour: "14:00", key: 6, status: "WATCH"},
-    {clientNameTask: 'Laura Nascimento', deliverDate: "2016/01/12", toRecallDate: "2016/01/12", deliverHour: "14:00", toRecallHour: "14:00", key: 7, status: "WATCH"},
-    {clientNameTask: 'Dra. Cecília Silveira', deliverDate: "2016/01/12", toRecallDate: "2016/01/12", deliverHour: "14:00", toRecallHour: "14:00", key: 8, status: "DELIVER"},
-    {clientNameTask: 'Caroline das Neves', deliverDate: "2016/01/12", toRecallDate: "2016/01/12", deliverHour: "14:00", toRecallHour: "14:00", key: 10, status: "OK"},
-    {clientNameTask: 'Sr. Thiago Fogaça', deliverDate: "2016/01/12", toRecallDate: "2016/01/12", deliverHour: "14:00", toRecallHour: "14:00", key: 11, status: "DELIVER"},
-];
 
 export function TaskPage() {
 
+    const route = useRoute();
     const navigation = useNavigation();
 
-    const [ tasksData, setTasksData ] = useState([...data]);
-    const [ tasksList, setTasksList ] = useState(tasksData);
+    const [ tasksData, setTasksData ] = useState([]);
+    const [ tasksList, setTasksList ] = useState([]);
     const [ searchText, setSearchText ] = useState("");
-
+    
     useEffect(() => {
         setTasksList(
             tasksData.filter(
                 (task) => {
                     return (
-                        Object.values(task).join('').toLowerCase().includes(searchText.toLowerCase())
+                        Object.values(task.usuarioQueSolicitou).join('').toLowerCase().includes(searchText.toLowerCase())
                     )
                 }
             )
         );
     }, [searchText]);
 
-    function navigateRegisterNewTask() {
-        //direcionar para outra pagina
-        navigation.navigate('registerNewTask');
+    useEffect(() => {
+        GetAllLocationsConfirmed();
+    }, []);
+
+    useEffect(() => {
+        GetAllLocationsConfirmed();
+    }, [route?.params]);
+
+    async function GetAllLocationsConfirmed() {
+
+        const response = await GetLocationSolicitations({status:"Aceito"});
+        
+        if (response != undefined) {
+        
+            if (response.data.sucesso === true) {
+                await setTasksData(response.data.locacoes);
+                await setTasksList(response.data.locacoes);
+            }
+            if (response.data.sucesso === false)
+                Alert.alert("Erro!", "Verifique sua conexão com a internet!");
+        } else {
+            Alert.alert("Erro!", "Verifique sua conexão com a internet!");
+        }
     }
 
     return (
@@ -70,11 +80,6 @@ export function TaskPage() {
             <View style={styles.inventoryBar}>
                 {/*Texto de task*/}
                 <Text style={styles.title}>Tarefas</Text>
-                
-                {/*Botão para adicionar task*/}
-                <CustomAddButton
-                    onPress={navigateRegisterNewTask}
-                />
             </View>
             
             {/*Lista de tasks*/}
