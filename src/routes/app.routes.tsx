@@ -15,6 +15,7 @@ import { SolicitacionPageUser } from '../pages/commonUserPage/solicitacionPageUs
 import { SolicitacionPageAdmin } from '../pages/solicitacionPageAdmin/SolicitacionPageAdmin';
 import { EditSolicitacionPage } from '../pages/solicitacionPageAdmin/EditSolicitacionPage';
 import { EditLocationPage } from '../pages/EditLocationPage';
+import { EditSolicitacionPageUser } from '../pages/commonUserPage/solicitacionPageUser/EditSolicitacionPageUser';
 
 const { Navigator, Screen } = createNativeStackNavigator();
 
@@ -71,7 +72,7 @@ export function AppRoutes() {
                 component={RequestLocation}
             />
             <Screen
-                name="solicitationPage"
+                name="solicitacionPageUser"
                 component={SolicitacionPageUser}
             />
             <Screen
@@ -87,6 +88,11 @@ export function AppRoutes() {
             <Screen
                 name="editLocationPage"
                 component={EditLocationPage}
+            />
+
+            <Screen
+                name="editSolicitacionPageUser"
+                component={EditSolicitacionPageUser}
             />
         </Navigator>
     );

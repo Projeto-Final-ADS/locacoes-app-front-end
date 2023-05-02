@@ -1,38 +1,65 @@
 import { useState, useEffect } from 'react';
 import {
     View,
-    Text,
     StyleSheet,
     Dimensions,
-    ScrollView,
-    KeyboardAvoidingView,
     FlatList
 } from 'react-native';
+
+import { GetLocationSolicitations } from '../../../services/solicitacion';
+
 import { Navbar } from '../../../components/pagesComponents/Navbar';
 import { Solicitacion } from './components/Solicitacion';
+import { useRoute } from '@react-navigation/native';
 
 export function SolicitacionPageUser() {
-    return(
-        <ScrollView style={styles.page}>
-            <KeyboardAvoidingView
-                behavior="position"
-                enabled
-                keyboardVerticalOffset={-240}
-            >
-                <Navbar/>
 
-                {/*
+    const [ listSolicitationLocation, setListSolicitationLocation] = useState([]);
+
+    const route = useRoute();
+
+    useEffect(() => {
+        getAllSolicitacionLocation();
+    }, []);
+
+    useEffect(() => {
+        getAllSolicitacionLocation();
+    }, [route.params]);
+
+    async function getAllSolicitacionLocation() {
+        const data = await GetLocationSolicitations();
+
+        if (data != undefined) {
+            setListSolicitationLocation(data.data.locacoes);
+        }
+    }
+
+    return(
+        <View style={styles.page}>
+                <Navbar/>
+                {
                 <FlatList
-                    data={}
+                    data={listSolicitationLocation}
                     showsVerticalScrollIndicator ={false}
-                    renderItem={}
-                    ListFooterComponent={<View style={{height:300}}></View>} //Adiciona espaço abaixo do Flatlist
+                    renderItem={ ({item}) => (
+                        <>
+                            <Solicitacion
+                                key={1}
+                                solicitacionID={item.id}
+                                dateOpen={item.dataSolicitacao}
+                                dateDelivery={item.dataDoEvento}
+                                totalItems={item.produtoPorLocacao.length}
+                                client={item.usuarioQueSolicitou}
+                                statusSolicitacion={item.statusDaSolicitacao.toLowerCase()}
+                                productList={item.produtoPorLocacao}
+                                addressEvent={item.enderecoDoEvento}
+                            />
+                        </>
+                    )}
+                    ListFooterComponent={<View style={{height:100}}></View>} //Adiciona espaço abaixo do Flatlist
                 />
-                */}
-                
-                <Solicitacion/>
-            </KeyboardAvoidingView>
-        </ScrollView>
+                }
+        </View>
     );
 }
 

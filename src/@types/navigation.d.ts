@@ -69,6 +69,14 @@ export declare global {
                 solicitacion?: Solicitacion;
                 refresh?: boolean;
             };
+            solicitacionPageUser?: {
+                solicitacion?: Solicitacion;
+                refresh?: boolean;
+            };
+            editSolicitacionPageUser?: {
+                solicitacion?: Solicitacion;
+                refresh?: boolean;
+            };
             editLocationPage?: {
                 location?: Location;
                 refresh?: boolean;
