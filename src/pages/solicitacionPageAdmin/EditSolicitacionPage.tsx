@@ -3,10 +3,10 @@ import {
     View,
     StyleSheet,
     Dimensions,
-    FlatList,
     Text,
     TouchableOpacity,
     Alert,
+    ScrollView
 } from 'react-native';
 
 import { Navbar } from '../../components/pagesComponents/Navbar';
@@ -14,6 +14,8 @@ import { useRoute } from '@react-navigation/native';
 import { PutLocationSolicitation } from '../../services/solicitacion';
 import { useNavigation } from '@react-navigation/native'
 import { Item } from './components/Item';
+
+const currencyFormatter = require('currency-formatter');
 
 interface Solicitacion {
     dateOpen: string;
@@ -24,6 +26,7 @@ interface Solicitacion {
     statusSolicitacion: string;
     productList: undefined;
     addressEvent: undefined;
+    toRecallLocationDate: string;
 }
 
 export function EditSolicitacionPage() {
@@ -33,8 +36,51 @@ export function EditSolicitacionPage() {
 
     const [productList, setProductList] = useState(route.params?.solicitacion.productList);
     const [solicitacion, setSolicitacion] = useState<Solicitacion>(route.params?.solicitacion);
+    const [valueAllProducts, setValueAllProducts] = useState("");
+
+    const dateToRecallConverted = new Date(solicitacion.toRecallLocationDate);
+
+    const formatedDateToRecall = formatDate(dateToRecallConverted);
+    const formatedHourToRecall = formatHours(dateToRecallConverted);
+
+    async function totalValueAllProducts() {
+        const list = productList;
+
+        let valueAllProducts:number = 0.00;
+
+        await list.forEach(list => {
+            valueAllProducts += list.quantidade * list.produto.preco
+        });
+
+        const formatedValue = await currencyFormatter.format(valueAllProducts, { code: 'BRL' });
+        setValueAllProducts(formatedValue);
+    }
+
+    useEffect(()=> {
+        totalValueAllProducts();
+    },[]);
+
+    function padTo2Digits(number:number) {
+        return number.toString().padStart(2, '0');
+    }
+      
+    function formatDate(date:Date) {
+        return [
+          padTo2Digits(date.getDate()),
+          padTo2Digits(date.getMonth() + 1),
+          date.getFullYear(),
+        ].join('/');
+      }
+    
+    function formatHours(hours:Date) {
+        return [
+          padTo2Digits(hours.getHours()),
+          padTo2Digits(hours.getMinutes())
+        ].join(':');
+    }
 
     async function AcceptLocationSolicitacion() {
+
         let body:Solicitacion = await {
             dateOpen: solicitacion.dateOpen,
             dateDelivery: solicitacion.dateDelivery,
@@ -43,7 +89,8 @@ export function EditSolicitacionPage() {
             client: solicitacion.client,
             statusSolicitacion: "Aceito",
             productList: solicitacion.productList,
-            addressEvent: solicitacion.addressEvent
+            addressEvent: solicitacion.addressEvent,
+            toRecallLocationDate: solicitacion.toRecallLocationDate
         };
 
         const response = await PutLocationSolicitation(body);
@@ -70,7 +117,8 @@ export function EditSolicitacionPage() {
             client: solicitacion.client,
             statusSolicitacion: "AnaliseRecusada",
             productList: solicitacion.productList,
-            addressEvent: solicitacion.addressEvent
+            addressEvent: solicitacion.addressEvent,
+            toRecallLocationDate: solicitacion.toRecallLocationDate
         };
 
         const response = await PutLocationSolicitation(body);
@@ -89,66 +137,83 @@ export function EditSolicitacionPage() {
     }
 
     return(
-        <View style={styles.page}>
-                <Navbar/>
-                <View style={styles.options}>
-                    <View style={{backgroundColor: '#fff', padding: 20, borderRadius: 20, width: Dimensions.get('screen').width - 50}}>
+        <ScrollView>
+            <View style={styles.page}>
+                    <Navbar/>
+                    <View style={styles.options}>
+                        <View style={{backgroundColor: '#fff', padding: 20, borderRadius: 20, width: Dimensions.get('screen').width - 50}}>
 
-                        <Text style={{backgroundColor: '#f1f1f1', padding: 10, borderRadius: 10, fontWeight: 'bold', textAlign: 'center'}}>
-                            Cliente
-                        </Text>
-                        <Text style={{marginLeft: 10, marginBottom: 10}}>
-                            {solicitacion.client}
-                        </Text>
+                            <Text style={{backgroundColor: '#f1f1f1', padding: 10, borderRadius: 10, fontWeight: 'bold', textAlign: 'center'}}>
+                                Cliente
+                            </Text>
+                            <Text style={{marginLeft: 10}}>
+                                {solicitacion.client}
+                            </Text>
 
-                        <Text style={{backgroundColor: '#f1f1f1', padding: 10, borderRadius: 10, fontWeight: 'bold', textAlign: 'center'}}>
-                            Endereço de entrega
-                        </Text>
+                            <Text style={{backgroundColor: '#f1f1f1', padding: 10, borderRadius: 10, fontWeight: 'bold', textAlign: 'center'}}>
+                                Endereço de entrega
+                            </Text>
 
-                        <View style={{marginLeft: 10}}>
-                            <Text>{solicitacion.addressEvent.cidade} - {solicitacion.addressEvent.uf}</Text>
-                            <Text>{solicitacion.addressEvent.rua}</Text>
-                            <Text>{solicitacion.addressEvent.bairro}</Text>
-                            <Text>{(solicitacion.addressEvent.cep).substr(0,5)}-{(solicitacion.addressEvent.cep).substr(5,8)}</Text>
+                            <View style={{marginLeft: 10}}>
+                                <Text>{solicitacion.addressEvent.cidade} - {solicitacion.addressEvent.uf}</Text>
+                                <Text>{solicitacion.addressEvent.rua}</Text>
+                                <Text>{solicitacion.addressEvent.bairro}</Text>
+                                <Text>{(solicitacion.addressEvent.cep).substr(0,5)}-{(solicitacion.addressEvent.cep).substr(5,8)}</Text>
+                            </View>
+
+                            <Text style={{backgroundColor: '#f1f1f1', padding: 10, borderRadius: 10, fontWeight: 'bold', textAlign: 'center'}}>
+                                Data recolhimento
+                            </Text>
+                            <Text style={{fontSize: 18, textAlign: 'center'}}>
+                                {formatedDateToRecall} - {formatedHourToRecall}h
+                            </Text>
+
+                            <Text style={{backgroundColor: '#f1f1f1', padding: 10, borderRadius: 10, fontWeight: 'bold', textAlign: 'center'}}>
+                                Valor Total
+                            </Text>
+
+                            <Text style={{ textAlign: 'center', fontSize: 20, color: "#32CD32", fontWeight: 'bold'}}>
+                                {valueAllProducts}
+                            </Text>
+                            
                         </View>
-                        
-                    </View>
-                    <View style={{flexDirection: 'row', marginTop: 20, justifyContent: 'space-around', width: '100%'}}>
-                        <TouchableOpacity
-                            style={styles.buttonAccept}
-                            onPress={AcceptLocationSolicitacion}
-                        >
-                            <Text style={{color: '#fff', fontSize: 14, fontWeight: 'bold'}}>
-                                Aceitar
-                            </Text>
-                        </TouchableOpacity>
 
-                        <TouchableOpacity
-                            style={styles.buttonCancel}
-                            onPress={CanceltLocationSolicitacion}
-                        >
-                            <Text style={{color: '#fff', fontSize: 14, fontWeight: 'bold'}}>
-                                Cancelar
-                            </Text>
-                        </TouchableOpacity>
+                        <View style={{flexDirection: 'row', marginTop: 20, justifyContent: 'space-around', width: '100%'}}>
+                            <TouchableOpacity
+                                style={styles.buttonAccept}
+                                onPress={AcceptLocationSolicitacion}
+                            >
+                                <Text style={{color: '#fff', fontSize: 14, fontWeight: 'bold'}}>
+                                    Aceitar
+                                </Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                                style={styles.buttonCancel}
+                                onPress={CanceltLocationSolicitacion}
+                            >
+                                <Text style={{color: '#fff', fontSize: 14, fontWeight: 'bold'}}>
+                                    Cancelar
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
                     </View>
-                </View>
-                
-                <FlatList
-                    style={styles.list}
-                    data={productList}
-                    showsVerticalScrollIndicator ={false}
-                    renderItem={({item}) => (
-                        <>
+
+                    <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center', marginTop: 10, marginBottom: 10}}>
+                        Itens
+                    </Text>
+
+                    {
+                        productList.map((item)=>
                             <Item
                                 itemName={item.produto.nome}
                                 amount={item.quantidade}
+                                key={item.id}
                             />
-                        </>
-                    )}
-                    ListFooterComponent={<View style={{height:100}}></View>} //Adiciona espaço abaixo do Flatlist
-                />
-        </View>
+                        )
+                    }
+            </View>
+        </ScrollView>
     );
 }
 
@@ -159,7 +224,7 @@ const styles = StyleSheet.create({
         height: Dimensions.get('screen').height
     },
     options: {
-        height: 320,
+        height: 450,
         width: Dimensions.get('screen').width,
         backgroundColor: '#d6f5e0',
         alignItems: 'center',

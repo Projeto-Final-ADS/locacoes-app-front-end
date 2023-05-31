@@ -1,7 +1,13 @@
 {
   "expo": {
-    "name": "project",
-    "slug": "project",
+    "name": "Locacoes",
+    "slug": "Locacoes",
+    "plugins": [
+      ["expo-camera",
+        {
+          "cameraPermission": "Permita $(PRODUCT_NAME) acessar a câmera."
+        }]
+    ],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

@@ -3,6 +3,7 @@ import { api, GetAuthToken } from './api';
 interface Solicitacion {
     dateOpen: string;
     dateDelivery: string;
+    toRecallLocationDate: string;
     totalItems: number;
     solicitacionID: number;
     client: string;
@@ -34,6 +35,7 @@ export async function GetLocationSolicitations() {
 
 export async function PutLocationSolicitation(props: Solicitacion) {
     try {
+
         const token = await GetAuthToken();
         
          const response = await api.put(
@@ -41,6 +43,7 @@ export async function PutLocationSolicitation(props: Solicitacion) {
             {
                 dataDoEvento: props.dateDelivery,
                 enderecoDoEvento: props.addressEvent,
+                dataRecolhimentoLocacao: props.toRecallLocationDate,
                 id: props.solicitacionID,
                 statusDaSolicitacao: props.statusSolicitacion
             },

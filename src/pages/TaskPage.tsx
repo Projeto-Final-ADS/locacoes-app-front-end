@@ -12,7 +12,7 @@ import {
     Alert
 } from 'react-native';
 
-import { useRoute, useNavigation } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
 import { CustomInputText } from "../components/customComponents/CustomInputText";
 import { Task } from "../components/pagesComponents/tasksPage/Task";
 import { Navbar } from "../components/pagesComponents/Navbar";
@@ -22,7 +22,6 @@ import { GetLocationSolicitations } from "../services/tasks";
 export function TaskPage() {
 
     const route = useRoute();
-    const navigation = useNavigation();
 
     const [ tasksData, setTasksData ] = useState([]);
     const [ tasksList, setTasksList ] = useState([]);

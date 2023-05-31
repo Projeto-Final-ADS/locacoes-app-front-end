@@ -38,6 +38,9 @@ export default function ActionModal({handleClose}: props) {
     function navigateClientsPage() {
         navigation.navigate("clientsPage");
     }
+    function navigateAnalyticPageAdmin() {
+        navigation.navigate("analyticPageAdmin");
+    }
 
     return (
         <View style={styles.container}>
@@ -52,6 +55,7 @@ export default function ActionModal({handleClose}: props) {
                     
                     <Text style={styles.textMenu}>MENU</Text>  
 
+                    <CustomButton titleButton='Analise'onPress={navigateAnalyticPageAdmin}/>
                     <CustomButton titleButton='Tarefas'onPress={navigateTasksPage}/>
                     <CustomButton titleButton='Estoque' onPress={navigateInventory}/>
                     <CustomButton titleButton='Solicitações' onPress={navigateSolicitationPageAdmin}/>

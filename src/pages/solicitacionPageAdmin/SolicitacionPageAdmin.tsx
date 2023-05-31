@@ -53,6 +53,7 @@ export function SolicitacionPageAdmin() {
                                 statusSolicitacion={item.statusDaSolicitacao.toLowerCase()}
                                 productList={item.produtoPorLocacao}
                                 addressEvent={item.enderecoDoEvento}
+                                toRecallLocationDate={item.dataRecolhimentoLocacao}
                             />
                         </>
                     )}

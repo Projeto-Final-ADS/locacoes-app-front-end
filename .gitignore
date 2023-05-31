@@ -1,1 +1,4 @@
 node_modules
+patches
+.expo
+.expo-shared

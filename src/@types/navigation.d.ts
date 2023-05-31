@@ -32,6 +32,7 @@ interface Solicitacion {
 export declare global {
     namespace ReactNavigation {
         interface RootParamList {
+            
             login?: {
                 tokenAuth?: string;
             };
@@ -45,6 +46,7 @@ export declare global {
             signup: undefined;
             registerItem?: {
                 refresh?: boolean;
+                imgBase64?: string;
             };
             registerClient: undefined;
             tasksPage?: {
@@ -52,8 +54,9 @@ export declare global {
             };
             clientsPage: undefined;
             editItemPage?: {
-                item: undefined;
+                item?: undefined;
                 refresh?: boolean;
+                imgBase64?: string;
             };
             requestLocation?: {
                 itemsLocationList?: any;
@@ -80,6 +83,11 @@ export declare global {
             editLocationPage?: {
                 location?: Location;
                 refresh?: boolean;
+            };
+            analyticPageAdmin: undefined;
+            cameraPage: {
+                returnPage: string;
+                body?: any;
             };
         }
     }

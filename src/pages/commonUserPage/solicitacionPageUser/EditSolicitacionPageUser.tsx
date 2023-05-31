@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
     View,
     StyleSheet,
     Dimensions,
-    FlatList,
+    ScrollView,
     Text,
 } from 'react-native';
 
@@ -11,6 +11,8 @@ import { Navbar } from '../inventoryPage/Navbar';
 import { useRoute } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native'
 import { Item } from './components/Item';
+
+const currencyFormatter = require('currency-formatter');
 
 interface Solicitacion {
     dateOpen: string;
@@ -30,6 +32,24 @@ export function EditSolicitacionPageUser() {
 
     const [productList, setProductList] = useState(route.params?.solicitacion.productList);
     const [solicitacion, setSolicitacion] = useState<Solicitacion>(route.params?.solicitacion);
+    const [valueAllProducts, setValueAllProducts] = useState("");
+
+    async function totalValueAllProducts() {
+        const list = productList;
+
+        let valueAllProducts:number = 0.00;
+
+        await list.forEach(list => {
+            valueAllProducts += list.quantidade * list.produto.preco
+        });
+
+        const formatedValue = await currencyFormatter.format(valueAllProducts, { code: 'BRL' });
+        setValueAllProducts(formatedValue);
+    }
+
+    useEffect(()=> {
+        totalValueAllProducts();
+    },[]);
 
     /*async function CanceltLocationSolicitacion() {
         let body:Solicitacion = await {
@@ -59,58 +79,67 @@ export function EditSolicitacionPageUser() {
     }*/
 
     return(
-        <View style={styles.page}>
-                <Navbar/>
-                <View style={styles.options}>
-                    <View style={{backgroundColor: '#fff', padding: 20, borderRadius: 20, width: Dimensions.get('screen').width - 50}}>
+        <ScrollView>
+            <View style={styles.page}>
+                    <Navbar/>
+                    <View style={styles.options}>
+                        <View style={{backgroundColor: '#fff', padding: 20, borderRadius: 20, width: Dimensions.get('screen').width - 50}}>
 
-                        <Text style={{backgroundColor: '#f1f1f1', padding: 10, borderRadius: 10, fontWeight: 'bold', textAlign: 'center'}}>
-                            Cliente
-                        </Text>
-                        <Text style={{marginLeft: 10, marginBottom: 10}}>
-                            {solicitacion.client}
-                        </Text>
-
-                        <Text style={{backgroundColor: '#f1f1f1', padding: 10, borderRadius: 10, fontWeight: 'bold', textAlign: 'center'}}>
-                            Endereço de entrega
-                        </Text>
-
-                        <View style={{marginLeft: 10}}>
-                            <Text>{solicitacion.addressEvent.cidade} - {solicitacion.addressEvent.uf}</Text>
-                            <Text>{solicitacion.addressEvent.rua}</Text>
-                            <Text>{solicitacion.addressEvent.bairro}</Text>
-                            <Text>{(solicitacion.addressEvent.cep).substr(0,5)}-{(solicitacion.addressEvent.cep).substr(5,8)}</Text>
-                        </View>
-                        
-                    </View>
-                    {/* <View style={{flexDirection: 'row', marginTop: 20, justifyContent: 'space-around', width: '100%'}}>
-                        <TouchableOpacity
-                            style={styles.buttonCancel}
-                            onPress={CanceltLocationSolicitacion}
-                        >
-                            <Text style={{color: '#fff', fontSize: 14, fontWeight: 'bold'}}>
-                                Cancelar
+                            <Text style={{backgroundColor: '#f1f1f1', padding: 10, borderRadius: 10, fontWeight: 'bold', textAlign: 'center'}}>
+                                Cliente
                             </Text>
-                        </TouchableOpacity>
+                            <Text style={{marginLeft: 10}}>
+                                {solicitacion.client}
+                            </Text>
+
+                            <Text style={{backgroundColor: '#f1f1f1', padding: 10, borderRadius: 10, fontWeight: 'bold', textAlign: 'center'}}>
+                                Endereço de entrega
+                            </Text>
+
+                            <View style={{marginLeft: 10}}>
+                                <Text>{solicitacion.addressEvent.cidade} - {solicitacion.addressEvent.uf}</Text>
+                                <Text>{solicitacion.addressEvent.rua}</Text>
+                                <Text>{solicitacion.addressEvent.bairro}</Text>
+                                <Text>{(solicitacion.addressEvent.cep).substr(0,5)}-{(solicitacion.addressEvent.cep).substr(5,8)}</Text>
+                            </View>
+
+                            <Text style={{backgroundColor: '#f1f1f1', padding: 10, borderRadius: 10, fontWeight: 'bold', textAlign: 'center'}}>
+                                Valor Total
+                            </Text>
+
+                            <Text style={{ textAlign: 'center', fontSize: 20, color: "#32CD32", fontWeight: 'bold'}}>
+                                {valueAllProducts}
+                            </Text>
+                            
+                        </View>
+                        {/* <View style={{flexDirection: 'row', marginTop: 20, justifyContent: 'space-around', width: '100%'}}>
+                            <TouchableOpacity
+                                style={styles.buttonCancel}
+                                onPress={CanceltLocationSolicitacion}
+                            >
+                                <Text style={{color: '#fff', fontSize: 14, fontWeight: 'bold'}}>
+                                    Cancelar
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                        */}
                     </View>
-                    */}
-                </View>
-                
-                <FlatList
-                    style={styles.list}
-                    data={productList}
-                    showsVerticalScrollIndicator ={false}
-                    renderItem={({item}) => (
-                        <>
+
+                    <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center', marginTop: 10, marginBottom: 10}}>
+                        Itens
+                    </Text>
+                    
+                    {
+                        productList.map((item)=>
                             <Item
                                 itemName={item.produto.nome}
                                 amount={item.quantidade}
+                                key={item.id}
                             />
-                        </>
-                    )}
-                    ListFooterComponent={<View style={{height:100}}></View>} //Adiciona espaço abaixo do Flatlist
-                />
-        </View>
+                        )
+                    }
+            </View>
+        </ScrollView>
     );
 }
 

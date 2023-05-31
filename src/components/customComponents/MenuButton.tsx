@@ -48,6 +48,6 @@ const styles = StyleSheet.create({
         width: 50,
         height: 50,
         resizeMode: 'contain',
-        marginLeft: 8
+        marginLeft: 5
     }
 });

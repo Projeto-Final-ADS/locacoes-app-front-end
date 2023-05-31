@@ -16,20 +16,13 @@ import { CustomInputText } from "../components/customComponents/CustomInputText"
 import { CustomAddButton } from "../components/customComponents/CustomAddButton";
 import { Client } from "../components/pagesComponents/clientsPage/Client";
 import { Navbar } from "../components/pagesComponents/Navbar";
-
-const data = [
-    {clientName: 'Alessandro Luiz da Silva Mota', address: 'Rua 14, Qd.47, Lt. 10, N15, 75357-010, Setor Centro, Varjão - Goiás', key: 1},
-    {clientName: 'Lucas', address: 'Rua 15, Qd.7, Lt. 10, N122, 75555-010, Setor Centro, Varjão - Goiás, Centro', key: 2},
-    {clientName: 'Maria Firmina', address: 'Rua 17, Qd.50, Lt. 45, N47, 75557-010, Setor Centro, Varjão - Goiás, Centro', key: 3},
-    {clientName: 'João Katagury', address: 'Rua 18, Qd.53, Lt. 21, N8, 75357-010, Setor Centro, Varjão - Goiás, Centro', key: 4},
-    {clientName: 'Kin Jhon Yiun', address: 'Rua 19, Qd.12, Lt. 45, N9, 75357-010, Setor Centro, Varjão - Goiás, Centro', key: 5},
-];
+import { GetAllUsersByRole } from '../services/users';
 
 export function ClientsPage() {
 
     const navigation = useNavigation();
 
-    const [ itemsData, setItemsData ] = useState([...data]);
+    const [ itemsData, setItemsData ] = useState([]);
     const [ itemList, setItemList ] = useState(itemsData);
     const [ searchText, setSearchText ] = useState("");
 
@@ -47,6 +40,18 @@ export function ClientsPage() {
 
     function navigateRegisterClient() {
         navigation.navigate('registerClient');
+    }
+
+    useEffect(() => {
+        GetAllUsers();
+    },[]);
+
+    async function GetAllUsers() {
+        const response = await GetAllUsersByRole("Usuario");
+        
+        if (response !== undefined) {
+            setItemList(response.data.usuarios);
+        }
     }
 
     return (
@@ -75,7 +80,7 @@ export function ClientsPage() {
                     showsVerticalScrollIndicator ={false}
                     renderItem={
                         ({item}) => (
-                            <Client clientName={item.clientName} address={item.address} key={item.key}/>
+                            <Client firstName={item.nome} lastName={item.sobrenome} email={item.email}/>
                         )
                     }
                     ListFooterComponent={<View style={{height:300}}></View>} //Adiciona espaço abaixo do Flatlist

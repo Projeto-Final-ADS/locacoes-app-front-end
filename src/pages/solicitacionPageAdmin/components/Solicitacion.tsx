@@ -21,13 +21,14 @@ interface Solicitacion {
     statusSolicitacion: string;
     productList: undefined;
     addressEvent: undefined;
+    toRecallLocationDate: string;
 }
 
 export function Solicitacion(props: Solicitacion) {
     const navigation = useNavigation();
 
     const dateOpenConverted = new Date(props.dateOpen);
-
+    const dateToRecallConverted = new Date(props.toRecallLocationDate);
     const dateDeliveryConverted = new Date(props.dateDelivery);
 
     const formatedDateOpen = formatDate(dateOpenConverted);
@@ -35,6 +36,9 @@ export function Solicitacion(props: Solicitacion) {
 
     const formatedDateDelivery = formatDate(dateDeliveryConverted);
     const formatedHourDelivery = formatHours(dateDeliveryConverted);
+
+    const formatedDateToRecall = formatDate(dateToRecallConverted);
+    const formatedHourToRecall = formatHours(dateToRecallConverted);
 
     function navigateToEditSolicitacionPage() {
         
@@ -81,6 +85,8 @@ export function Solicitacion(props: Solicitacion) {
                     <Text>{formatedDateOpen} - {formatedHourOpen}h</Text>
                     <Text style={styles.label}>Data para entrega:</Text>
                     <Text>{formatedDateDelivery} - {formatedHourDelivery}h</Text>
+                    <Text style={styles.label}>Data para recolhimento:</Text>
+                    <Text>{formatedDateToRecall} - {formatedHourToRecall}h</Text>
                     <View style={{flexDirection: 'row'}}>
                         <Text style={styles.label}>Total de items: </Text>
                         <Text style={{color: '#42c9db', fontWeight: 'bold'}}>{props.totalItems}</Text>
@@ -101,7 +107,7 @@ export function Solicitacion(props: Solicitacion) {
 const styles = StyleSheet.create({
     container: {
         width: '100%',
-        height: 155,
+        height: 195,
         backgroundColor: '#f0f0f0',
         padding: 10,
         marginTop: 10

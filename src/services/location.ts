@@ -8,13 +8,14 @@ interface Location {
     cep?: string;
     itemsList?: any;
     locationDate?: Date;
+    toRecallLocationDate: Date;
 }
 
-export async function PutLocation( props: Location ) {
+export async function PostLocation( props: Location ) {
     try {
         const token = await GetAuthToken();
 
-        let list = [];
+        let list:any = [];
 
         await props.itemsList.forEach((item) => {
             list.push({
@@ -34,7 +35,8 @@ export async function PutLocation( props: Location ) {
                     cidade: props.city,
                     uf: props.federativeUnit,
                     cep: props.cep
-                } 
+                },
+                dataRecolhimentoLocacao: props.toRecallLocationDate
             },
             {
                 headers: {

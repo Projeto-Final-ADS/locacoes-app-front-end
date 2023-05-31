@@ -8,7 +8,7 @@ import {
 
 import { GetLocationSolicitations } from '../../../services/solicitacion';
 
-import { Navbar } from '../../../components/pagesComponents/Navbar';
+import { Navbar } from '../inventoryPage/Navbar';
 import { Solicitacion } from './components/Solicitacion';
 import { useRoute } from '@react-navigation/native';
 
@@ -53,6 +53,7 @@ export function SolicitacionPageUser() {
                                 statusSolicitacion={item.statusDaSolicitacao.toLowerCase()}
                                 productList={item.produtoPorLocacao}
                                 addressEvent={item.enderecoDoEvento}
+                                toRecallLocationDate={item.dataRecolhimentoLocacao}
                             />
                         </>
                     )}
