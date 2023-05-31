@@ -1,9 +1,6 @@
-import { useState, useEffect } from 'react';
 import {
     View,
-    Text,
     StyleSheet,
-    Dimensions,
 } from 'react-native';
 
 interface props {
@@ -13,13 +10,13 @@ interface props {
 export function Status(props:props) {
     return(
         <>
-            { props.status == "Aceito" &&
+            { props.status == "aceito" &&
                 <View style={styles.statusOk}/>
             }
-            { props.status == "Pendente" &&
+            { props.status == "pendente" || props.status == "andamento" &&
                 <View style={styles.statusPending}/>
             }
-            { props.status == "Cancelado" &&
+            { props.status == "analiserecusada" &&
                 <View style={styles.statusCanceled}/>
             }
             

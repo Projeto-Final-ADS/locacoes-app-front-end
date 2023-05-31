@@ -26,13 +26,15 @@ export function InventoryItemUser({...props}: props) {
             <TouchableOpacity
         >
                 <View style={styles.buttonImage}>
-                    <Image source={noImage} style={styles.imgIcon}/>
+                    <Image source={{uri: props.item.imagem}} style={styles.picture}/>
                 </View>
             </TouchableOpacity>
 
             <View style={styles.propertiesItemName}>
-                <Text style={styles.label}>Item:</Text>
-                <Text numberOfLines={2} style={{width: 270}}>{props.item.nome}</Text>
+                <Text style={styles.label}>Nome:</Text>
+                <Text numberOfLines={2} style={{width: Dimensions.get('screen').width - 140}}>{props.item.nome}</Text>
+                <Text style={styles.label}>Descrição:</Text>
+                <Text numberOfLines={2} style={{width: Dimensions.get('screen').width - 140}}>{props.item.descricao}</Text>
             </View>
         </View>
     );
@@ -41,7 +43,7 @@ export function InventoryItemUser({...props}: props) {
 const styles = StyleSheet.create({
     container: {
         width: Dimensions.get('screen').width,
-        height: 120,
+        height: 140,
         marginBottom: 10,
         backgroundColor: '#f0f0f0',
         flexDirection: 'row',
@@ -54,16 +56,16 @@ const styles = StyleSheet.create({
     },
     buttonImage: {
         backgroundColor: "#dfdfdf",
-        width: 90,
-        height: 100,
+        width: 120,
+        height: 120,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 10
     },
     propertiesItemName: {
-        marginLeft: 15,
-        marginRight: 20,
-        width: 290,
+        marginLeft: 10,
+        marginRight: 10,
+        width: Dimensions.get('screen').width - 150,
         backgroundColor: '#f9f9f9',
         borderRadius: 10,
         padding: 5
@@ -73,8 +75,9 @@ const styles = StyleSheet.create({
         marginRight: 20,
         flexDirection: 'row'
     },
-    imgIcon: {
-        width:50,
-        height: 50
+    picture: {
+        width: 120,
+        height: 120,
+        borderRadius: 10
     }
 });

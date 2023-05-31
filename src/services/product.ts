@@ -5,7 +5,7 @@ interface product {
     itemName?: string;
     itemDescription?: string;
     itemPrice?: number;
-    itemImage?: string;
+    imageBase64?: string;
     itemAmount?: number;
 }
 
@@ -19,7 +19,7 @@ export async function CreateProduct( props: product ) {
                 nome: props.itemName,
                 descricao: props.itemDescription,
                 preco: props.itemPrice,
-                imagem: props.itemImage,
+                imagem: props.imageBase64,
                 quantidade: props.itemAmount
             },
             {
@@ -36,7 +36,7 @@ export async function CreateProduct( props: product ) {
     }
 }
 
-export async function updateProduct( props: product ) {
+export async function UpdateProduct( props: product ) {
     try {
         const token = await GetAuthToken();
          const response = await api.put(
@@ -46,7 +46,7 @@ export async function updateProduct( props: product ) {
                 nome: props.itemName,
                 descricao: props.itemDescription,
                 preco: props.itemPrice,
-                imagem: props.itemImage,
+                imagem: props.imageBase64,
                 quantidade: props.itemAmount
             },
             {
@@ -63,7 +63,7 @@ export async function updateProduct( props: product ) {
     }
 }
 
-export async function deleteProduct( props: product ) {
+export async function DeleteProduct( props: product ) {
     try {
         const token = await GetAuthToken();
 

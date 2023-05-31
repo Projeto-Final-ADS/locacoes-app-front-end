@@ -13,25 +13,39 @@ import CurrencyInput from 'react-native-currency-input';
 
 import { useNavigation, useRoute } from '@react-navigation/native';
 
-import { deleteProduct, updateProduct } from '../services/product';
+import { DeleteProduct, UpdateProduct } from '../services/product';
 
 import { CustomInputText } from "../components/customComponents/CustomInputText";
 import { CustomEditButton } from "../components/customComponents/CustomEditButton";
 import { Navbar } from "../components/pagesComponents/Navbar";
 import { CustomCancelButton } from "../components/customComponents/CustomCancelButton";
+import { CustomOpenPicCamera } from "../components/customComponents/CustomOpenPicCamera";
 
+interface Item {
+  id: number;
+  quantidade: number;
+  descricao: string;
+  nome: string;
+  preco: number;
+  imagem: string;
+}
 export function EditItemPage() {
 
   const navigation = useNavigation();
-
   const route = useRoute();
 
+  const [ item, setItem ] = useState<Item>();
   const [ itemId, setItemId ] = useState(-1);
   const [ itemName, setItemName ] = useState("");
   const [ itemDescription, setItemDescription ] = useState("");
   const [ itemPrice, setItemPrice ] = useState(0.01);
-  const [ itemImage, setItemImage ] = useState("0x00");
+  const [ imageBase64, setImageBase64 ] = useState("");
   const [ itemAmount, setItemAmount] = useState(1);
+
+  useEffect(() => {
+    if (route.params?.imgBase64 !== undefined)
+      setImageBase64(route.params?.imgBase64);
+  },[route.params]);
   
   useEffect(() => {
     if (itemPrice === null)
@@ -44,20 +58,29 @@ export function EditItemPage() {
   },[itemAmount]);
 
   useEffect(() => {
-    toFillFields();
+    setItem(route?.params?.item);
   }, [route?.params?.item]);
 
+  useEffect(() => {
+    if (item !== undefined)
+    toFillFields();
+  }, [item]);
+
   function toFillFields() {
-    setItemId(route?.params?.item.id);
-    setItemAmount(route?.params?.item.quantidade);
-    setItemDescription(route?.params?.item.descricao);
-    setItemName(route?.params?.item.nome);
-    setItemPrice(route?.params?.item.preco);
+    if (item != undefined) {
+      setItemId(item.id);
+      setItemAmount(item.quantidade);
+      setItemDescription(item.descricao);
+      setItemName(item.nome);
+      setItemPrice(item.preco);
+      setImageBase64(item.imagem);
+    }
+    
   }
 
   async function updateStorage() {
     
-    const responseProduct = await updateProduct({itemId, itemName, itemDescription, itemPrice, itemImage, itemAmount});
+    const responseProduct = await UpdateProduct({itemId, itemName, itemDescription, itemPrice, imageBase64, itemAmount});
     
     if (responseProduct?.data.sucesso == true) {
         Alert.alert("Sucesso!","Produto atualizado com sucesso!");
@@ -87,7 +110,7 @@ export function EditItemPage() {
 
   async function deleteProductStorage() {
 
-      const responseProduct = await deleteProduct({itemId});
+      const responseProduct = await DeleteProduct({itemId});
   
       if (responseProduct?.data.sucesso) {
         Alert.alert("Sucesso!","Produto excluido do estoque!");
@@ -102,6 +125,10 @@ export function EditItemPage() {
     navigation.navigate('inventory', {refresh: true});
   }
 
+  function navigateCameraPage() {
+    navigation.navigate('cameraPage', {returnPage: "editItemPage", body: route?.params?.item});
+  }
+
   return (
     <ScrollView style={styles.page}>
       <KeyboardAvoidingView behavior="padding" enabled>
@@ -111,7 +138,6 @@ export function EditItemPage() {
         <View style={styles.container}>
 
           <Text style={styles.title}>Editar Item</Text>
-
           <CustomInputText
             value={itemName}
             placeholder="Nome do item"
@@ -147,6 +173,13 @@ export function EditItemPage() {
             onChangeValue={ setItemAmount }
             style={styles.customInputCurrency}
           />
+
+          <View style={styles.picture}>
+            <CustomOpenPicCamera
+              onPress={navigateCameraPage}
+              uriBase64Image={imageBase64}
+            />
+          </View>
 
           <View style={styles.buttons}>     
 
@@ -211,5 +244,8 @@ const styles = StyleSheet.create({
   quantidade: {
     fontSize: 18,
     marginTop: 5
+  },
+  picture: {
+    marginTop: 20
   }
 });

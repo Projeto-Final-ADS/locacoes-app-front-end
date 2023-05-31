@@ -1,4 +1,9 @@
-import { View, StyleSheet, Image} from "react-native";
+import {
+  View,
+  StyleSheet,
+  Image,
+  Dimensions
+} from "react-native";
 import { MenuButton } from "../customComponents/MenuButton";
 import { ReturnButton } from "../customComponents/ReturnButton";
 
@@ -24,11 +29,12 @@ export function Navbar() {
 const styles = StyleSheet.create({
   topNavBar: {
     backgroundColor: "#ffffff",
-    width: "100%",
+    width: Dimensions.get("screen").width - 15,
     height: 60,
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: 60
+    marginTop: 60,
+    marginLeft: 15
   },
   profile: {
     width: 50,

@@ -4,6 +4,7 @@ import { AppRoutes } from './app.routes';
 import AuthProvider from '../contexts/auth';
 
 export function Routes() {
+
     return (
         <NavigationContainer>
             <AuthProvider>

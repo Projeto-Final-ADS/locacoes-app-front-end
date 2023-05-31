@@ -1,24 +1,70 @@
-import { useState, useEffect } from 'react';
 import {
     View,
     Text,
     StyleSheet,
-    Dimensions,
     Image,
     TouchableOpacity
 } from 'react-native';
-import { Status } from './Status';
+import { Status } from '../../solicitacionPageUser/components/Status';
+
+import { useNavigation } from '@react-navigation/native';
 
 const infoIconImage = require('../../../../../resources/icons/info-icon.png');
 
 interface Solicitacion {
-    dateOpen?: Date;
-    dateDelivery?: Date;
-    totalItems?: number;
-    solicitacionID?: number;
+    dateOpen: string;
+    dateDelivery: string;
+    totalItems: number;
+    solicitacionID: number;
+    client: string;
+    statusSolicitacion: string;
+    productList: undefined;
+    addressEvent: undefined;
+    toRecallLocationDate: string;
 }
 
 export function Solicitacion(props: Solicitacion) {
+    const navigation = useNavigation();
+
+    const dateOpenConverted = new Date(props.dateOpen);
+    const dateDeliveryConverted = new Date(props.dateDelivery);
+    const dateToRecallConverted = new Date(props.toRecallLocationDate);
+
+    const formatedDateOpen = formatDate(dateOpenConverted);
+    const formatedHourOpen = formatHours(dateOpenConverted);
+
+    const formatedDateDelivery = formatDate(dateDeliveryConverted);
+    const formatedHourDelivery = formatHours(dateDeliveryConverted);
+
+    const formatedDateToRecall = formatDate(dateToRecallConverted);
+    const formatedHourToRecall = formatHours(dateToRecallConverted);
+
+    function navigateToEditSolicitacionPageUser() {
+        navigation.navigate("editSolicitacionPageUser", {
+            solicitacion: props,
+            refresh: false
+        });
+    }
+
+    function padTo2Digits(number:number) {
+        return number.toString().padStart(2, '0');
+      }
+      
+    function formatDate(date:Date) {
+        return [
+          padTo2Digits(date.getDate()),
+          padTo2Digits(date.getMonth() + 1),
+          date.getFullYear(),
+        ].join('/');
+      }
+    
+    function formatHours(hours:Date) {
+        return [
+          padTo2Digits(hours.getHours()),
+          padTo2Digits(hours.getMinutes())
+        ].join(':');
+    }
+
     return(
         <View style={styles.container}>
             <View style={{flexDirection: 'row'}}>
@@ -26,19 +72,26 @@ export function Solicitacion(props: Solicitacion) {
                     <Text style={{fontWeight: 'bold'}}>Status</Text>
                     <View style={styles.statusBorder}>
                         <Status
-                            status='Aceito'
+                            status={props.statusSolicitacion.toLowerCase()}
                         />
                     </View>
                 </View>
                 <View style={styles.column2}>
-                    <Text>Data de abertura:</Text>
-                    <Text>01/10/2025 - 17:00h</Text>
-                    <Text>Data para entrega:</Text>
-                    <Text>06/10/2025 - 14:00h</Text>
-                    <Text>Total de items: {10}</Text>
+                    <Text style={styles.label}>Data de abertura:</Text>
+                    <Text>{formatedDateOpen} - {formatedHourOpen}h</Text>
+                    <Text style={styles.label}>Data para entrega:</Text>
+                    <Text>{formatedDateDelivery} - {formatedHourDelivery}h</Text>
+                    <Text style={styles.label}>Data para recolhimento:</Text>
+                    <Text>{formatedDateToRecall} - {formatedHourToRecall}h</Text>
+                    <View style={{flexDirection: 'row'}}>
+                        <Text style={styles.label}>Total de items: </Text>
+                        <Text style={{color: '#42c9db', fontWeight: 'bold'}}>{props.totalItems}</Text>
+                    </View>
                 </View>
                 <View style={styles.column3}>
-                    <TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={navigateToEditSolicitacionPageUser}
+                    >
                         <Image source={infoIconImage} style={styles.infoButtom}/>
                     </TouchableOpacity>
                 </View>
@@ -50,9 +103,10 @@ export function Solicitacion(props: Solicitacion) {
 const styles = StyleSheet.create({
     container: {
         width: '100%',
-        height: 120,
+        height: 155,
         backgroundColor: '#f0f0f0',
-        padding: 10
+        padding: 10,
+        marginTop: 10
     },
     statusBorder: {
         padding: 4,
@@ -81,5 +135,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         width: "17%",
+    },
+    label: {
+        fontWeight: 'bold'
     }
 });

@@ -6,37 +6,45 @@ import {
   KeyboardAvoidingView,
   ScrollView,
   Dimensions,
-  Alert
+  Alert,
 } from "react-native";
 
 import CurrencyInput from 'react-native-currency-input';
 
 import { CreateProduct } from '../services/product';
 
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 import { CustomInputText } from "../components/customComponents/CustomInputText";
 import { CustomAddButton } from "../components/customComponents/CustomAddButton";
 import { Navbar } from "../components/pagesComponents/Navbar";
+import { CustomOpenPicCamera } from "../components/customComponents/CustomOpenPicCamera";
 
 export function RegisterItemPage() {
   
   const navigation = useNavigation();
 
+  const route = useRoute();
+
+  useEffect(() => {
+    if (route.params?.imgBase64 !== undefined)
+      setImageBase64(route.params?.imgBase64);
+  },[route.params]);
+
   const [ itemName, setItemName ] = useState("");
   const [ itemDescription, setItemDescription ] = useState("");
-  const [ itemPrice, setItemPrice ] = useState(0.01);
-  const [ itemImage, setItemImage ] = useState("0x00");
+  const [ itemPrice, setItemPrice ] = useState(0.00);
+  const [ imageBase64, setImageBase64 ] = useState("");
   const [ itemAmount, setItemAmount] = useState(1);
   
   useEffect(() => {
     if (itemPrice === null)
-      setItemPrice(0.01);
+      setItemPrice(0.00);
   },[itemPrice]);
 
   async function handleCreateProduct() {
 
-    const response = await CreateProduct({itemName, itemDescription, itemPrice, itemImage, itemAmount});
+    const response = await CreateProduct({itemName, itemDescription, itemPrice, imageBase64, itemAmount});
     
     if (response != undefined) {
 
@@ -55,12 +63,15 @@ export function RegisterItemPage() {
   function navigateInventoryPage() {
     navigation.navigate('inventory', {refresh: true});
   }
+  function navigateCameraPage() {
+    navigation.navigate('cameraPage', {returnPage: "registerItem"});
+  }
 
   function clearFields() {
     setItemAmount(1)
     setItemDescription("")
     setItemName("")
-    setItemPrice(0.01)
+    setItemPrice(0.00)
   }
 
   return (
@@ -93,7 +104,7 @@ export function RegisterItemPage() {
             separator=","
             precision={2}
             minValue={0}
-            onChangeValue={setItemPrice }
+            onChangeValue={setItemPrice}
             style={styles.customInputCurrency}
           />
 
@@ -105,18 +116,23 @@ export function RegisterItemPage() {
             separator=","
             precision={0}
             minValue={0}
-            onChangeValue={setItemAmount }
+            onChangeValue={setItemAmount}
             style={styles.customInputCurrency}
           />
 
           <View style={styles.buttons}>
-              
+
+            <CustomOpenPicCamera
+              onPress={navigateCameraPage}
+              uriBase64Image={imageBase64}
+            />
+
             <View style={styles.button}>
               <CustomAddButton
                 onPress={handleCreateProduct}
               />
             </View>
-
+            
           </View>
         
         </View>
@@ -141,18 +157,22 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    marginBottom: 20
   },
   input: {
     marginBottom: 20
   },
   buttons: {
-    flexDirection: 'row'
+    marginTop: 20,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   button: {
     marginTop: 20,
     marginLeft: 40,
-    marginRight: 40
+    marginRight: 40,
+    
   },
   customInputCurrency: {
       backgroundColor: '#f8f8f8',

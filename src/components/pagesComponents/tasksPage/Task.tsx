@@ -24,9 +24,13 @@ export function Task({...props}: props) {
     const navigation = useNavigation();
 
     const dateDeliveryConverted = new Date(props.task.dataDoEvento);
+    const dateToRecallConverted = new Date(props.task.dataRecolhimentoLocacao);
 
     const formatedDateDelivery = formatDate(dateDeliveryConverted);
     const formatedHourDelivery = formatHours(dateDeliveryConverted);
+
+    const formatedDateToRecall = formatDate(dateToRecallConverted);
+    const formatedHourToRecall = formatHours(dateToRecallConverted);
 
     function padTo2Digits(number:number) {
         return number.toString().padStart(2, '0');
@@ -77,8 +81,8 @@ export function Task({...props}: props) {
                     </View>
                 <Text style={styles.textLabel}>Data Recolhimento</Text>
                     <View style={{flexDirection: 'row'}}>
-                        <Text>-----</Text>
-                        <Text style={styles.hour}>----</Text>
+                        <Text>{formatedDateToRecall}</Text>
+                        <Text style={styles.hour}>{formatedHourToRecall}h</Text>
                     </View>
             </View>
         </View>

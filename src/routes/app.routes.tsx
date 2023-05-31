@@ -15,6 +15,9 @@ import { SolicitacionPageUser } from '../pages/commonUserPage/solicitacionPageUs
 import { SolicitacionPageAdmin } from '../pages/solicitacionPageAdmin/SolicitacionPageAdmin';
 import { EditSolicitacionPage } from '../pages/solicitacionPageAdmin/EditSolicitacionPage';
 import { EditLocationPage } from '../pages/EditLocationPage';
+import { EditSolicitacionPageUser } from '../pages/commonUserPage/solicitacionPageUser/EditSolicitacionPageUser';
+import { AnalyticPageAdmin } from '../pages/AnalyticPageAdmin';
+import { CameraPage } from '../pages/CameraPage';
 
 const { Navigator, Screen } = createNativeStackNavigator();
 
@@ -71,7 +74,7 @@ export function AppRoutes() {
                 component={RequestLocation}
             />
             <Screen
-                name="solicitationPage"
+                name="solicitacionPageUser"
                 component={SolicitacionPageUser}
             />
             <Screen
@@ -88,6 +91,22 @@ export function AppRoutes() {
                 name="editLocationPage"
                 component={EditLocationPage}
             />
+
+            <Screen
+                name="editSolicitacionPageUser"
+                component={EditSolicitacionPageUser}
+            />
+            
+            <Screen
+                name="analyticPageAdmin"
+                component={AnalyticPageAdmin}
+            />
+
+            <Screen
+                name="cameraPage"
+                component={CameraPage}
+            />
+            
         </Navigator>
     );
 }

@@ -26,7 +26,7 @@ export default function ActionModal({handleClose}: props) {
     }
 
     function navigateSolicitationPage() {
-        navigation.navigate("solicitationPage");
+        navigation.navigate("solicitacionPageUser");
     }
 
     return (

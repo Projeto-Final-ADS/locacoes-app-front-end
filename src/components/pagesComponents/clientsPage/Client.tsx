@@ -7,8 +7,9 @@ import {
 } from 'react-native';
 
 interface props {
-    clientName: string;
-    address: string;
+    firstName: string;
+    lastName: string;
+    email: string;
 }
 
 const clientIcon = require("../../../../resources/icons/client-icon.png");
@@ -23,10 +24,10 @@ export function Client({...props}: props) {
             
             <View style={{flexDirection: 'column'}}>
                 <View style={styles.propertiesItemName}>
-                    <Text style={styles.label}>Name:</Text>
-                    <Text numberOfLines={1} style={{width: 300}}>{props.clientName}</Text>
-                    <Text style={styles.label}>Address:</Text>
-                    <Text numberOfLines={1} style={{width: 300}}>{props.address}</Text>
+                    <Text style={styles.label}>Nome:</Text>
+                    <Text numberOfLines={1} style={{width: 300}}>{props.firstName} {props.lastName}</Text>
+                    <Text style={styles.label}>E-mail:</Text>
+                    <Text numberOfLines={1} style={{width: 300}}>{props.email}</Text>
                 </View>
             </View>
         </View>

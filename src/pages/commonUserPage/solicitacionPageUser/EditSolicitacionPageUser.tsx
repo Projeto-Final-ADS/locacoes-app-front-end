@@ -1,17 +1,14 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
     View,
     StyleSheet,
     Dimensions,
+    ScrollView,
     Text,
-    TouchableOpacity,
-    Alert,
-    ScrollView
 } from 'react-native';
 
-import { Navbar } from '../../components/pagesComponents/Navbar';
+import { Navbar } from '../inventoryPage/Navbar';
 import { useRoute } from '@react-navigation/native';
-import { PutLocationSolicitation } from '../../services/solicitacion';
 import { useNavigation } from '@react-navigation/native'
 import { Item } from './components/Item';
 
@@ -26,10 +23,9 @@ interface Solicitacion {
     statusSolicitacion: string;
     productList: undefined;
     addressEvent: undefined;
-    toRecallLocationDate: string;
 }
 
-export function EditSolicitacionPage() {
+export function EditSolicitacionPageUser() {
 
     const route = useRoute();
     const navigation = useNavigation();
@@ -37,11 +33,6 @@ export function EditSolicitacionPage() {
     const [productList, setProductList] = useState(route.params?.solicitacion.productList);
     const [solicitacion, setSolicitacion] = useState<Solicitacion>(route.params?.solicitacion);
     const [valueAllProducts, setValueAllProducts] = useState("");
-
-    const dateToRecallConverted = new Date(solicitacion.toRecallLocationDate);
-
-    const formatedDateToRecall = formatDate(dateToRecallConverted);
-    const formatedHourToRecall = formatHours(dateToRecallConverted);
 
     async function totalValueAllProducts() {
         const list = productList;
@@ -60,55 +51,7 @@ export function EditSolicitacionPage() {
         totalValueAllProducts();
     },[]);
 
-    function padTo2Digits(number:number) {
-        return number.toString().padStart(2, '0');
-    }
-      
-    function formatDate(date:Date) {
-        return [
-          padTo2Digits(date.getDate()),
-          padTo2Digits(date.getMonth() + 1),
-          date.getFullYear(),
-        ].join('/');
-      }
-    
-    function formatHours(hours:Date) {
-        return [
-          padTo2Digits(hours.getHours()),
-          padTo2Digits(hours.getMinutes())
-        ].join(':');
-    }
-
-    async function AcceptLocationSolicitacion() {
-
-        let body:Solicitacion = await {
-            dateOpen: solicitacion.dateOpen,
-            dateDelivery: solicitacion.dateDelivery,
-            totalItems: solicitacion.totalItems,
-            solicitacionID: solicitacion.solicitacionID,
-            client: solicitacion.client,
-            statusSolicitacion: "Aceito",
-            productList: solicitacion.productList,
-            addressEvent: solicitacion.addressEvent,
-            toRecallLocationDate: solicitacion.toRecallLocationDate
-        };
-
-        const response = await PutLocationSolicitation(body);
-        
-        if (response != undefined) {
-            if (response.data.sucesso == true) {
-                
-                navigation.navigate("tasksPage", {refresh: true});
-                
-                Alert.alert("Status", "Solicitação aceita com sucesso!");
-            }
-            if (response.data.sucesso == false) {
-                Alert.alert("Erro", response.data.mensagem);
-            }
-        }
-    }
-
-    async function CanceltLocationSolicitacion() {
+    /*async function CanceltLocationSolicitacion() {
         let body:Solicitacion = await {
             dateOpen: solicitacion.dateOpen,
             dateDelivery: solicitacion.dateDelivery,
@@ -117,8 +60,7 @@ export function EditSolicitacionPage() {
             client: solicitacion.client,
             statusSolicitacion: "AnaliseRecusada",
             productList: solicitacion.productList,
-            addressEvent: solicitacion.addressEvent,
-            toRecallLocationDate: solicitacion.toRecallLocationDate
+            addressEvent: solicitacion.addressEvent
         };
 
         const response = await PutLocationSolicitation(body);
@@ -126,7 +68,7 @@ export function EditSolicitacionPage() {
         if (response != undefined) {
             if (response.data.sucesso == true) {
                 
-                navigation.navigate("tasksPage", {refresh: true});
+                navigation.navigate("solicitacionPageUser", {refresh: true});
                 
                 Alert.alert("Status", "Solicitação cancelada com sucesso!");
             }
@@ -134,7 +76,7 @@ export function EditSolicitacionPage() {
                 Alert.alert("Erro", response.data.mensagem);
             }
         }
-    }
+    }*/
 
     return(
         <ScrollView>
@@ -162,13 +104,6 @@ export function EditSolicitacionPage() {
                             </View>
 
                             <Text style={{backgroundColor: '#f1f1f1', padding: 10, borderRadius: 10, fontWeight: 'bold', textAlign: 'center'}}>
-                                Data recolhimento
-                            </Text>
-                            <Text style={{fontSize: 18, textAlign: 'center'}}>
-                                {formatedDateToRecall} - {formatedHourToRecall}h
-                            </Text>
-
-                            <Text style={{backgroundColor: '#f1f1f1', padding: 10, borderRadius: 10, fontWeight: 'bold', textAlign: 'center'}}>
                                 Valor Total
                             </Text>
 
@@ -177,17 +112,7 @@ export function EditSolicitacionPage() {
                             </Text>
                             
                         </View>
-
-                        <View style={{flexDirection: 'row', marginTop: 20, justifyContent: 'space-around', width: '100%'}}>
-                            <TouchableOpacity
-                                style={styles.buttonAccept}
-                                onPress={AcceptLocationSolicitacion}
-                            >
-                                <Text style={{color: '#fff', fontSize: 14, fontWeight: 'bold'}}>
-                                    Aceitar
-                                </Text>
-                            </TouchableOpacity>
-
+                        {/* <View style={{flexDirection: 'row', marginTop: 20, justifyContent: 'space-around', width: '100%'}}>
                             <TouchableOpacity
                                 style={styles.buttonCancel}
                                 onPress={CanceltLocationSolicitacion}
@@ -197,12 +122,13 @@ export function EditSolicitacionPage() {
                                 </Text>
                             </TouchableOpacity>
                         </View>
+                        */}
                     </View>
 
                     <Text style={{ fontSize: 20, fontWeight: 'bold', textAlign: 'center', marginTop: 10, marginBottom: 10}}>
                         Itens
                     </Text>
-
+                    
                     {
                         productList.map((item)=>
                             <Item
@@ -224,7 +150,7 @@ const styles = StyleSheet.create({
         height: Dimensions.get('screen').height
     },
     options: {
-        height: 450,
+        height: 320,
         width: Dimensions.get('screen').width,
         backgroundColor: '#d6f5e0',
         alignItems: 'center',

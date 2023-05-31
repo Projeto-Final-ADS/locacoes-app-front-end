@@ -18,7 +18,7 @@ import { CustomInputText } from "../../../../components/customComponents/CustomI
 import { CustomAddButton } from "../../../../components/customComponents/CustomAddButton";
 import { Navbar } from "../Navbar";
 import { CustomInputNumeric } from "../../../../components/customComponents/CustomInputNumeric";
-import { PutLocation } from "../../../../services/location";
+import { PostLocation } from "../../../../services/location";
 
 import DateTimePicker from '@react-native-community/datetimepicker';
 
@@ -29,11 +29,17 @@ export function RequestLocation() {
 
   const [ itemsList, setItemList ] = useState([]);
   
-  let date = new Date();
-  date.setHours(date.getHours() - 3);
+  let dateToRecall = new Date();
+  dateToRecall.setHours(dateToRecall.getHours() + 24);
+
   const [showDateLocationDialog, setShowDateLocationDialog] = useState(false);
   const [showHourLocationDialog, setShowHourLocationDialog] = useState(false);
-  const [locationDate, setLocationDate] = useState(date);
+  
+  const [showDateToRecallLocationDialog, setShowDateToRecallLocationDialog] = useState(false);
+  const [showHourToRecallLocationDialog, setShowHourToRecallLocationDialog] = useState(false);
+
+  const [locationDate, setLocationDate] = useState(new Date());
+  const [toRecallLocationDate, setToRecallLocationDate] = useState(dateToRecall);
 
   const [ street, setStreet ] = useState();
   const [ neighborhood, setNeighborhood ] = useState();
@@ -47,7 +53,7 @@ export function RequestLocation() {
 
   async function viaCEP() {
     
-    const res = axios.get("https://viacep.com.br/ws/"+ cep +"/json/")
+    axios.get("https://viacep.com.br/ws/"+ cep +"/json/")
     .then((response) => {
       setCity(response.data.localidade);
       setNeighborhood(response.data.bairro);
@@ -58,10 +64,11 @@ export function RequestLocation() {
     });
   }
 
-  async function putLocation() {
+  async function postLocation() {
     const flag = await checkEmptyFields();
 
-    let date = new Date(locationDate);
+    let dateLocation = new Date(locationDate);
+    let dateToRecall = new Date(toRecallLocationDate);
 
     if (flag) {
       const locationBody = {
@@ -71,10 +78,11 @@ export function RequestLocation() {
         federativeUnit,
         cep,
         itemsList: [...itemsList],
-        locationDate: date
+        locationDate: dateLocation,
+        toRecallLocationDate: dateToRecall
       };
   
-      const response = await PutLocation(locationBody);
+      const response = await PostLocation(locationBody);
   
         if (response?.data.sucesso == true) {
           navigate.navigate("inventoryUser");
@@ -143,38 +151,72 @@ export function RequestLocation() {
           <View style={styles.container}>
 
           { showDateLocationDialog &&
-          <DateTimePicker
-            testID="dateTimePicker"
-            value={new Date()}
-            mode='date'
-            is24Hour={true}
-            onChange={(event, date) => {
-              setShowDateLocationDialog(false);
-              setLocationDate(new Date(date?.toISOString()+""));
-            }}
-          />
-        }
+            <DateTimePicker
+              testID="dateTimePicker"
+              value={locationDate}
+              mode='date'
+              is24Hour={true}
+              onChange={(event, date) => {
+                setShowDateLocationDialog(false);
+                setLocationDate(new Date(date?.toISOString()+""));
+              }}
+            />
+          }
 
-        { showHourLocationDialog &&
-          <DateTimePicker
-            testID="dateTimePicker"
-            value={new Date()}
-            mode='time'
-            is24Hour={true}
-            onChange={(event, date) => {
-              if (date != undefined) {
-                setShowHourLocationDialog(false);
+          { showDateToRecallLocationDialog &&
+            <DateTimePicker
+              testID="dateTimePicker"
+              value={toRecallLocationDate}
+              mode='date'
+              is24Hour={true}
+              onChange={(event, date) => {
+                setShowDateToRecallLocationDialog(false);
+                setToRecallLocationDate(new Date(date?.toISOString()+""));
+              }}
+            />
+          }
 
-                var hours = locationDate;
+          { showHourLocationDialog &&
+            <DateTimePicker
+              testID="dateTimePicker"
+              value={locationDate}
+              mode='time'
+              is24Hour={true}
+              onChange={(event, date) => {
+                if (date != undefined) {
+                  setShowHourLocationDialog(false);
 
-                hours.setHours(date.getHours());
-                hours.setMinutes(date.getMinutes());
+                  var hours = locationDate;
 
-                setLocationDate(new Date(hours));
-              }
-            }}
-          />
-        }
+                  hours.setHours(date.getHours());
+                  hours.setMinutes(date.getMinutes());
+
+                  setLocationDate(new Date(hours));
+                }
+              }}
+            />
+          }
+
+          { showHourToRecallLocationDialog &&
+            <DateTimePicker
+              testID="dateTimePicker"
+              value={toRecallLocationDate}
+              mode='time'
+              is24Hour={true}
+              onChange={(event, date) => {
+                if (date != undefined) {
+                  setShowHourToRecallLocationDialog(false);
+
+                  var hours = toRecallLocationDate;
+
+                  hours.setHours(date.getHours());
+                  hours.setMinutes(date.getMinutes());
+
+                  setToRecallLocationDate(new Date(hours));
+                }
+              }}
+            />
+          }
 
             <Text style={styles.title}>Locação</Text>
             <Text style={styles.label}>CEP:</Text>
@@ -229,9 +271,22 @@ export function RequestLocation() {
               </TouchableOpacity>
             </View>
 
+            <Text style={styles.label}>Dia e hora de recolhimento:</Text>
+            <View style={{flexDirection:"row"}}>
+              <TouchableOpacity style={styles.containerDate} onPress={() => setShowDateToRecallLocationDialog(true)}>
+                <Text style={styles.labelDate}>Dia</Text>
+                <Text style={styles.date}>{formatDate(toRecallLocationDate)}</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity style={styles.containerDate} onPress={() => setShowHourToRecallLocationDialog(true)}>
+                <Text style={styles.labelDate}>Hora</Text>
+                <Text style={styles.date}>{formatHours(toRecallLocationDate)}</Text>
+              </TouchableOpacity>
+            </View>
+
             <View style={styles.buttonAdd}>
               <CustomAddButton
-                onPress={putLocation}
+                onPress={postLocation}
               />
             </View>
           
