@@ -95,8 +95,7 @@ export function InventoryPageUser() {
                     onPress={navigateLocationPage}
                 />
             </View>
-            
-
+        
             <View style={styles.containerInventory}>
 
                 {itemsData.length == 0 &&

@@ -17,12 +17,13 @@ import { CustomInputText } from "../components/customComponents/CustomInputText"
 import { Task } from "../components/pagesComponents/tasksPage/Task";
 import { Navbar } from "../components/pagesComponents/Navbar";
 import { GetLocationSolicitations } from "../services/tasks";
-
+import { Picker } from '@react-native-picker/picker';
 
 export function TaskPage() {
 
     const route = useRoute();
 
+    const [ selectedValue, setSelectedValue ] = useState("");
     const [ tasksData, setTasksData ] = useState([]);
     const [ tasksList, setTasksList ] = useState([]);
     const [ searchText, setSearchText ] = useState("");
@@ -33,11 +34,13 @@ export function TaskPage() {
                 (task) => {
                     return (
                         Object.values(task.usuarioQueSolicitou).join('').toLowerCase().includes(searchText.toLowerCase())
+                        &&
+                        Object.values(task.statusDaLocacao).join('').includes(selectedValue)
                     )
                 }
             )
         );
-    }, [searchText]);
+    }, [searchText, selectedValue]);
 
     useEffect(() => {
         GetAllLocationsConfirmed();
@@ -79,6 +82,21 @@ export function TaskPage() {
             <View style={styles.inventoryBar}>
                 {/*Texto de task*/}
                 <Text style={styles.title}>Tarefas</Text>
+
+                <Picker
+                    mode='dropdown'
+                    selectedValue={selectedValue}
+                    style={styles.filter}
+                    onValueChange={(itemValue, itemIndex) => {
+                        setSelectedValue(itemValue);
+                    }}
+                >
+                    <Picker.Item label='Todos' value=''/>
+                    <Picker.Item label='A entregar' value='AEntregar'/>
+                    <Picker.Item label='Entregue' value='Entregue'/>
+                    <Picker.Item label='Recolher' value='Recolher'/>
+                    <Picker.Item label='Concluido' value='Concluido'/>
+                </Picker>
             </View>
             
             {/*Lista de tasks*/}
@@ -126,5 +144,10 @@ const styles = StyleSheet.create({
     },
     flatList: {
         maxHeight: '100%'
+    },
+    filter: {
+        height: 50,
+        width: "50%",
+        backgroundColor: '#f5f5f5'
     }
 });

@@ -38,17 +38,22 @@ export function CameraPage() {
     },[]);
 
     function navigateRegisterItemPage(uri: string) {
-        navigation.navigate("registerItem", {imgBase64: uri,refresh: true})
+        navigation.navigate("registerItem", {imgBase64: uri, refresh: true})
     }
 
     function navigateEditItemPage(uri: string) {
-        navigation.navigate("editItemPage", {imgBase64: uri,refresh: true, item: item})
+        navigation.navigate("editItemPage", {imgBase64: uri, refresh: true, item: item})
     }
     
     function selectPage(uri: string) {
         switch (route?.params?.returnPage) {
-            case "registerItem": navigateRegisterItemPage(uri);
-            case "editItemPage": navigateEditItemPage(uri);
+            case "registerItem":
+                navigateRegisterItemPage(uri);
+                break;
+            case "editItemPage":
+                navigateEditItemPage(uri);
+                break;
+            default: console.log("Não foi possivel identificar a pagina de retorno.");
         }
     }
     

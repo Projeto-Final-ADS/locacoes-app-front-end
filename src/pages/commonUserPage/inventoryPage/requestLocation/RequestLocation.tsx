@@ -230,7 +230,7 @@ export function RequestLocation() {
             <Text style={styles.label}>Cidade:</Text>
             <CustomInputText
               placeholder="Cidade"
-              textContentType="text"
+              textContentType="countryName"
               onChange={setCity}
               value={city}
               editable={false}
@@ -238,21 +238,21 @@ export function RequestLocation() {
             <Text style={styles.label}>Bairro:</Text>
             <CustomInputText
               placeholder="Bairro"
-              textContentType="text"
+              textContentType="addressCity"
               onChange={setNeighborhood}
               value={neighborhood}
             />
             <Text style={styles.label}>Rua/Logradouro: </Text>
             <CustomInputText
               placeholder="Rua, Lote, Quadra, Nº"
-              textContentType="text"
+              textContentType="addressCity"
               onChange={setStreet}
             />
 
             <Text style={styles.label}>UF:</Text>
             <CustomInputText
               placeholder="Unidade Federativa"
-              textContentType="text"
+              textContentType="addressState"
               onChange={setFederativeUnit}
               value={federativeUnit}
               editable={false}

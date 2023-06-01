@@ -209,6 +209,8 @@ export function EditSolicitacionPage() {
                                 itemName={item.produto.nome}
                                 amount={item.quantidade}
                                 key={item.id}
+                                itemDescription={item.produto.descricao}
+                                picture={item.produto.imagem}
                             />
                         )
                     }

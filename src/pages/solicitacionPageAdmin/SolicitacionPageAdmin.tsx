@@ -3,7 +3,8 @@ import {
     View,
     StyleSheet,
     Dimensions,
-    FlatList
+    FlatList,
+    Text,
 } from 'react-native';
 
 import { GetLocationSolicitations } from '../../services/solicitacion';
@@ -11,10 +12,25 @@ import { GetLocationSolicitations } from '../../services/solicitacion';
 import { Navbar } from '../../components/pagesComponents/Navbar';
 import { Solicitacion } from './components/Solicitacion';
 import { useRoute } from '@react-navigation/native';
+import { Picker } from '@react-native-picker/picker';
 
 export function SolicitacionPageAdmin() {
 
     const [ listSolicitationLocation, setListSolicitationLocation] = useState([]);
+    const [ listSolicitationLocationData, setListSolicitationLocationData] = useState([]);
+    const [ selectedValue, setSelectedValue ] = useState("");
+    
+    useEffect(() => {
+        setListSolicitationLocation(
+            listSolicitationLocationData.filter(
+                (solicitacion) => {
+                    return (
+                        Object.values(solicitacion.statusDaSolicitacao).join('').includes(selectedValue)
+                    )
+                }
+            )
+        );
+    }, [selectedValue]);
 
     const route = useRoute();
 
@@ -31,12 +47,33 @@ export function SolicitacionPageAdmin() {
 
         if (data != undefined) {
             setListSolicitationLocation(data.data.locacoes);
+            setListSolicitationLocationData(data.data.locacoes);
         }
     }
 
     return(
         <View style={styles.page}>
                 <Navbar/>
+
+                <View style={styles.containerFilter}>
+
+                    <Text style={styles.title}>Solicitações</Text>
+
+                    <Picker
+                        mode='dropdown'
+                        selectedValue={selectedValue}
+                        style={styles.filter}
+                        onValueChange={(itemValue, itemIndex) => {
+                            setSelectedValue(itemValue);
+                        }}
+                    >
+                        <Picker.Item label='Todos' value=''/>
+                        <Picker.Item label='Aceito' value='Aceito'/>
+                        <Picker.Item label='Pendente' value='Andamento'/>
+                        <Picker.Item label='Cancelado' value='AnaliseRecusada'/>
+                    </Picker>
+                </View>
+                
                 {
                 <FlatList
                     data={listSolicitationLocation}
@@ -69,5 +106,22 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFF',
         width: Dimensions.get('screen').width,
         height: Dimensions.get('screen').height
-    }
+    },
+    filter: {
+        height: 50,
+        width: "40%",
+        backgroundColor: '#f5f5f5'
+    },
+    containerFilter: {
+        width: Dimensions.get('screen').width,
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        marginTop: 20,
+        marginBottom: 10,
+        flexDirection: 'row'
+    },
+    title: {
+        fontSize: 30,
+        fontWeight: 'bold'
+    },
 });
