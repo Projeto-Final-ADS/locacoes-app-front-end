@@ -9,7 +9,6 @@ import {
 
 import { Navbar } from '../inventoryPage/Navbar';
 import { useRoute } from '@react-navigation/native';
-import { useNavigation } from '@react-navigation/native'
 import { Item } from './components/Item';
 
 const currencyFormatter = require('currency-formatter');
@@ -28,7 +27,6 @@ interface Solicitacion {
 export function EditSolicitacionPageUser() {
 
     const route = useRoute();
-    const navigation = useNavigation();
 
     const [productList, setProductList] = useState(route.params?.solicitacion.productList);
     const [solicitacion, setSolicitacion] = useState<Solicitacion>(route.params?.solicitacion);
@@ -79,8 +77,8 @@ export function EditSolicitacionPageUser() {
     }*/
 
     return(
-        <ScrollView>
-            <View style={styles.page}>
+        <ScrollView style={styles.page}>
+            <View>
                     <Navbar/>
                     <View style={styles.options}>
                         <View style={{backgroundColor: '#fff', padding: 20, borderRadius: 20, width: Dimensions.get('screen').width - 50}}>
@@ -102,6 +100,14 @@ export function EditSolicitacionPageUser() {
                                 <Text>{solicitacion.addressEvent.bairro}</Text>
                                 <Text>{(solicitacion.addressEvent.cep).substr(0,5)}-{(solicitacion.addressEvent.cep).substr(5,8)}</Text>
                             </View>
+
+                            <Text style={{backgroundColor: '#f1f1f1', padding: 10, borderRadius: 10, fontWeight: 'bold', textAlign: 'center'}}>
+                                Status da Solicitação
+                            </Text>
+
+                            <Text style={{ textAlign: 'center', fontSize: 20, color: "#368CAD", fontWeight: 'bold'}}>
+                                {solicitacion.statusSolicitacion}
+                            </Text>
 
                             <Text style={{backgroundColor: '#f1f1f1', padding: 10, borderRadius: 10, fontWeight: 'bold', textAlign: 'center'}}>
                                 Valor Total
@@ -135,9 +141,12 @@ export function EditSolicitacionPageUser() {
                                 itemName={item.produto.nome}
                                 amount={item.quantidade}
                                 key={item.id}
+                                itemDescription={item.produto.descricao}
+                                picture={item.produto.imagem}
                             />
                         )
                     }
+                    
             </View>
         </ScrollView>
     );
@@ -150,7 +159,7 @@ const styles = StyleSheet.create({
         height: Dimensions.get('screen').height
     },
     options: {
-        height: 320,
+        height: 380,
         width: Dimensions.get('screen').width,
         backgroundColor: '#d6f5e0',
         alignItems: 'center',

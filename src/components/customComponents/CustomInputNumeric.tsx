@@ -9,6 +9,7 @@ interface props {
     value?: string;
     maxLength?: number;
     eventOnBlur?: any;
+    textContentType: any;
 }
 
 export function CustomInputNumeric( { ...props } : props) {
@@ -24,6 +25,7 @@ export function CustomInputNumeric( { ...props } : props) {
             keyboardType = 'numeric'
             maxLength={props.maxLength}
             onBlur={props.eventOnBlur}
+            textContentType={props.textContentType}
         />
     );
 }

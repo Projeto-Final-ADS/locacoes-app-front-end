@@ -18,6 +18,7 @@ import { CustomInputText } from "../components/customComponents/CustomInputText"
 import { CustomAddButton } from "../components/customComponents/CustomAddButton";
 import { InventoryItem } from "../components/pagesComponents/inventoryPage/InventoryItem";
 import { Navbar } from "../components/pagesComponents/Navbar";
+import LoadingScreen from '../components/customComponents/LoadingScreen';
 
 export function InventoryPage() {
 
@@ -27,6 +28,7 @@ export function InventoryPage() {
     const [ itemsData, setItemsData ] = useState([]);
     const [ itemList, setItemList ] = useState([]);
     const [ searchText, setSearchText ] = useState("");
+    const [ isLoading, setIsLoading ] = useState(true);
 
     useEffect(() => {
         setItemList(
@@ -42,17 +44,17 @@ export function InventoryPage() {
 
     useEffect(() => {
         listAllProductStorage();
-    }, []);
-
-    useEffect(() => {
-        listAllProductStorage();
     }, [route?.params]);
 
     async function listAllProductStorage() {
+        setIsLoading(true)
+
         const response = await ListProducts();
+        
         if (response != undefined) {
-            setItemsData(response.data.produtos);
-            setItemList(response.data.produtos);
+            await setItemsData(response.data.produtos);
+            await setItemList(response.data.produtos);
+            setIsLoading(false);
         }
     }
 
@@ -82,6 +84,7 @@ export function InventoryPage() {
             
 
             <View style={styles.containerInventory}>
+                <LoadingScreen isLoading={isLoading}/>
 
                 {itemsData.length == 0 &&
                     <Text style={styles.storageInfo}>Nenhum item encontrado</Text>
@@ -95,7 +98,6 @@ export function InventoryPage() {
                             <InventoryItem
                                 itemName={item.nome}
                                 itemTotalAmount={item.quantidade}
-                                itemAvaiableAmount={item.quantidade}
                                 key={item.id}
                                 item={item}
                             />

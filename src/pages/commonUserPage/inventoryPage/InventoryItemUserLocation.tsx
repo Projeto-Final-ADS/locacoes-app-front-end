@@ -21,8 +21,6 @@ interface props {
     item: any;
 }
 
-const noImage = require("../../../../resources/icons/no-image.png");
-
 export function InventoryItemUserLocation({...props}: props) {
 
     const [ checkBoxValue, setCheckBoxValue ] = useState(false);

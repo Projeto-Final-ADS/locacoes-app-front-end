@@ -13,13 +13,13 @@ interface props {
 export function Status(props:props) {
     return(
         <>
-            { props.status == "aceito" &&
+            { props.status.toLocaleLowerCase() == "aceito" &&
                 <View style={styles.statusOk}/>
             }
-            { props.status == "pendente" || props.status == "andamento" &&
+            { props.status.toLocaleLowerCase() == "pendente" || props.status.toLocaleLowerCase() == "andamento" &&
                 <View style={styles.statusPending}/>
             }
-            { props.status == "analiserecusada" &&
+            { props.status.toLocaleLowerCase() == "analiserecusada" &&
                 <View style={styles.statusCanceled}/>
             }
             

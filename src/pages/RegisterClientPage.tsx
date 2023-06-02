@@ -33,7 +33,7 @@ export function RegisterClientPage() {
 
           <CustomInputText
             placeholder="Nome do cliente"
-            textContentType="text"
+            textContentType="name"
           />
 
           <CustomInputPersonalData
@@ -45,20 +45,21 @@ export function RegisterClientPage() {
           <CustomInputNumeric
             placeholder="CEP"
             maxLength={8}
+            textContentType="postalCode"
           />
           <CustomInputText
             placeholder="Cidade"
-            textContentType="text"
+            textContentType="countryName"
           />
 
           <CustomInputText
             placeholder="Bairro"
-            textContentType="text"
+            textContentType="addressCity"
           />
 
           <CustomInputText
             placeholder="Rua"
-            textContentType="text"
+            textContentType="addressCity"
           />
 
           <View style={{width: "80%"}}>
@@ -67,21 +68,21 @@ export function RegisterClientPage() {
               <View style={{width: 100}}>
                 <CustomInputText
                   placeholder="Qd."
-                  textContentType="text"
+                  textContentType="addressCity"
                 />
               </View>
 
               <View style={{width: 100}}>
                 <CustomInputText
                   placeholder="Lt."
-                  textContentType="text"
+                  textContentType="addressCity"
                 />
               </View>
 
               <View style={{width: 100}}>
                 <CustomInputText
                   placeholder="Nº"
-                  textContentType="text"
+                  textContentType="addressCity"
                 />
               </View>
 
@@ -90,7 +91,7 @@ export function RegisterClientPage() {
 
           <CustomInputText
             placeholder="Complemento"
-            textContentType="text"
+            textContentType="addressCity"
           />
 
           <View style={styles.buttonAdd}>

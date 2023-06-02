@@ -137,8 +137,8 @@ export function EditSolicitacionPage() {
     }
 
     return(
-        <ScrollView>
-            <View style={styles.page}>
+        <ScrollView style={styles.page}>
+            <View>
                     <Navbar/>
                     <View style={styles.options}>
                         <View style={{backgroundColor: '#fff', padding: 20, borderRadius: 20, width: Dimensions.get('screen').width - 50}}>
@@ -166,6 +166,14 @@ export function EditSolicitacionPage() {
                             </Text>
                             <Text style={{fontSize: 18, textAlign: 'center'}}>
                                 {formatedDateToRecall} - {formatedHourToRecall}h
+                            </Text>
+
+                            <Text style={{backgroundColor: '#f1f1f1', padding: 10, borderRadius: 10, fontWeight: 'bold', textAlign: 'center'}}>
+                                Status da Solicitação
+                            </Text>
+
+                            <Text style={{ textAlign: 'center', fontSize: 20, color: "#368CAD", fontWeight: 'bold'}}>
+                                {solicitacion.statusSolicitacion}
                             </Text>
 
                             <Text style={{backgroundColor: '#f1f1f1', padding: 10, borderRadius: 10, fontWeight: 'bold', textAlign: 'center'}}>
@@ -209,6 +217,8 @@ export function EditSolicitacionPage() {
                                 itemName={item.produto.nome}
                                 amount={item.quantidade}
                                 key={item.id}
+                                itemDescription={item.produto.descricao}
+                                picture={item.produto.imagem}
                             />
                         )
                     }
@@ -224,7 +234,7 @@ const styles = StyleSheet.create({
         height: Dimensions.get('screen').height
     },
     options: {
-        height: 450,
+        height: 500,
         width: Dimensions.get('screen').width,
         backgroundColor: '#d6f5e0',
         alignItems: 'center',

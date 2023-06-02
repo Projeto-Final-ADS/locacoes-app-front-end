@@ -17,6 +17,7 @@ interface Location {
     locationId?: number;
     address?: any;
     statusLocation?: string;
+    productPerLocation: string;
 }
 
 export function Task({...props}: props) {
@@ -56,7 +57,8 @@ export function Task({...props}: props) {
             locationId: props.task.id,
             statusLocation: props.task.statusDaLocacao,
             address: props.task.enderecoDoEvento,
-            username: props.task.usuarioQueSolicitou
+            username: props.task.usuarioQueSolicitou,
+            productPerLocation: props.task.produtoPorLocacao
         }
         navigation.navigate("editLocationPage", {location: location, refresh: false});
     }

@@ -7,7 +7,7 @@ interface props {
     onChange?: any;
     editable?: boolean;
     value?: string;
-    textContentType:any;
+    textContentType: any;
 }
 
 export function CustomInputText( { ...props } : props) {

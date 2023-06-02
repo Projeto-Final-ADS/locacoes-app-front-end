@@ -23,8 +23,8 @@ export function LoginPage() {
 
   const { signIn, error } = useContext(AuthContext);
   
-  const [ email, setEmail ] = useState("alessandro2@gmail.com");
-  const [ password, setPassword ] = useState("123456");
+  const [ email, setEmail ] = useState("");
+  const [ password, setPassword ] = useState("");
   const [ wrongPassword, setWrongPassword ] = useState(false);
 
   async function handleLogin() {

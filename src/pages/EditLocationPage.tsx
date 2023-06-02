@@ -6,18 +6,21 @@ import {
     Text,
     TouchableOpacity,
     Alert,
+    ScrollView,
 } from 'react-native';
 
 import { Navbar } from '../components/pagesComponents/Navbar';
 import { useRoute } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native'
 import { UpdateStatusLocation } from '../services/tasks'
+import { Item } from './solicitacionPageAdmin/components/Item';
 
 interface Location {
     username?: string;
     locationId?: number;
     address?: any;
     statusLocation: string;
+    productPerLocation: string;
 }
 
 export function EditLocationPage() {
@@ -72,7 +75,7 @@ export function EditLocationPage() {
     }
 
     return(
-        <View style={styles.page}>
+        <ScrollView style={styles.page}>
                 <Navbar/>
                 <View style={styles.options}>
                     <View style={{backgroundColor: '#fff', padding: 20, borderRadius: 20, width: Dimensions.get('screen').width - 50}}>
@@ -115,8 +118,31 @@ export function EditLocationPage() {
                             </Text>
                         </TouchableOpacity>
                     </View>
+                    
                 </View>
-        </View>
+
+                <View style={{alignItems:'center', justifyContent: 'center', width: Dimensions.get('screen').width, marginTop: 10}}>
+                    <Text style={{color: '#000', fontSize: 24, fontWeight: 'bold'}}>
+                        Itens
+                    </Text>
+                </View>
+                
+
+                <View style={styles.productList}>
+                
+                    {
+                        location.productPerLocation.map((item)=>
+                            <Item
+                                itemName={item.produto.nome}
+                                amount={item.quantidade}
+                                key={item.id}
+                                itemDescription={item.produto.descricao}
+                                picture={item.produto.imagem}
+                            />
+                        )
+                    }
+                </View>
+        </ScrollView>
     );
 }
 
@@ -157,5 +183,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#f9f9f9',
         padding: 5,
         borderRadius: 10
+    },
+    productList: {
+        marginTop: 10
     }
 });
