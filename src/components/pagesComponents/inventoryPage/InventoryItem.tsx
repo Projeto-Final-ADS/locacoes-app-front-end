@@ -12,7 +12,6 @@ import { useNavigation } from '@react-navigation/native';
 interface props {
     itemName?: string;
     itemTotalAmount?: number;
-    itemAvaiableAmount?: number;
     item?: any;
 }
 
@@ -38,8 +37,10 @@ export function InventoryItem({...props}: props) {
             
             <View style={{flexDirection: 'column'}}>
                 <View style={styles.propertiesItemName}>
-                    <Text style={styles.label}>Item</Text>
-                    <Text numberOfLines={1} style={{width: 300}}>{props.itemName}</Text>
+                    <Text style={styles.label}>Item:</Text>
+                    <Text numberOfLines={1} style={{width: Dimensions.get('screen').width - 120}}>{props.itemName}</Text>
+                    <Text style={styles.label}>Descrição:</Text>
+                    <Text numberOfLines={1} style={{width: 300}}>{props.item.descricao}</Text>
                 </View>
 
                 <View style={styles.propertiesAmount}>
@@ -47,11 +48,6 @@ export function InventoryItem({...props}: props) {
                     <Text style={styles.totalAmount}>{props.itemTotalAmount}</Text>
                 </View>
 
-                <View style={styles.propertiesAmount}>
-                    <Text style={styles.label}>Disponível: </Text>
-                    <Text style={styles.availableAmount}>{props.itemAvaiableAmount}</Text>
-                </View>
-                
             </View>
         </View>
     );
@@ -60,7 +56,7 @@ export function InventoryItem({...props}: props) {
 const styles = StyleSheet.create({
     container: {
         width: Dimensions.get('screen').width,
-        height: 120,
+        height: 140,
         marginBottom: 10,
         backgroundColor: '#f0f0f0',
         borderRadius: 10,

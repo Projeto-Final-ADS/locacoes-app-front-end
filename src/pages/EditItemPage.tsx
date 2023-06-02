@@ -138,18 +138,25 @@ export function EditItemPage() {
         <View style={styles.container}>
 
           <Text style={styles.title}>Editar Item</Text>
+
+          <Text style={styles.quantidade}>Nome do item:</Text>
           <CustomInputText
             value={itemName}
             placeholder="Nome do item"
             textContentType='none'
             onChange={setItemName}
           />
+
+          <Text style={styles.quantidade}>Descrição:</Text>
+
           <CustomInputText
             value={itemDescription}
             placeholder="Descrição do item"
             textContentType='none'
             onChange={setItemDescription}
           />
+
+          <Text style={styles.quantidade}>Preço:</Text>
 
           <CurrencyInput
             value={itemPrice}
@@ -213,13 +220,14 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     backgroundColor: '#e4e4e4',
-    padding: 20,
+    padding: 10,
     margin: 10,
     borderRadius: 10
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    marginBottom: 10
   },
   input: {
     marginBottom: 20
@@ -239,11 +247,11 @@ const styles = StyleSheet.create({
       borderRadius: 20,
       paddingLeft: 20,
       paddingRight: 20,
-      fontSize: 18
+      fontSize: 18,
+      marginBottom: 10
   },
   quantidade: {
     fontSize: 18,
-    marginTop: 5
   },
   picture: {
     marginTop: 20

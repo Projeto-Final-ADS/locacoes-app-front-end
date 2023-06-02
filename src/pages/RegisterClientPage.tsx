@@ -33,7 +33,7 @@ export function RegisterClientPage() {
 
           <CustomInputText
             placeholder="Nome do cliente"
-            textContentType="text"
+            textContentType="name"
           />
 
           <CustomInputPersonalData

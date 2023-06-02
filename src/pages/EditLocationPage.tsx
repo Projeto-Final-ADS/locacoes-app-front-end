@@ -120,7 +120,16 @@ export function EditLocationPage() {
                     </View>
                     
                 </View>
+
+                <View style={{alignItems:'center', justifyContent: 'center', width: Dimensions.get('screen').width, marginTop: 10}}>
+                    <Text style={{color: '#000', fontSize: 24, fontWeight: 'bold'}}>
+                        Itens
+                    </Text>
+                </View>
+                
+
                 <View style={styles.productList}>
+                
                     {
                         location.productPerLocation.map((item)=>
                             <Item
@@ -176,6 +185,6 @@ const styles = StyleSheet.create({
         borderRadius: 10
     },
     productList: {
-        marginTop: 20
+        marginTop: 10
     }
 });

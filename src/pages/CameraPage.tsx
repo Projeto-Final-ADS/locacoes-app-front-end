@@ -14,6 +14,7 @@ import { Camera, CameraType } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
 import { manipulateAsync } from 'expo-image-manipulator';
 import { ReturnButton } from "../components/customComponents/ReturnButton";
+import LoadingScreen from "../components/customComponents/LoadingScreen";
 
 const iconCam = require("../../resources/icons/camera.png");
 
@@ -22,6 +23,8 @@ const configBase64Image = 'data:image/jpeg;base64,';
 export function CameraPage() {
 
     const [hasCameraPermission, setHasCameraPermission] = useState(Boolean);
+    const [ isLoading, setIsLoading ] = useState(false);
+
     const cameraRef = useRef<any>(null);
 
     const route = useRoute();
@@ -60,7 +63,10 @@ export function CameraPage() {
     async function captureHandle() {
         if (cameraRef !== null) {
             try {
+                setIsLoading(true);
+
                 const data = await cameraRef.current.takePictureAsync();
+                
                 const resizedPhoto = await manipulateAsync(
                     data.uri,
                     [{ resize: { width: 500, height: 500 } }],
@@ -71,22 +77,23 @@ export function CameraPage() {
                     const uri = configBase64Image + resizedPhoto.base64;
                     selectPage(uri);
                 }
-
+                setIsLoading(false);
                 
             } catch(error) {
                 console.log(error);
+                setIsLoading(false);
             }
         }
     }
 
     return (
         <View style={styles.container}>
+            <LoadingScreen isLoading={isLoading} isAbsolute={true}/>
             <Camera
                 style={styles.camera}
                 type={CameraType.back}
                 ref={cameraRef}
             >
-                
             </Camera>
 
             <View style={styles.menuCam}>
@@ -121,7 +128,6 @@ const styles = StyleSheet.create({
         height: Dimensions.get("screen").height,
         alignItems: 'center',
         justifyContent: 'center',
-        
     },
     camera: {
         width: Dimensions.get("screen").width,
@@ -157,7 +163,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#D4D4D4',
         marginTop: 20,
         borderRadius: 10,
-        
     },
     textReturn: {
         fontWeight: 'bold',

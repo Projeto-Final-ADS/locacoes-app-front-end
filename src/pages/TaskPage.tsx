@@ -9,7 +9,7 @@ import {
     Text,
     FlatList,
     Dimensions,
-    Alert
+    Alert,
 } from 'react-native';
 
 import { useRoute } from '@react-navigation/native';
@@ -18,6 +18,7 @@ import { Task } from "../components/pagesComponents/tasksPage/Task";
 import { Navbar } from "../components/pagesComponents/Navbar";
 import { GetLocationSolicitations } from "../services/tasks";
 import { Picker } from '@react-native-picker/picker';
+import LoadingScreen from '../components/customComponents/LoadingScreen';
 
 export function TaskPage() {
 
@@ -27,6 +28,7 @@ export function TaskPage() {
     const [ tasksData, setTasksData ] = useState([]);
     const [ tasksList, setTasksList ] = useState([]);
     const [ searchText, setSearchText ] = useState("");
+    const [ isLoading, setIsLoading ] = useState(true);
     
     useEffect(() => {
         setTasksList(
@@ -44,10 +46,6 @@ export function TaskPage() {
 
     useEffect(() => {
         GetAllLocationsConfirmed();
-    }, []);
-
-    useEffect(() => {
-        GetAllLocationsConfirmed();
     }, [route?.params]);
 
     async function GetAllLocationsConfirmed() {
@@ -59,19 +57,21 @@ export function TaskPage() {
             if (response.data.sucesso === true) {
                 await setTasksData(response.data.locacoes);
                 await setTasksList(response.data.locacoes);
+                setIsLoading(false);
             }
             if (response.data.sucesso === false)
                 Alert.alert("Erro!", "Verifique sua conexão com a internet!");
+                setIsLoading(false);
         } else {
             Alert.alert("Erro!", "Verifique sua conexão com a internet!");
+            setIsLoading(false);
         }
     }
 
     return (
-        
         <View style={styles.page}>
+            
             <Navbar/>
-            {/*Input para pesquisa task*/}
             <View style={styles.inputSearch}>
                 <CustomInputText
                     placeholder="Pesquisar"
@@ -101,6 +101,7 @@ export function TaskPage() {
             
             {/*Lista de tasks*/}
             <View style={styles.containerInventory}>
+            <LoadingScreen isLoading={isLoading}/>
                 <FlatList
                     style={styles.flatList}
                     data={tasksList}
@@ -149,5 +150,5 @@ const styles = StyleSheet.create({
         height: 50,
         width: "50%",
         backgroundColor: '#f5f5f5'
-    }
+    },
 });

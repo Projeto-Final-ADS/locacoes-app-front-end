@@ -13,12 +13,14 @@ import { Navbar } from '../../components/pagesComponents/Navbar';
 import { Solicitacion } from './components/Solicitacion';
 import { useRoute } from '@react-navigation/native';
 import { Picker } from '@react-native-picker/picker';
+import LoadingScreen from '../../components/customComponents/LoadingScreen';
 
 export function SolicitacionPageAdmin() {
 
     const [ listSolicitationLocation, setListSolicitationLocation] = useState([]);
     const [ listSolicitationLocationData, setListSolicitationLocationData] = useState([]);
     const [ selectedValue, setSelectedValue ] = useState("");
+    const [ isLoading, setIsLoading ] = useState(true);
     
     useEffect(() => {
         setListSolicitationLocation(
@@ -36,18 +38,18 @@ export function SolicitacionPageAdmin() {
 
     useEffect(() => {
         getAllSolicitacionLocation();
-    }, []);
-
-    useEffect(() => {
-        getAllSolicitacionLocation();
     }, [route.params]);
 
     async function getAllSolicitacionLocation() {
+
+        setIsLoading(true);
+
         const data = await GetLocationSolicitations();
 
         if (data != undefined) {
-            setListSolicitationLocation(data.data.locacoes);
-            setListSolicitationLocationData(data.data.locacoes);
+            await setListSolicitationLocation(data.data.locacoes);
+            await setListSolicitationLocationData(data.data.locacoes);
+            setIsLoading(false);
         }
     }
 
@@ -74,7 +76,7 @@ export function SolicitacionPageAdmin() {
                     </Picker>
                 </View>
                 
-                {
+                <LoadingScreen isLoading={isLoading}/>
                 <FlatList
                     data={listSolicitationLocation}
                     showsVerticalScrollIndicator ={false}
@@ -87,7 +89,7 @@ export function SolicitacionPageAdmin() {
                                 dateDelivery={item.dataDoEvento}
                                 totalItems={item.produtoPorLocacao.length}
                                 client={item.usuarioQueSolicitou}
-                                statusSolicitacion={item.statusDaSolicitacao.toLowerCase()}
+                                statusSolicitacion={item.statusDaSolicitacao}
                                 productList={item.produtoPorLocacao}
                                 addressEvent={item.enderecoDoEvento}
                                 toRecallLocationDate={item.dataRecolhimentoLocacao}
@@ -96,7 +98,6 @@ export function SolicitacionPageAdmin() {
                     )}
                     ListFooterComponent={<View style={{height:100}}></View>} //Adiciona espaço abaixo do Flatlist
                 />
-                }
         </View>
     );
 }

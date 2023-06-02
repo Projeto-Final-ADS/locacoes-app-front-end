@@ -18,6 +18,7 @@ import { InventoryItemUserLocation } from "./inventoryPage/InventoryItemUserLoca
 import { Navbar } from "./inventoryPage/Navbar";
 import { InventoryItemUser } from './inventoryPage/InventoryItemUser';
 import { CustomButtonLocation } from '../../components/customComponents/CustomButtonLocation';
+import LoadingScreen from '../../components/customComponents/LoadingScreen';
 
 export function InventoryPageUser() {
 
@@ -30,6 +31,7 @@ export function InventoryPageUser() {
     const [ itemList, setItemList ] = useState([]);
     const [ searchText, setSearchText ] = useState("");
     const [ switchVal, setSwitchVal ] = useState(false);
+    const [ isLoading, setIsLoading ] = useState(true);
 
     useEffect(() => {
         setItemList(
@@ -44,10 +46,6 @@ export function InventoryPageUser() {
     }, [searchText]);
 
     useEffect(() => {
-        listAllProductStorage();
-    }, []);
-
-    useEffect(() => {
         setListSelectedItens([]);
     }, [switchVal]);
 
@@ -56,10 +54,13 @@ export function InventoryPageUser() {
     }, [route?.params]);
     
     async function listAllProductStorage() {
+        setIsLoading(true);
+
         const response = await ListProducts();
         if (response != undefined) {
-            setItemsData(response.data.produtos);
-            setItemList(response.data.produtos);
+            await setItemsData(response.data.produtos);
+            await setItemList(response.data.produtos);
+            setIsLoading(false);
         }
     }
 
@@ -97,40 +98,50 @@ export function InventoryPageUser() {
             </View>
         
             <View style={styles.containerInventory}>
+                <LoadingScreen isLoading={isLoading}/>
 
                 {itemsData.length == 0 &&
                     <Text style={styles.storageInfo}>Nenhum item encontrado</Text>
                 }
 
-                <FlatList
-                    data={itemList}
-                    showsVerticalScrollIndicator ={false}
-                    renderItem={
-                        ({item}) => (
-                            <>
-                                { switchVal &&
-                                    <InventoryItemUserLocation
-                                        itemTotalAmount={item.quantidade}
-                                        itemAvaiableAmount={item.quantidade}
-                                        key={item.id}
-                                        item={item}
-                                        isCheckedForLocation={false}
-                                        listSelectedItens={listSelectedItens}
-                                    />
-                                }
-                                { switchVal == false &&
-                                    <InventoryItemUser
-                                        itemTotalAmount={item.quantidade}
-                                        itemAvaiableAmount={item.quantidade}
-                                        key={item.id}
-                                        item={item}
-                                    />
-                                }
-                            </>
-                        )
-                    }
-                    ListFooterComponent={<View style={{height:300}}></View>} //Adiciona espaço abaixo do Flatlist
-                />
+
+                { switchVal == false &&
+                    <FlatList
+                        data={itemList}
+                        showsVerticalScrollIndicator ={false}
+                        renderItem={
+                            ({item}) => (
+                                <InventoryItemUser
+                                    itemTotalAmount={item.quantidade}
+                                    itemAvaiableAmount={item.quantidade}
+                                    key={item.id}
+                                    item={item}
+                                />
+                            )
+                        }
+                        ListFooterComponent={<View style={{height:300}}></View>} //Adiciona espaço abaixo do Flatlist
+                    />
+                }
+
+                { switchVal &&
+                    <FlatList
+                        data={itemList}
+                        showsVerticalScrollIndicator ={false}
+                        renderItem={
+                            ({item}) => (
+                                <InventoryItemUserLocation
+                                    itemTotalAmount={item.quantidade}
+                                    itemAvaiableAmount={item.quantidade}
+                                    key={item.id}
+                                    item={item}
+                                    isCheckedForLocation={false}
+                                    listSelectedItens={listSelectedItens}
+                                />
+                            )
+                        }
+                        ListFooterComponent={<View style={{height:300}}></View>} //Adiciona espaço abaixo do Flatlist
+                    />
+                }
             </View>
         </View>
     );

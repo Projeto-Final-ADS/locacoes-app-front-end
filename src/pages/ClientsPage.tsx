@@ -17,6 +17,7 @@ import { CustomAddButton } from "../components/customComponents/CustomAddButton"
 import { Client } from "../components/pagesComponents/clientsPage/Client";
 import { Navbar } from "../components/pagesComponents/Navbar";
 import { GetAllUsersByRole } from '../services/users';
+import LoadingScreen from '../components/customComponents/LoadingScreen';
 
 export function ClientsPage() {
 
@@ -25,6 +26,7 @@ export function ClientsPage() {
     const [ itemsData, setItemsData ] = useState([]);
     const [ itemList, setItemList ] = useState(itemsData);
     const [ searchText, setSearchText ] = useState("");
+    const [ isLoading, setIsLoading ] = useState(true);
 
     useEffect(() => {
         setItemList(
@@ -47,10 +49,13 @@ export function ClientsPage() {
     },[]);
 
     async function GetAllUsers() {
+        setIsLoading(true);
+
         const response = await GetAllUsersByRole("Usuario");
         
         if (response !== undefined) {
-            setItemList(response.data.usuarios);
+            await setItemList(response.data.usuarios);
+            setIsLoading(false);
         }
     }
 
@@ -75,6 +80,7 @@ export function ClientsPage() {
             </View>
             
             <View style={styles.containerInventory}>
+                <LoadingScreen isLoading={isLoading}/>
                 <FlatList
                     data={itemList}
                     showsVerticalScrollIndicator ={false}
