@@ -209,14 +209,14 @@ export function AnalyticPageAdmin() {
                         <View style={styles.bar}/>
 
                         <Text style={styles.title}>
-                            Best Sellers
+                            Mais Locados
                         </Text>
                         
                         { //Renderizar listagem de itens
-                            resumeSellers.map((item) => (
+                            resumeSellers.map((item, index) => (
                                 <ItemAnalytic
                                     item={item}
-                                    key={item.id}
+                                    key={index}
                                 />
                             ))
                         }
