@@ -37,7 +37,7 @@ export function EditSolicitacionPageUser() {
 
         let valueAllProducts:number = 0.00;
 
-        await list.forEach(list => {
+        await list.forEach((list:any) => {
             valueAllProducts += list.quantidade * list.produto.preco
         });
 
@@ -136,7 +136,7 @@ export function EditSolicitacionPageUser() {
                     </Text>
                     
                     {
-                        productList.map((item)=>
+                        productList.map((item:any)=>
                             <Item
                                 itemName={item.produto.nome}
                                 amount={item.quantidade}

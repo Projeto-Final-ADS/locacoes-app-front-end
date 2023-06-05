@@ -36,7 +36,7 @@ export function InventoryPageUser() {
     useEffect(() => {
         setItemList(
             itemsData.filter(
-                (item) => {
+                (item:any) => {
                     return (
                         Object.values(item.nome).join('').toLowerCase().includes(searchText.toLowerCase())
                     )
