@@ -77,9 +77,9 @@ export function InventoryItemUserLocation({...props}: props) {
                 
                 <View style={styles.propertiesItemName}>
                     <Text style={styles.label}>Nome:</Text>
-                    <Text numberOfLines={2} style={{width: Dimensions.get('screen').width - 150}}>{props.item.nome}</Text>
+                    <Text numberOfLines={1} style={{width: Dimensions.get('screen').width - 160}}>{props.item.nome}</Text>
                     <Text style={styles.label}>Descrição:</Text>
-                    <Text numberOfLines={2} style={{width: Dimensions.get('screen').width - 150}}>{props.item.descricao}</Text>
+                    <Text numberOfLines={2} style={{width: Dimensions.get('screen').width - 160}}>{props.item.descricao}</Text>
                 </View>
             </View>
 
