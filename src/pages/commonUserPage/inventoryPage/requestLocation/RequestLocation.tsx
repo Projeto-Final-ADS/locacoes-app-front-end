@@ -258,7 +258,7 @@ export function RequestLocation() {
               editable={false}
             />
 
-            <Text style={styles.label}>Dia e hora da locação:</Text>
+            <Text style={styles.label}>Dia e hora para entrega:</Text>
             <View style={{flexDirection:"row"}}>
               <TouchableOpacity style={styles.containerDate} onPress={() => setShowDateLocationDialog(true)}>
                 <Text style={styles.labelDate}>Dia</Text>

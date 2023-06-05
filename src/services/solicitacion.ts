@@ -12,6 +12,16 @@ interface Solicitacion {
     addressEvent: undefined;
 }
 
+interface ProductList {
+    products: Product,
+    eventDate: Date,
+}
+
+interface Product {
+    id: number,
+    quantidade: number,
+}
+
 export async function GetLocationSolicitations() {
     try {
         const token = await GetAuthToken();
@@ -32,7 +42,6 @@ export async function GetLocationSolicitations() {
     }
 }
 
-
 export async function PutLocationSolicitation(props: Solicitacion) {
     try {
 
@@ -46,6 +55,31 @@ export async function PutLocationSolicitation(props: Solicitacion) {
                 dataRecolhimentoLocacao: props.toRecallLocationDate,
                 id: props.solicitacionID,
                 statusDaSolicitacao: props.statusSolicitacion
+            },
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                },
+            }
+        );
+
+        return response;
+
+    } catch(error) {
+      console.log(error);
+    }
+}
+
+export async function CheckProductListAvailability(props: ProductList) {
+    try {
+
+        const token = await GetAuthToken();
+        
+         const response = await api.post(
+            '/locacao/verificar-estoque',
+            {
+                produtos: props.products,
+                dataDoEvento: props.eventDate,
             },
             {
                 headers: {

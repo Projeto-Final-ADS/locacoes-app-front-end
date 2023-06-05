@@ -69,7 +69,7 @@ export function CameraPage() {
                 
                 const resizedPhoto = await manipulateAsync(
                     data.uri,
-                    [{ resize: { width: 500, height: 500 } }],
+                    [{ resize: { width: 200, height: 200 } }],
                     { compress: 1, base64: true }
                 );
 

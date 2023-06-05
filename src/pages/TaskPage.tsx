@@ -33,7 +33,7 @@ export function TaskPage() {
     useEffect(() => {
         setTasksList(
             tasksData.filter(
-                (task) => {
+                (task: any) => {
                     return (
                         Object.values(task.usuarioQueSolicitou).join('').toLowerCase().includes(searchText.toLowerCase())
                         &&

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
     View,
     StyleSheet,
@@ -14,14 +14,7 @@ import { useRoute } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native'
 import { UpdateStatusLocation } from '../services/tasks'
 import { Item } from './solicitacionPageAdmin/components/Item';
-
-interface Location {
-    username?: string;
-    locationId?: number;
-    address?: any;
-    statusLocation: string;
-    productPerLocation: string;
-}
+import { CheckProductListAvailability } from '../services/solicitacion';
 
 export function EditLocationPage() {
 
@@ -29,7 +22,41 @@ export function EditLocationPage() {
     
     const navigation = useNavigation();
 
-    const [location, setLocation] = useState<Location>(route.params?.location);
+    const [location, setLocation] = useState<any>(route.params?.location);
+    const [productList, setProductList] = useState(route.params?.location.productPerLocation);
+    const [loadingNewArrayItems, setLoadingNewArrayItems] = useState(true);
+    
+    const dateDeliveryConverted = new Date(location.dateDelivery);
+    const dateToRecallConverted = new Date(location.toRecall);
+
+    const formatedDateDelivery = formatDate(dateDeliveryConverted);
+    const formatedHourDelivery = formatHours(dateDeliveryConverted);
+
+    const formatedDateToRecall = formatDate(dateToRecallConverted);
+    const formatedHourToRecall = formatHours(dateToRecallConverted);
+
+    useEffect(()=> {
+        CheckOutOfStockProductList();
+    },[]);
+
+    function padTo2Digits(number:number) {
+        return number.toString().padStart(2, '0');
+    }
+      
+    function formatDate(date:Date) {
+        return [
+          padTo2Digits(date.getDate()),
+          padTo2Digits(date.getMonth() + 1),
+          date.getFullYear(),
+        ].join('/');
+    }
+    
+    function formatHours(hours:Date) {
+        return [
+          padTo2Digits(hours.getHours()),
+          padTo2Digits(hours.getMinutes())
+        ].join(':');
+    }
 
     function ToProgressStatus(status: string) {
         switch(status) {
@@ -74,6 +101,43 @@ export function EditLocationPage() {
         }
     }
 
+    async function CheckOutOfStockProductList() {
+        let listProducts: any = [];
+
+        await productList.map((item: any) => {
+            listProducts.push({
+                id: item.produto.id,
+                quantidade: item.quantidade,
+            });
+        });
+
+        const response = await CheckProductListAvailability({
+            products: listProducts,
+            eventDate: new Date(location.dateDelivery),
+        });
+
+        let lengthArray: number = response?.data.validacaoDoEstoque.length;
+        let arrayResponse: any[] = response?.data.validacaoDoEstoque;
+        let newProductList: any = [];
+
+        if (response != undefined) {
+            for (let i = 0; i < productList.length; i++) {
+                for (let j = 0; j < lengthArray; j++) {
+                    if (arrayResponse[j].produtoId == productList[i].produto.id) {
+                        await newProductList.push({
+                            ...productList[i],
+                            containStock: arrayResponse[j].temEstoque,
+                            messageStock: arrayResponse[j].mensagem,
+                        });
+                    }
+                }
+            }
+
+        }
+        await setProductList(newProductList);
+        setLoadingNewArrayItems(false);
+    }
+
     return(
         <ScrollView style={styles.page}>
                 <Navbar/>
@@ -97,6 +161,20 @@ export function EditLocationPage() {
                             <Text>{location.address.bairro}</Text>
                             <Text>{(location.address.cep).substr(0,5)}-{(location.address.cep).substr(5,8)}</Text>
                         </View>
+
+                        <Text style={{ backgroundColor: '#f1f1f1', padding: 10, borderRadius: 10, fontWeight: 'bold', textAlign: 'center' }}>
+                            Data de entrega
+                        </Text>
+                        <Text style={{ fontSize: 18, textAlign: 'center' }}>
+                            {formatedDateDelivery} - {formatedHourDelivery}h
+                        </Text>
+
+                        <Text style={{ backgroundColor: '#f1f1f1', padding: 10, borderRadius: 10, fontWeight: 'bold', textAlign: 'center' }}>
+                            Data recolhimento
+                        </Text>
+                        <Text style={{ fontSize: 18, textAlign: 'center' }}>
+                            {formatedDateToRecall} - {formatedHourToRecall}h
+                        </Text>
 
                         <Text style={styles.titleBars}>
                             Status Atual
@@ -130,14 +208,16 @@ export function EditLocationPage() {
 
                 <View style={styles.productList}>
                 
-                    {
-                        location.productPerLocation.map((item)=>
+                    {loadingNewArrayItems == false &&
+                        productList.map((item:any)=>
                             <Item
                                 itemName={item.produto.nome}
                                 amount={item.quantidade}
                                 key={item.id}
                                 itemDescription={item.produto.descricao}
                                 picture={item.produto.imagem}
+                                containStock={item.containStock}
+                                messageStock={item.messageStock}
                             />
                         )
                     }
@@ -153,7 +233,7 @@ const styles = StyleSheet.create({
         height: Dimensions.get('screen').height
     },
     options: {
-        height: 420,
+        height: 550,
         width: Dimensions.get('screen').width,
         backgroundColor: '#d6f5e0',
         alignItems: 'center',

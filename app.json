@@ -1,12 +1,14 @@
 {
   "expo": {
-    "name": "Locacoes",
-    "slug": "Locacoes",
+    "name": "LocaGest",
+    "slug": "LocaGest",
     "plugins": [
-      ["expo-camera",
+      [
+        "expo-camera",
         {
           "cameraPermission": "Permita $(PRODUCT_NAME) acessar a câmera."
-        }]
+        }
+      ]
     ],
     "version": "1.0.0",
     "orientation": "portrait",
@@ -30,10 +32,20 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.luizinhoh2o1.LocaGest"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "f75fbb44-619c-479d-b245-d05bbb294101"
+      }
     }
   }
 }
