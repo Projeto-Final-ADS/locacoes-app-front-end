@@ -74,9 +74,9 @@ export function ClientsPage() {
 
                 <Text style={styles.title}>Clientes</Text>
 
-                <CustomAddButton
+                {/*<CustomAddButton
                     onPress={navigateRegisterClient}
-                />
+                />*/}
             </View>
             
             <View style={styles.containerInventory}>

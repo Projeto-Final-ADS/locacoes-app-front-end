@@ -54,7 +54,7 @@ export function LoginPage() {
               source={require("../../resources/images/logo-cubebox.png")}
               style={{ resizeMode: "contain", height: 75, width: 75 }}
             />
-            <Text style={styles.titleLogo}>Locações</Text>
+            <Text style={styles.titleLogo}>LocaGest</Text>
           </View>
 
           {/** View Container Login */}
