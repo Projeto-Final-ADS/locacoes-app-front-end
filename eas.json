@@ -1,6 +1,7 @@
 {
   "cli": {
-    "version": ">= 3.13.2"
+    "version": ">= 3.13.2",
+    "appVersionSource": "remote"
   },
   "build": {
     "development": {
@@ -8,7 +9,18 @@
       "distribution": "internal"
     },
     "preview": {
-      "distribution": "internal"
+      "distribution": "internal",
+      "android": {
+        "buildType": "apk"
+      }
+    },
+    "preview2": {
+        "android": {
+          "gradleCommand": ":app:assembleRelease"
+        }
+    },
+    "preview3": {
+      "developmentClient": true
     },
     "production": {}
   },
