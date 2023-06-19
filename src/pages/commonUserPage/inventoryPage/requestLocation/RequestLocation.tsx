@@ -21,13 +21,16 @@ import { CustomInputNumeric } from "../../../../components/customComponents/Cust
 import { PostLocation } from "../../../../services/location";
 
 import DateTimePicker from '@react-native-community/datetimepicker';
+const currencyFormatter = require('currency-formatter');
 
 export function RequestLocation() {
 
   const route = useRoute();
   const navigate = useNavigation();
 
-  const [ itemsList, setItemList ] = useState([]);
+  const [ itemsList, setItemList ] = useState<any>([]);
+
+  const [ totalValue, setTotalValue ] = useState(0);
   
   let dateToRecall = new Date();
   dateToRecall.setHours(dateToRecall.getHours() + 24);
@@ -49,6 +52,7 @@ export function RequestLocation() {
 
   useEffect(()=> {
     setItemList(route.params?.itemsLocationList);
+    sumAllProducts();
   });
 
   async function viaCEP() {
@@ -62,6 +66,14 @@ export function RequestLocation() {
     .catch((err) => {
       console.log(err);
     });
+  }
+
+  async function sumAllProducts() {
+    let value = 0;
+    for (let i = 0; i < itemsList.length; i++) {
+      value += itemsList[i].amount * itemsList[i].productPrice;
+    }
+    setTotalValue(value);
   }
 
   async function postLocation() {
@@ -85,7 +97,7 @@ export function RequestLocation() {
       const response = await PostLocation(locationBody);
   
         if (response?.data.sucesso == true) {
-          navigate.navigate("inventoryUser");
+          navigate.navigate("inventoryUser", {refresh: true});
           Alert.alert("Sucesso!","Solicitação de locação criada com sucesso!");
         } else {
   
@@ -226,6 +238,7 @@ export function RequestLocation() {
               onChange={setCEP}
               value={cep}
               eventOnBlur={viaCEP}
+              textContentType="postal-code"
             />
             <Text style={styles.label}>Cidade:</Text>
             <CustomInputText
@@ -284,6 +297,10 @@ export function RequestLocation() {
               </TouchableOpacity>
             </View>
 
+            <Text style={styles.totalPrice}>
+              Valor total: {currencyFormatter.format(totalValue, { code: 'BRL' })}
+            </Text>
+
             <View style={styles.buttonAdd}>
               <CustomAddButton
                 onPress={postLocation}
@@ -324,6 +341,13 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 16
+  },
+  totalPrice: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    backgroundColor: '#f2f2f2',
+    padding: 8,
+    borderRadius: 10
   },
   labelDate: {
     fontSize: 16,

@@ -22,6 +22,7 @@ import { GetLocationSolicitations } from "../services/tasks";
 import { Picker } from '@react-native-picker/picker';
 import LoadingScreen from '../components/customComponents/LoadingScreen';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { ReloadButton } from '../components/customComponents/ReloadButton';
 
 export function TaskPage() {
 
@@ -79,6 +80,7 @@ export function TaskPage() {
     }
 
     async function GetAllLocationsConfirmed() {
+        setIsLoading(true);
 
         const response = await GetLocationSolicitations({ status: "Aceito" });
 
@@ -163,6 +165,12 @@ export function TaskPage() {
             <View style={styles.inventoryBar}>
                 {/*Texto de task*/}
                 <Text style={styles.title}>Tarefas</Text>
+                <View style={{alignItems: 'center'}}>
+                    <Text>Recarregar</Text>
+                    <ReloadButton
+                        onPress={GetAllLocationsConfirmed}
+                    />
+                </View>
             </View>
 
 
@@ -178,7 +186,7 @@ export function TaskPage() {
                             <Task task={item} />
                         )
                     }
-                    ListFooterComponent={<View style={{ height: 300 }}></View>} //Adiciona espaço abaixo do Flatlist
+                    ListFooterComponent={<View style={{ height: 350 }}></View>} //Adiciona espaço abaixo do Flatlist
                 />
             </View>
         </View>
@@ -193,7 +201,7 @@ const styles = StyleSheet.create({
     },
     containerInventory: {
         alignItems: 'center',
-        marginTop: 20
+        marginTop: 20,
     },
     inputSearch: {
         alignItems: 'center'
