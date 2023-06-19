@@ -13,6 +13,8 @@ import { CustomSmallAddButton } from '../../../components/customComponents/Custo
 import { CustomSmallSubtractionButton } from '../../../components/customComponents/CustomSmallSubtractionButton';
 import { CustomSmallInputNumeric } from '../../../components/customComponents/CustomSmallInputNumeric';
 
+const currencyFormatter = require('currency-formatter');
+
 interface props {
     itemTotalAmount?: number;
     itemAvaiableAmount?: number;
@@ -27,7 +29,7 @@ export function InventoryItemUserLocation({...props}: props) {
     const [ amount, setAmount ] = useState(1);
 
     useEffect(()=> {
-        if (amount < 1)
+        if (amount <= 0 || amount == undefined)
             setAmount(1);
         updateItemOfTheList();
     },[amount]);
@@ -48,7 +50,8 @@ export function InventoryItemUserLocation({...props}: props) {
             props.listSelectedItens.push({
                 productId: props.item.id,
                 productName: props.item.nome,
-                amount: amount
+                amount: amount,
+                productPrice: props.item.preco,
             });
         } else {
             let index = await props.listSelectedItens.findIndex((obj) => obj.productId == props.item.id);
@@ -72,7 +75,8 @@ export function InventoryItemUserLocation({...props}: props) {
                         checked={checkBoxValue}
                         onPress={()=> setCheckBoxValue(!checkBoxValue)}
                         containerStyle={styles.checkbox}
-                        checkedColor="#2fbf0f"
+                        checkedColor="#51f542"
+                        uncheckedColor='#fff'
                     />
                 
                 <View style={styles.propertiesItemName}>
@@ -80,13 +84,14 @@ export function InventoryItemUserLocation({...props}: props) {
                     <Text numberOfLines={1} style={{width: Dimensions.get('screen').width - 160}}>{props.item.nome}</Text>
                     <Text style={styles.label}>Descrição:</Text>
                     <Text numberOfLines={2} style={{width: Dimensions.get('screen').width - 160}}>{props.item.descricao}</Text>
+                    <Text style={styles.labelPrice}>{currencyFormatter.format(props.item.preco, { code: 'BRL' })} unidade</Text>
                 </View>
             </View>
 
             { checkBoxValue &&
                 <View style={styles.containerAmount}> 
                     <Text style={{fontSize: 16}}>Quantidade:</Text>
-                    <View>
+                    <View style={{alignItems: 'center'}}>
                         
                             <View style={{flexDirection: 'row'}}>
                                 <CustomSmallSubtractionButton
@@ -100,6 +105,7 @@ export function InventoryItemUserLocation({...props}: props) {
                                     onPress={() => setAmount(amount +1)}
                                 />
                             </View>
+                            <Text style={styles.label}>Total: {currencyFormatter.format(props.item.preco * amount, { code: 'BRL' })}</Text>
                     </View>
                 </View>
             }
@@ -110,7 +116,7 @@ export function InventoryItemUserLocation({...props}: props) {
 const styles = StyleSheet.create({
     container: {
         width: Dimensions.get('screen').width,
-        height: 140,
+        height: 155,
         backgroundColor: '#f0f0f0',
         flexDirection: 'row',
         justifyContent: 'flex-start',
@@ -119,6 +125,10 @@ const styles = StyleSheet.create({
     label: {
         fontSize: 18,
         fontWeight: 'bold'
+    },
+    labelPrice: {
+        fontSize: 16,
+        fontWeight: 'bold',
     },
     buttonImage: {
         backgroundColor: "#dfdfdf",

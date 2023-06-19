@@ -27,7 +27,8 @@ const styles = StyleSheet.create({
     height: 60,
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: 60,
+    //marginTop: 60,
+    marginTop: 10,
     marginLeft: 15
   },
   profile: {

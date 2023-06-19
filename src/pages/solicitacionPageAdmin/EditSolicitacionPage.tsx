@@ -174,6 +174,7 @@ export function EditSolicitacionPage() {
         if (response != undefined) {
             if (response.data.sucesso == true) {
 
+                navigation.navigate("tasksPage", { refresh: true });
                 navigation.navigate("solicitationPageAdmin", { refresh: true });
 
                 Alert.alert("Status", "Solicitação aceita com sucesso!");

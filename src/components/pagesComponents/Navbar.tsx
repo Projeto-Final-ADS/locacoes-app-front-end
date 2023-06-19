@@ -33,7 +33,8 @@ const styles = StyleSheet.create({
     height: 60,
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: 60,
+    marginTop: 10,
+    //marginTop: 60,
     marginLeft: 15
   },
   profile: {

@@ -51,6 +51,7 @@ export function InventoryPageUser() {
 
     useEffect(() => {
         listAllProductStorage();
+        setSwitchVal(false);
     }, [route?.params]);
     
     async function listAllProductStorage() {
@@ -73,7 +74,6 @@ export function InventoryPageUser() {
         
         <View style={styles.page}>
             <Navbar/>
-
             <View style={styles.inputSearch}>
                 <CustomInputText
                     placeholder="Pesquisar"
@@ -110,7 +110,7 @@ export function InventoryPageUser() {
                         data={itemList}
                         showsVerticalScrollIndicator ={false}
                         renderItem={
-                            ({item}) => (
+                            ({item}:any) => (
                                 <InventoryItemUser
                                     itemTotalAmount={item.quantidade}
                                     itemAvaiableAmount={item.quantidade}
@@ -128,7 +128,7 @@ export function InventoryPageUser() {
                         data={itemList}
                         showsVerticalScrollIndicator ={false}
                         renderItem={
-                            ({item}) => (
+                            ({item}:any) => (
                                 <InventoryItemUserLocation
                                     itemTotalAmount={item.quantidade}
                                     itemAvaiableAmount={item.quantidade}

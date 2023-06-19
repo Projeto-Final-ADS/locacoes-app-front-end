@@ -195,7 +195,7 @@ export function AnalyticPageAdmin() {
                                 text={"*Indice ordenado em ordem decrescente."}
                             />
                             <VictoryLabel x={48} y={35} style={{fill: '#444', fontSize: 20}}
-                                text={"Mais vendidos:"}
+                                text={"Mais locados:"}
                             />
                             <VictoryBar
                                 style={{ data: { fill: "#114599" } }}

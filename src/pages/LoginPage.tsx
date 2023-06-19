@@ -23,8 +23,8 @@ export function LoginPage() {
 
   const { signIn, error } = useContext(AuthContext);
   
-  const [ email, setEmail ] = useState("");
-  const [ password, setPassword ] = useState("");
+  const [ email, setEmail ] = useState("joao@gmail.com");
+  const [ password, setPassword ] = useState("123456");
   const [ wrongPassword, setWrongPassword ] = useState(false);
 
   async function handleLogin() {
@@ -88,7 +88,6 @@ export function LoginPage() {
               </Text>
             }
             
-
             <CustomButton
               titleButton="Entrar"
               onPress={handleLogin}

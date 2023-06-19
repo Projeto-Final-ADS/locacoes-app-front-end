@@ -7,19 +7,15 @@ import {
     TouchableOpacity
 } from 'react-native';
 
-import { useNavigation } from '@react-navigation/native';
-
 interface props {
     itemTotalAmount?: number;
     itemAvaiableAmount?: number;
     item?: any;
 }
 
-const noImage = require("../../../../resources/icons/no-image.png");
+const currencyFormatter = require('currency-formatter');
 
 export function InventoryItemUser({...props}: props) {
-
-    const navigation = useNavigation();
 
     return (
         <View style={styles.container}>
@@ -35,6 +31,7 @@ export function InventoryItemUser({...props}: props) {
                 <Text numberOfLines={1} style={{width: Dimensions.get('screen').width - 160}}>{props.item.nome}</Text>
                 <Text style={styles.label}>Descrição:</Text>
                 <Text numberOfLines={2} style={{width: Dimensions.get('screen').width - 160}}>{props.item.descricao}</Text>
+                <Text style={styles.labelPrice}>{currencyFormatter.format(props.item.preco, { code: 'BRL' })} unidade</Text>
             </View>
         </View>
     );
@@ -43,7 +40,7 @@ export function InventoryItemUser({...props}: props) {
 const styles = StyleSheet.create({
     container: {
         width: Dimensions.get('screen').width,
-        height: 140,
+        height: 155,
         marginBottom: 10,
         backgroundColor: '#f0f0f0',
         flexDirection: 'row',
@@ -52,6 +49,10 @@ const styles = StyleSheet.create({
     },
     label: {
         fontSize: 18,
+        fontWeight: 'bold'
+    },
+    labelPrice: {
+        fontSize: 16,
         fontWeight: 'bold'
     },
     buttonImage: {
